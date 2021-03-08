@@ -57,8 +57,8 @@
     <h3>This is the testing "Change Password" page for ALL users.</h3>
     <h1>Update your password</h1>
     <form method="post">
-        New Password: <input type="password" name="new_password"><br><br>
-        Verify New Password: <input type="password" name="verify_password"><br><br>
+        New Password: <input type="password" name="new_password" required><br><br>
+        Verify New Password: <input type="password" name="verify_password" required><br><br>
         <br><br>
         <input id="button" type="submit" name="update_password" value="Update Password"><br><br>
     </form>
