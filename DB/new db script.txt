@@ -1,0 +1,53 @@
+//Copy+paste into MySQL
+
+CREATE DATABASE prototypev1;
+
+USE prototypev1;
+
+
+CREATE TABLE users (
+	user_id varchar(100) NOT NULL PRIMARY KEY,
+	password varchar(100) NOT NULL,
+	first_name varchar(100) NOT NULL,
+	last_name varchar(100) NOT NULL,
+	email varchar(100) NOT NULL,
+	phone_number varchar(100) NOT NULL,
+	department varchar(100) NOT NULL,
+	position varchar(100) NOT NULL);
+	
+	
+CREATE TABLE tickets (
+	ticket_id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	date_created timestamp NOT NULL DEFAULT current_timestamp(),
+	priority varchar(20) NOT NULL,
+	description text NOT NULL,
+	created_by varchar(100) NOT NULL,
+	assigned_to varchar(100) DEFAULT NULL,
+	status varchar(100) NOT NULL DEFAULT 'Open');
+
+	
+INSERT INTO tickets (priority, description, created_by) VALUES
+	('HIGH', 'Please add the following member to our team:\r\n                                                                      Carol Danvers\r\n                                                                      (651) 123-5555\r\n                                                                      pewpewpew@fakedomain.com\r\n                                                                      Position: intern', 'dlance'),
+	('High', 'My computer keeps showing a driver error, but I took the bus to work this morning!\r\n                                                                      FIX IT!!', 'ckent'),
+	('Low', 'Could I get an ergo keyboard at my desk, please?', 'ballen'),
+	('Medium', 'Can\'t connect to the printer with my computer, but I can transfer files to print on the printer using a USB thumb drive. This is just a temporary work-around, as we REALLY need to be able to connect to the printer via our computers.\r\n                                                                       \r\n                                                                       Thanks!', 'zzatara'),
+	('Medium', 'My laptop only has USB C ports, but I need to be able to connect to other devices via USB A. I need an adapter/hub.\r\n                                                                      \r\n                                                                      Thanks!\r\n                                                                      \r\n                                                                      Barry Allen', 'ballen'),
+	('Low', 'Could I also get an ergo mouse at my desk, perhaps something like the Logitech mx ergo plus?', 'ballen'),
+	('High', 'OMG,IDROPPEDMYLAPTOP,ANDNOWTHESPACEBARDOESN\'TWORK!!\r\n\r\nHELPME!!', 'ballen'),
+	('HIGH', 'OH,GREAT,NOWCAPSLOCKWON\'TTURNOFFASWELL!!\r\n\r\nIREALLYNEEDANEWLAPTOP!!!', 'ballen');
+	
+
+INSERT INTO users (user_id, password, first_name, last_name, email, phone_number, department, position) VALUES
+	('ballen', md5('theflash'), 'Barry', 'Allen', 'fastguy@fakedomain.com', '(651) 123-4567', 'Shipping', 'Manager'),
+	('bwayne', md5('batman'), 'Bruce', 'Wayne', 'richguy@fakedomain.com', '(651) 123-4568', 'Leadership', 'CFO'),
+	('ckent', md5('superman'), 'Clark', 'Kent', 'farmville@fakedomain.com', '(651) 123-4569', 'Leadership', 'COO'),
+	('dlance', md5('blackcanary'), 'Dinah', 'Lance', 'loleardrums@fakedomain.com', '(651) 123-4570', 'HR', 'Manager'),
+	('dprince', md5('wonderwoman'), 'Diana', 'Prince', 'princessbadass@fakedomain.com', '(651) 123-4571', 'Leadership', 'CEO'),
+	('dschwen', md5('potato'), 'Daniel', 'Schwen', 'daniel.schwen@fakedomain.com', '(651) 123-4572', 'IT Support', 'Manager'),
+	('hjordan', md5('greenlantern'), 'Hal', 'Jordan', 'ringslinger@fakedomain.com', '(651) 123-4573', 'Marketing', 'Manager'),
+	('jcruz', md5('greenlantern'), 'Jessica', 'Cruz', 'betterringslinger@fakedomain.com', '(651) 123-4574', 'Shipping', 'Manager'),
+	('jjones', md5('martianmanhunter'), 'John', 'Jones', 'imissmars@fakedomain.com', '(651) 123-4575', 'HR', 'Manager'),
+	('jsmith01', md5('12345'), 'John', 'Smith', 'john.smith.01@fakedomain.com', '(651) 123-4576', 'Finance', 'Manager'),
+	('jsmith02', md5('12345'), 'Jacob', 'Smith', 'john.smith.02@fakedomain.com', '(651) 123-4577', 'IT Support', 'Level 1 Support'),
+	('shol', md5('hawkwoman'), 'Shayera', 'Hol', 'hammertime@fakedomain.com', '(651) 123-4578', 'Legal', 'Manager'),
+	('zzatara', md5('annataZ'), 'Zatanna', 'Zatara', 'spellsgopewpew@fakedomain.com', '(651) 123-4579', 'Finance', 'Manager');
