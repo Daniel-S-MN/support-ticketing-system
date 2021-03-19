@@ -1,9 +1,9 @@
 /* This is just a place-holder for now, this is from: https://epicbootstrap.com/snippets/login-form-dark */
 
 .login-dark {
-    height:1000px;
+    height:auto;
     background:#475d62 url(../Images/test.jpg);
-    background-size:cover;
+    background-size:contain;
     position:relative;
   }
   

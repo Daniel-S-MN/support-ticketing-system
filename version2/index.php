@@ -2,7 +2,8 @@
     // Login form example found:
     // https://epicbootstrap.com/snippets/login-form-dark
 
-    include('connection.php');
+    // I need to change this to utilize the dbConnection class...
+    include('testingConnection.php');
 
     session_start();
 
@@ -25,7 +26,7 @@
             $_SESSION['Position'] = $row['position'];
 
             // Send the user to the correct main page, based on department and/or position
-            header("Location: redirect.php");
+            header("Location: testing.php");
 
         } else {
             echo '<script>alert("Invalid username or password")</script>';
@@ -35,13 +36,14 @@
 
 ?>
 
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Untitled</title>
+    <title>Log In</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -50,12 +52,13 @@
 
 <body>
     <div class="login-dark">
-        <form method="post">
+        <form action="index.php" method="post">
             <h2 class="sr-only">Login Form</h2>
             <div class="illustration"><i class="icon ion-locked"></i></div>
-            <div class="form-group"><input class="form-control" type="text" name="posted_username" placeholder="User ID"></div>
-            <div class="form-group"><input class="form-control" type="password" name="posted_password" placeholder="Password"></div>
-            <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</button></div><a href="#" class="forgot">Forgot your email or password?</a></form>
+            <div class="form-group"><input class="form-control" type="text" name="posted_username" placeholder="User ID" required="true"></div>
+            <div class="form-group"><input class="form-control" type="password" name="posted_password" placeholder="Password" required="true"></div>
+            <div class="form-group"><button class="btn btn-primary btn-block" type="submit" name="post_login">Log In</button></div>
+        </form>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
