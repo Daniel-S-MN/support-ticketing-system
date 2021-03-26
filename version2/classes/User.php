@@ -1,37 +1,42 @@
 <?php
 
-require_once('classes/DBConn.php');
+require('classes/DBConn.php');
 
 class User extends DBConn {
     
     function login($userID, $password) {
 
-        $stmt = $this->mysqli->prepare("SELECT * FROM users WHERE user_id = ?");
+        $stmt = $this->connection->prepare("SELECT * FROM users WHERE user_id = ?");
         $stmt->bind_param("s", $userID);
         $stmt->execute();
         $result = $stmt->get_result();
-        $row = $result->fetch_array(MYSQLI_ASSOC);
-        if (is_array($row)) {
-            if ($password == $row['password']) {
+        $count = $stmt->rowCount();
+
+        if ($count < 1) {
+            $this->error = "No user found";
+            return false;
+        } else {
+            $stmt->bind_result($uid, $passcode, $fName, $lName, $email, $phoneNum, $dept, $position);
+            
+            // Verify the entered password with the hashed password in the DB
+            $verify = password_verify($password, $passcode);
+            if ($verify) {
                 session_start();
                 $_SESSION['login'] = "yes";
-                $_SESSION['User_ID'] = $row['user_id'];
-                $_SESSION['First_Name'] = $row['first_name'];
-                $_SESSION['Last_Name'] = $row['last_name'];
-                $_SESSION['Email'] = $row['email'];
-                $_SESSION['Phone_Num'] = $row['phone_number'];
-                $_SESSION['Department'] = $row['department'];
-                $_SESSION['Position'] = $row['position'];
-
-            return true;
-
+                $_SESSION['User_ID'] = $uid;
+                $_SESSION['First_Name'] = $fName;
+                $_SESSION['Last_Name'] = $lName;
+                $_SESSION['Email'] = $email;
+                $_SESSION['Phone_Num'] = $phoneNum;
+                $_SESSION['Department'] = $dept;
+                $_SESSION['Position'] = $position;
+                return true;
+                
             } else {
-                $this->error = "Invalid Password";
+                $this->error = "Invalid password";
                 return false;
             }
-        } else {
-            $this->error = "User not found";
-            return false;
         }
     }
+
 }

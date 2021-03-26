@@ -1,7 +1,6 @@
 //Copy+paste into MySQL
 
 CREATE DATABASE prototypev1;
-
 USE prototypev1;
 
 

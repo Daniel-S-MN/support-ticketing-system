@@ -2,21 +2,19 @@
 
 if (isset($_POST['post_login'])) {
 
-    // require('classes/User.php');
+    require('classes/User.php');
 
-    // $user = new User();
-    // $user->connect();
+    $user = new User();
+    $user->connect();
 
-    // if($user->login($_POST['posted_username'], md5($_POST['posted_password']))) {
-    //     // Send the user to the correct main page, based on department and/or position
-    //     header("Location: loginTest.php");
-    // } else {
-    //     $errormsg = $user->getError();
-    //     echo '<script>alert("{$errormsg}")</script>';
-    //     header("refresh:0; url=index.php");
-    // }
-    require('testing/blarg.php');
-    whatever();
+    if($user->login($_POST['posted_username'], md5($_POST['posted_password']))) {
+        // Send the user to the correct main page, based on department and/or position
+        header("Location: loginTest.php");
+    } else {
+        $errormsg = $user->getError();
+        echo '<script>alert("{$errormsg}")</script>';
+        header("refresh:0; url=index.php");
+    }
 }
 
 ?>

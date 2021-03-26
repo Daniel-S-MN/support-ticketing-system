@@ -6,17 +6,17 @@ class DBConn {
 	private $dbhost = "localhost";
     private $dbuser = "root";
     private $dbpass = "";
-    private $dbname = "prototypev1";
+    private $dbname = "prototypev2";
 
-	public $mysqli = "";
+	public $connection = "";
 	public $error;
 
 	function connect() {
         $this->connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
-        if ($this->mysqli->connect_errno) {
-            $this->error = "Failed to connect to MySQL: " . $this->$mysqli -> connect_error;
-            return false;
+        if ($this->connection->connect_errno) {
+            $this->error = "Failed to connect to MySQL: " . $this->$connection -> connect_error;
+            //return false;
         } else {
             return $this->connection;
         }
@@ -24,6 +24,10 @@ class DBConn {
 
     function dbClose() {
         mysqli_close($this->connection);
+    }
+
+    function getError() {
+        return $this->$error;
     }
 
 }
