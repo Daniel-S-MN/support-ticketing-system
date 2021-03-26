@@ -18,5 +18,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
  </head>
  <body>
   <?php echo'<p>This page should only be visible after logging in.</p>';?>
+  <br><br>
+  <button type=“button”><a href="logout.php">Log Out</a></button>
  </body>
 </html>

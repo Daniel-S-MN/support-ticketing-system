@@ -12,7 +12,7 @@ class DBConn {
 	public $error;
 
 	function connect() {
-        $this->connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+        $this->connection = mysqli_connect($this->dbhost, $this->dbuser, $this->dbpass, $this->dbname);
 
         if ($this->connection->connect_errno) {
             $this->error = "Failed to connect to MySQL: " . $this->$connection -> connect_error;
@@ -27,7 +27,9 @@ class DBConn {
     }
 
     function getError() {
-        return $this->$error;
+        $error = $this->error;
+		unset($this->error);
+		return $error;
     }
 
 }

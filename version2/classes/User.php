@@ -5,36 +5,39 @@ require('classes/DBConn.php');
 class User extends DBConn {
     
     function login($userID, $password) {
-
-        $stmt = $this->connection->prepare("SELECT * FROM users WHERE user_id = ?");
-        $stmt->bind_param("s", $userID);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $count = $stmt->rowCount();
-
-        if ($count < 1) {
-            $this->error = "No user found";
+        
+        // Perform a MySQL search to see if that user exists in the users table
+        $stmt = mysqli_query($this->connection, "SELECT *
+                                                FROM users
+                                                WHERE user_id = '$userID'");
+        $row = mysqli_fetch_array($stmt);
+        
+        // Determine if the MySQL search found the user
+        if (!is_array($row)) {
+            $this->error = "User not found";
             return false;
         } else {
-            $stmt->bind_result($uid, $passcode, $fName, $lName, $email, $phoneNum, $dept, $position);
-            
-            // Verify the entered password with the hashed password in the DB
+            // Verify that the password matches with the hashed password in the DB
+            $passcode = $row['password'];
             $verify = password_verify($password, $passcode);
-            if ($verify) {
+
+            if (!$verify) {
+                $this->error = "Incorrect password";
+                return false;
+            } else {
+                // Set the session for the user
                 session_start();
                 $_SESSION['login'] = "yes";
-                $_SESSION['User_ID'] = $uid;
-                $_SESSION['First_Name'] = $fName;
-                $_SESSION['Last_Name'] = $lName;
-                $_SESSION['Email'] = $email;
-                $_SESSION['Phone_Num'] = $phoneNum;
-                $_SESSION['Department'] = $dept;
-                $_SESSION['Position'] = $position;
+                $_SESSION['User_ID'] = $row['user_id'];
+                $_SESSION['User_Passcode'] = $password;
+                $_SESSION['First_Name'] = $row['first_name'];
+                $_SESSION['Last_Name'] = $row['last_name'];
+                $_SESSION['Email'] = $row['email'];
+                $_SESSION['Phone_Num'] = $row['phone_number'];
+                $_SESSION['Department'] = $row['department'];
+                $_SESSION['Position'] = $row['position'];
+
                 return true;
-                
-            } else {
-                $this->error = "Invalid password";
-                return false;
             }
         }
     }

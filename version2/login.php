@@ -7,12 +7,13 @@ if (isset($_POST['post_login'])) {
     $user = new User();
     $user->connect();
 
-    if($user->login($_POST['posted_username'], md5($_POST['posted_password']))) {
+    if($user->login($_POST['posted_username'], $_POST['posted_password'])) {
         // Send the user to the correct main page, based on department and/or position
-        header("Location: loginTest.php");
+        header("Location: index.php");
     } else {
         $errormsg = $user->getError();
-        echo '<script>alert("{$errormsg}")</script>';
+        //echo '<script>alert("${errormsg}")</script>';
+        echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
         header("refresh:0; url=index.php");
     }
 }
@@ -25,7 +26,7 @@ if (isset($_POST['post_login'])) {
     <title>Login</title>
     <link href="style.css" rel="stylesheet">
 </head>
-
+<body>
 
 <div id="login">
 
