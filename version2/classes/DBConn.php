@@ -3,7 +3,7 @@
 class DBConn {
 
     // The connection variables.
-	private $dbhost = "localhost";
+    private $dbhost = "localhost";
     private $dbuser = "root";
     private $dbpass = "";
     private $dbname = "prototypev2";
@@ -28,8 +28,8 @@ class DBConn {
 
     function getError() {
         $error = $this->error;
-		unset($this->error);
-		return $error;
+        unset($this->error);
+        return $error;
     }
 
 }

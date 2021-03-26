@@ -11,8 +11,8 @@ if (isset($_POST['post_login'])) {
         // Send the user to the correct main page, based on department and/or position
         header("Location: index.php");
     } else {
+        // Incorrect user ID or password
         $errormsg = $user->getError();
-        //echo '<script>alert("${errormsg}")</script>';
         echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
         header("refresh:0; url=index.php");
     }
@@ -21,27 +21,41 @@ if (isset($_POST['post_login'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <title>Login</title>
-    <link href="style.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport"
+     content="width=device-width, initial-scale=1, user-scalable=yes">
+ 
+  <title>Login</title>    
+  <link rel="stylesheet" href="styles/stylesheet.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+      h3{color:white;}
+  </style>
+
 </head>
 <body>
 
-<div id="login">
+<body>
 
-    <form method="post">
-
-        <div style="font-size: 20px; margin: 10px; color: white;">Suppor Ticket System</div>
-        <br>
-        <input id="loginText" type="text" name="posted_username" placeholder="Enter your user ID" required><br><br>
-        <input id="loginText" type="password" name="posted_password" placeholder="Enter your password" required><br><br>
-
-        <input id="loginButton" type="submit" name="post_login" value="Login"><br><br>
-
+    <form class="login" method="post">
+        <h3>Support Ticket System</h3><br>
+        
+        <div class="loginInput">
+            <i class="fa fa-user-circle-o icon fa-lg"></i>
+            <input class="testField" type="text" name="posted_username" placeholder="User ID" required>
+        </div>
+            
+        <div class="loginInput">
+            <i class="fa fa-lock icon fa-lg"></i>
+            <input class="testField" type="password" name="posted_password" placeholder="Password" required>
+        </div><br>
+        
+        <input class="loginButton" type="submit" name="post_login" value="Login"><br><br>
+            
     </form>
 
-</div>
-
 </body>
+
 </html>

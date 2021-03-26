@@ -2,34 +2,46 @@
             font-family: "Lato", sans-serif;
         }
 
-        #loginText {
-
-            height: 25px;
-            border-radius: 5px;
-            padding: 4px;
-            border: solid thin #aaa;
-            width: 100%;
-    
-        }
-    
-        #loginButton {
-    
-            padding: 10px;
-            width: 100px;
-            color: white;
-            background-color: lightblue;
-            border: none;
-    
-        }
-    
-        #login {
+        .login {
     
             margin: auto;
             border-radius: 20px;
             background-color: grey;
             padding: 20px;
-            width: 300px;
+            width: 350px;
             height: auto;
+            text-align: center;
+        }
+    
+        .loginButton {
+    
+            padding: 10px;
+            width: 100px;
+            color: white;
+            background-color: rgb(34, 110, 136);
+            border: none;
+    
+        }
+
+        .loginInput i {
+            position: absolute;
+        }
+  
+        .loginInput {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+  
+        .icon {
+            padding: 10px;
+            color: black;
+            min-width: 50px;
+            text-align: center;
+        }
+  
+        .testField {
+            width: 300px;
+            padding: 4px;
             text-align: center;
         }
 
@@ -40,7 +52,7 @@
             z-index: 1;
             top: 0;
             left: 0;
-            background-color: darkslategray;
+            background-color: rgb(14, 83, 104);
             overflow-x: hidden;
             padding-top: 20px;
         }
