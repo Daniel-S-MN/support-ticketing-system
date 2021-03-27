@@ -9,7 +9,7 @@ class Database {
 
     public $error;
 
-    public function __construct()
+    function __construct()
     {
         $this->dbhost = "localhost";
         $this->dbuser = "root";
