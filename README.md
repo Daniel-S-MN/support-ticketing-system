@@ -38,3 +38,34 @@ The group determined at the start of the semester that this project should be a
 web application, rather than a desktop application. An emphasis was placed on the 
 ability for users to be able to use the system on their desktop, laptop, tablet, or 
 even their phone.
+
+# ACCESS
+Here's a quick overview of what options/pages are available for each user:
+ - Users
+ 	* Home
+ 	* Create Ticket
+ 	* My Tickets (view all the tickets they've created)
+ 	* My Profile (see their information and change their password)
+ 	* Logout
+ 
+ - IT Support Agents
+ 	* Home
+ 	* Open Tickets (view all unassigned tickets that are open)
+ 	* Assigned Tickets (tickets that are assigned to them to work on)
+ 	* Create Ticket (same as users)
+ 	* My Tickets (same as uers)
+ 	* My Profile (same as uers)
+ 	* Logout
+ 	
+ 	
+ - IT Support Managers (admin)
+ 	* Home
+ 	* Open Tickets (same as agents)
+ 	* Pending Tickets (view and re-assign tickets that are pending)
+ 	* Assigned Tickets (same as agents)
+ 	* Create Ticket (same as users and agents)
+ 	* My Tickets (same as users and agents)
+ 	* My Profile (same as uers and agents)
+ 	* System Users (view system users and update their information)
+ 	* New User (add a new user to the system)
+ 	* Logout

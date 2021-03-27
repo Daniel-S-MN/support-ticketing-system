@@ -3,7 +3,6 @@
         }
 
         .login {
-    
             margin: auto;
             border-radius: 20px;
             background-color: grey;
@@ -12,15 +11,29 @@
             height: auto;
             text-align: center;
         }
-    
+
         .loginButton {
-    
-            padding: 10px;
-            width: 100px;
-            color: white;
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
             background-color: rgb(34, 110, 136);
             border: none;
-    
+            border-radius: 15px;
+            box-shadow: 0 4px #999;
+        }
+          
+        input[type="submit"].loginButton:hover {
+            background-color: rgb(22, 87, 109)
+        }
+          
+        .loginButton:active {
+            background-color: rgb(22, 87, 109);
+            box-shadow: 0 4px #666;
+            transform: translateY(4px);
         }
 
         .loginInput i {

@@ -27,7 +27,7 @@ if (isset($_POST['post_login'])) {
   <meta name="viewport"
      content="width=device-width, initial-scale=1, user-scalable=yes">
  
-  <title>Login</title>    
+  <title>Login - Support Ticket System</title>
   <link rel="stylesheet" href="styles/stylesheet.css" type="text/css" media="screen">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style>
@@ -52,7 +52,7 @@ if (isset($_POST['post_login'])) {
             <input class="testField" type="password" name="posted_password" placeholder="Password" required>
         </div><br>
         
-        <input class="loginButton" type="submit" name="post_login" value="Login"><br><br>
+        <input class="loginButton" type="submit" name="post_login" value="Login" style="cursor:pointer"><br><br>
             
     </form>
 

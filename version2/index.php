@@ -1,6 +1,25 @@
 <?php
 
-// Just testing to see if I can even get going with using classes for version 2 of the prototype
+/*
+ * Daniel Schwen
+ * March 27, 2021
+ * 
+ * I'm planning on learning more about AJAX to try and reduce the amount of pages
+ * that are used in the ticket system, but due to time constraints (iteration 3 is
+ * due in a couple days), it will have to wait for the final product.
+ * 
+ * For now, I'm going to be using separate pages for:
+ *  - Viewing all open/unassigned tickets
+ *  - Creating a new ticket
+ *  - Viewing your tickets
+ *  - Viewing+working on tickets assigned to you
+ *  - Viewing+reassigning pending tickets (Managers)
+ *  - Viewing all users in the system and creating new users
+ * 
+ * Thanks to restricing view access, I no longer need multipe version of the above 
+ * pages for each user type.
+*/
+
 
 session_start();
 
@@ -19,7 +38,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
   <meta name="viewport"
      content="width=device-width, initial-scale=1, user-scalable=yes">
  
-  <title>Index for Version 2</title>    
+  <title>Support Ticket System</title>    
   <link rel="stylesheet" href="styles/stylesheet.css" type="text/css" media="screen">
 </head>
 <body>
