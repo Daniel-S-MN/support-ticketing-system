@@ -1,15 +1,18 @@
 <?php
 
-require('classes/DBConn.php');
+//require('classes/DBConn.php');
 
-class User extends DBConn {
+class User {
+
+    public $error;
     
-    function login($userID, $password) {
+    // Check to see if the user is able to log into the system
+    function login($con, $userID, $password) {
         
         // Perform a MySQL search to see if that user exists in the users table
-        $stmt = mysqli_query($this->connection, "SELECT *
-                                                FROM users
-                                                WHERE user_id = '$userID'");
+        $stmt = mysqli_query($con, "SELECT *
+                                    FROM users
+                                    WHERE user_id = '$userID'");
         $row = mysqli_fetch_array($stmt);
         
         // Determine if the MySQL search found the user
@@ -40,6 +43,26 @@ class User extends DBConn {
                 return true;
             }
         }
+    }
+
+    // Get all the users from a specific department
+    function getDepartment($con, $department) {
+        $query = "SELECT user_id 
+            FROM users 
+            WHERE department='$department'";
+        
+        if ($result = mysqli_query($con, $query)) {
+            return $result;
+        } else {
+            $this->error = "Unable to process department query: " . mysql_error();
+            return NULL;
+        }
+    }
+
+    function getError() {
+        $error = $this->error;
+        unset($this->error);
+        return $error;
     }
 
 }

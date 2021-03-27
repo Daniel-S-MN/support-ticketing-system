@@ -62,7 +62,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
             echo '<a href="index.php">My Profile</a>';
         } else {
             // IT Support Managers (admins)
-            echo '<a href="index.php">Open Tickets</a>';
+            echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="index.php">Pending Tickets</a>';
             echo '<a href="index.php">Assigned Tickets</a>';
             echo '<a href="index.php">Create Ticket</a>';

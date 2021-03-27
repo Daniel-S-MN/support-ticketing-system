@@ -2,12 +2,15 @@
 
 if (isset($_POST['post_login'])) {
 
+    require('classes/Database.php');
     require('classes/User.php');
 
-    $user = new User();
-    $user->connect();
+    $db = new Database();
+    $con = $db->connect();
 
-    if($user->login($_POST['posted_username'], $_POST['posted_password'])) {
+    $user = new User();
+
+    if($user->login($con, $_POST['posted_username'], $_POST['posted_password'])) {
         // Send the user to the correct main page, based on department and/or position
         header("Location: index.php");
     } else {
