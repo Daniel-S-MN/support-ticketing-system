@@ -30,12 +30,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
         <?php
         // Menu items will only display for the correct permissions of each user
-        if ($_SESSION['Department'] != 'IT Support') {
-            // Customers
-            echo '<a href="create_ticket.php">Create Ticket</a>';
-            echo '<a href="my_tickets.php">My Tickets</a>';
-            echo '<a href="my_profile.php">My Profile</a>';
-        } elseif ($_SESSION['Position'] != 'Manager') {
+        if ($_SESSION['Position'] != 'Manager') {
             // IT Support non-managers
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="assigned_tickets.php">Assigned Tickets</a>';

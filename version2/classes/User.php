@@ -59,6 +59,20 @@ class User {
         }
     }
 
+    // Get all of the users from the DB
+    function getAllUsers($con) {
+
+        $query = "SELECT user_id, first_name, last_name, email, phone_number, department, position 
+        FROM users";
+
+        if ($result = mysqli_query($con, $query)) {
+            return $result;
+        } else {
+            $this->error = "Error processing query. " . mysql_error();
+            return NULL;
+        }
+    }
+
     function getError() {
         $error = $this->error;
         unset($this->error);

@@ -27,35 +27,14 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     
     <div class="sidenav">
         <a href="index.php">Home</a>
-
-        <?php
-        // Menu items will only display for the correct permissions of each user
-        if ($_SESSION['Department'] != 'IT Support') {
-            // Customers
-            echo '<a href="create_ticket.php">Create Ticket</a>';
-            echo '<a href="my_tickets.php">My Tickets</a>';
-            echo '<a href="my_profile.php">My Profile</a>';
-        } elseif ($_SESSION['Position'] != 'Manager') {
-            // IT Support non-managers
-            echo '<a href="open_tickets.php">Open Tickets</a>';
-            echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
-            echo '<a href="create_ticket.php">Create Ticket</a>';
-            echo '<a href="my_tickets.php">My Tickets</a>';
-            echo '<a href="my_profile.php">My Profile</a>';
-        } else {
-            // IT Support Managers (admins)
-            echo '<a href="open_tickets.php">Open Tickets</a>';
-            echo '<a href="pending_tickets.php">Pending Tickets</a>';
-            echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
-            echo '<a href="create_ticket.php">Create Ticket</a>';
-            echo '<a href="my_tickets.php">My Tickets</a>';
-            echo '<a href="my_profile.php">My Profile</a>';
-            echo '<a href="system_users.php">System Users</a>';
-            echo '<a href="new_user.php">New User</a>';
-        }
-
-        ?>
-
+        <a href="open_tickets.php">Open Tickets</a>
+        <a href="pending_tickets.php">Pending Tickets</a>
+        <a href="assigned_tickets.php">Assigned Tickets</a>
+        <a href="create_ticket.php">Create Ticket</a>
+        <a href="my_tickets.php">My Tickets</a>
+        <a href="my_profile.php">My Profile</a>
+        <a href="system_users.php">System Users</a>
+        <a href="new_user.php">New User</a>
         <a href="logout.php">Logout</a>
     </div>
 
