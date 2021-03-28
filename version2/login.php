@@ -5,6 +5,7 @@ if (isset($_POST['post_login'])) {
     require('classes/Database.php');
     require('classes/User.php');
 
+    
     $db = new Database();
     $con = $db->connect();
 
@@ -18,7 +19,9 @@ if (isset($_POST['post_login'])) {
         $errormsg = $user->getError();
         echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
         header("refresh:0; url=index.php");
+        exit();
     }
+    
 }
 
 ?>
