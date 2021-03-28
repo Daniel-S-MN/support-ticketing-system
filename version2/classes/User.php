@@ -45,8 +45,28 @@ class User {
         }
     }
 
+    // Add a new user to the DB
+    function addUser($con, $uID, $psw, $fName, $lName, $email, $phone, $dept, $position) {
+
+        // Can't store plaintext passwords in the DB
+        $passcode = password_hash($psw, PASSWORD_DEFAULT);
+        
+        $sql = "INSERT INTO users (user_id, password, first_name, last_name, email, phone_number, department, position)
+        VALUES ('$uID', '$passcode', '$fName', '$lName', '$email', '$phone', '$dept', '$position')";
+
+        if (mysqli_query($con, $sql)) {
+            // User was successfully added to the DB
+            return "Success";
+        } else {
+            // Couldn't add the user, return the error
+            $this->error = "Unable to add user: " . mysqli_error($con);
+            return "Fail";
+        }
+    }
+
     // Get all the users from a specific department
     function getDepartment($con, $department) {
+        
         $query = "SELECT user_id 
             FROM users 
             WHERE department='$department'";

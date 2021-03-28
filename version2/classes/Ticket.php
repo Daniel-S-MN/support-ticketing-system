@@ -37,6 +37,16 @@ class Ticket {
     // Get ALL the assigned pending tickets in the DB
     function getAllPendingTickets($con) {
 
+        $query = "SELECT ticket_id, date_created, priority, user_id, description, status 
+                FROM tickets 
+                WHERE assigned_to IS NOT NULL ";
+
+        if ($result = mysqli_query($con, $query)) {
+            return $result;
+        } else {
+            $this->error = "Error processing query. " . mysql_error();
+            return NULL;
+        }
     }
 
     // Get all the tickets assigned to the IT Support user

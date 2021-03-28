@@ -42,9 +42,69 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <h3>This is where you can add a new user to the system.</h3>
         <div>
         <?php
-        //echo 'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!';
+
+        echo "<h3>Create New User</h3>";
+        echo "<form method='post'>";
+            echo "<label for='userID'>New user ID: </label>";
+            echo "<input type='text' id='userID' name='userID' required><br><br>";
+            echo "<label for='tempPswrd'>Temporary Password: </label>";
+            echo "<input type='password' id='tempPswrd' name='tempPswrd' required><br><br>";
+            echo "<label for='firstName'>First Name: </label>";
+            echo "<input type='text' id='firstName' name='firstName' required><br><br>";
+            echo "<label for='lastName'>Last Name: </label>";
+            echo "<input type='text' id='lastName' name='lastName' required><br><br>";
+            echo "<label for='userEmail'>User Email: </label>";
+            echo "<input type='text' id='userEmail' name='userEmail' required><br><br>";
+            echo "<label for='phoneNum'>Phone Number: </label>";
+            echo "<input type='text' id='phoneNum' name='phoneNum' required><br><br>";
+            echo "<label for='userDept'>Department: </label>";
+            echo "<input type='text' id='userDept' name='userDept' required><br><br>";
+            echo "<label for='userPost'>Position: </label>";
+            echo "<input type='text' id='userPost' name='userPost' required><br><br>";
+            echo "<input type='submit' name='submit_new_user' value='Create New User'>";
+        echo "</form>";
+
         ?>
     </div>
 
  </body>
 </html>
+
+<?php
+
+if (isset($_POST['submit_new_user'])) {
+
+    require('classes/Database.php');
+    require('classes/User.php');
+
+    $db = new Database();
+    $con = $db->connect();
+
+    $user = new User();
+
+    $userID = $_POST['userID'];
+    $tempPass = $_POST['tempPswrd'];
+    $fName = $_POST['firstName'];
+    $lName = $_POST['lastName'];
+    $email = $_POST['userEmail'];
+    $phoneNum = $_POST['phoneNum'];
+    $dept = $_POST['userDept'];
+    $position = $_POST['userPost'];
+
+    $status = $user->addUser($con, $userID, $tempPass, $fName, $lName, $email, $phoneNum, $dept, $position);
+
+    if ($status != 'Success') {
+        // User couldn't be added to the DB
+        $errormsg = $user->getError();
+        echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+        header("refresh:0; url=index.php");
+
+    } else {
+        // User was added to the DB
+        $msg = "User was successfully added to the database!";
+        echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+        header("refresh:0; url=system_users.php");
+    }
+}
+
+?>

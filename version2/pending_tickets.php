@@ -25,47 +25,109 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 </head>
 <body>
     
-    <div class="sidenav">
+<div class="sidenav">
         <a href="index.php">Home</a>
-
-        <?php
-        // Menu items will only display for the correct permissions of each user
-        if ($_SESSION['Department'] != 'IT Support') {
-            // Customers
-            echo '<a href="create_ticket.php">Create Ticket</a>';
-            echo '<a href="my_tickets.php">My Tickets</a>';
-            echo '<a href="my_profile.php">My Profile</a>';
-        } elseif ($_SESSION['Position'] != 'Manager') {
-            // IT Support non-managers
-            echo '<a href="open_tickets.php">Open Tickets</a>';
-            echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
-            echo '<a href="create_ticket.php">Create Ticket</a>';
-            echo '<a href="my_tickets.php">My Tickets</a>';
-            echo '<a href="my_profile.php">My Profile</a>';
-        } else {
-            // IT Support Managers (admins)
-            echo '<a href="open_tickets.php">Open Tickets</a>';
-            echo '<a href="pending_tickets.php">Pending Tickets</a>';
-            echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
-            echo '<a href="create_ticket.php">Create Ticket</a>';
-            echo '<a href="my_tickets.php">My Tickets</a>';
-            echo '<a href="my_profile.php">My Profile</a>';
-            echo '<a href="system_users.php">System Users</a>';
-            echo '<a href="new_user.php">New User</a>';
-        }
-
-        ?>
-
+        <a href="open_tickets.php">Open Tickets</a>
+        <a href="pending_tickets.php">Pending Tickets</a>
+        <a href="assigned_tickets.php">Assigned Tickets</a>
+        <a href="create_ticket.php">Create Ticket</a>
+        <a href="my_tickets.php">My Tickets</a>
+        <a href="my_profile.php">My Profile</a>
+        <a href="system_users.php">System Users</a>
+        <a href="new_user.php">New User</a>
         <a href="logout.php">Logout</a>
     </div>
 
     <div class="main">
-        <h3>This is where you can view all pending tickets that are assigned to an IT agent.</h3>
+        <h3>Tickets currently assigned to an IT Support rep:</h3>
         <div>
+
         <?php
-        //echo 'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!';
+
+        require('classes/Database.php');
+        require('classes/Ticket.php');
+        require('classes/User.php');
+
+        $db = new Database();
+        $con = $db->connect();
+
+        $ticket = new Ticket();
+        $user = new User();
+
+        $openTickets = $ticket->getAllPendingTickets($con);
+
+        if ($openTickets != NULL) {
+
+            echo "<form method='post'>";
+            echo "<table border='2' cellpadding='2' cellspacing='2'>";
+                echo "<tr bgcolor='#b3edff'>";
+                echo "<th>Select</th>";
+                echo "<th>Ticket ID</th>";
+                echo "<th>Date Created</th>";
+                echo "<th>Priority</th>";
+                echo "<th>Created By</th>";
+                echo "<th>Description</th>";
+                echo "<th>Status</th>";
+                echo "</tr>";
+
+            while($tickets = mysqli_fetch_object($openTickets)) {
+
+                echo "<tr>";
+                echo "<td align='center'><input type='radio' name='id' value='".$tickets->ticket_id."' required></td>";
+                echo "<td align='center'>$tickets->ticket_id</td>";
+                echo "<td align='center'>$tickets->date_created</td>";
+                echo "<td align='center'>$tickets->priority</td>";
+                echo "<td align='center'>$tickets->created_by</td>";
+                echo "<td>$tickets->description</td>";
+                echo "<td align='center'>$tickets->status</td>";
+                echo "</tr>";
+            }
+
+            echo "</table><br><br>";
+            // Find all the IT Support users
+            $availAgents = $user->getDepartment($con, "IT Support");
+
+            if ($availAgents != NULL) {
+                echo "<label for='it_users'>Select IT Support user to assign ticket to: </label>";
+                echo "<select name='it_users' id='it_users' required>";
+                echo "<option value=''>-Select User-</option>";
+
+                while($ticket2 = mysqli_fetch_object($availAgents)) {
+
+                    echo "<option value='".$ticket2->user_id."'>".$ticket2->user_id."</option>";
+                }
+
+                echo "</select><br><br>";
+                echo "<input type='submit' name='assign' value='Assign Ticket'/>";
+                echo "</form>";
+
+            } else {
+                $agentError = $user->getError();
+                echo '<script type="text/javascript">alert("'.$agentError.'");</script>';
+                header("refresh:0; url=index.php");
+            }
+
+        } else {
+            // There was an issue with the mysql query
+            $errormsg = $ticket->getError();
+            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            header("refresh:0; url=index.php");
+        }
+
         ?>
+
     </div>
 
  </body>
 </html>
+
+<?php
+
+    if (isset($_POST['assign'])) {
+
+        require('classes/Database.php');
+        require('classes/Ticket.php');
+
+    }
+
+?>

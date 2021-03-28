@@ -24,6 +24,11 @@ if (isset($_POST['post_login'])) {
     
 }
 
+/*
+ * Here is the source for the background image:
+ * By McGhiever - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=79432904
+*/
+
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +43,11 @@ if (isset($_POST['post_login'])) {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style>
       h3{color:white;}
+      body {
+          background-image: url('./images/Metropolitan_State_University_New_Main.jpg');
+          background-repeat: no-repeat;
+          background-size: cover;
+      }
   </style>
 
 </head>
