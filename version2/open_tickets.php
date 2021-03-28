@@ -55,7 +55,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     </div>
 
     <div class="main">
-        <h3>Please select an open ticket to begin troubleshooting.</h3>
+        <h3>Select an open ticket to begin troubleshooting.</h3>
         <br>
 
         <?php

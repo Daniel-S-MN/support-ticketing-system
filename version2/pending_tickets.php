@@ -125,9 +125,20 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
     if (isset($_POST['assign'])) {
 
-        require('classes/Database.php');
-        require('classes/Ticket.php');
-
+        //require('classes/Database.php');
+        //require('classes/Ticket.php');
+        $agent = $_POST['it_users'];
+        $ticketID = $_POST['id'];
+        $check = $ticket->assignRep($con, $agent, $ticketID);
+        if ($check != 'Success') {
+            $errormsg = $ticket->getError();
+            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            header("refresh:0; url=index.php");
+        } else {
+            $msg = "Ticket updated successfully";
+            echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+            header("refresh:0; url=pending_tickets.php");
+        }
     }
 
 ?>

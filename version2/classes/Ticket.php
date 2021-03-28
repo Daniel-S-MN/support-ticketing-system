@@ -29,7 +29,7 @@ class Ticket {
         if ($result = mysqli_query($con, $query)) {
             return $result;
         } else {
-            $this->error = "Error processing query. " . mysql_error();
+            $this->error = "Error processing query. " . mysqli_error($con);
             return NULL;
         }
     }
@@ -44,7 +44,7 @@ class Ticket {
         if ($result = mysqli_query($con, $query)) {
             return $result;
         } else {
-            $this->error = "Error processing query. " . mysql_error();
+            $this->error = "Error processing query. " . mysqli_error($con);
             return NULL;
         }
     }
@@ -52,15 +52,49 @@ class Ticket {
     // Get all the tickets assigned to the IT Support user
     function getMyAssignedTickets($con, $userID) {
 
+        $query = "SELECT ticket_id, date_created, priority, user_id, description, status 
+                FROM tickets 
+                WHERE assigned_to = '$userID' AND status = 'Pending'";
+
+        if ($result = mysqli_query($con, $query)) {
+            return $result;
+        } else {
+            $this->error = "Error processing query. " . mysqli_error($con);
+            return NULL;
+        }
+
     }
 
-    // Search for a specific ticket
-    function getTicket($con, $ticketID) {
+    // Assign an IT Support rep to a specific ticket
+    function assignRep($con, $userID, $ticketID) {
 
+        $sql = "UPDATE tickets 
+                SET assigned_to = '$userID'  
+                WHERE tickets.ticket_id = '$ticketID'";
+        
+        if (mysqli_query($con, $sql)) {
+            // Ticket was successfully updated
+            return "Success";
+        } else {
+            // There was a problem
+            $this->error = "Unable to assign support rep: " . mysqli_error($con);
+        }
     }
 
     // Close a ticket
-    function closeTicket($con, $ticketID) {
+    function closeTicket($con, $userID, $ticketID) {
+
+        $sql = "UPDATE tickets 
+                SET status = Closed , assigned_to = '$userID' 
+                WHERE tickets.ticket_id = $ticketID";
+
+        if (mysqli_query($con, $sql)) {
+            // Ticket was successfully updated
+            return "Success";
+        } else {
+            // There was a problem
+            $this->error = "Unable to close the ticket: " . mysqli_error($con);
+        }
 
     }
 

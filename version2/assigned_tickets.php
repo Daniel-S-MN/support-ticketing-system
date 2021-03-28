@@ -55,11 +55,62 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     </div>
 
     <div class="main">
-        <h3>This is where you can view the tickets that have been assigned.</h3>
+        <h3>This is where you can view the tickets that have been assigned to you.</h3>
         <div>
+
         <?php
-        //echo 'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!';
+
+        require('classes/Database.php');
+        require('classes/Ticket.php');
+
+        $db = new Database();
+        $con = $db->connect();
+
+        $ticket = new Ticket();
+
+        $myID = $_SESSION['User_ID'];
+
+        $myTickets = $ticket->getMyAssignedTickets($con, $myID);
+
+        if ($myTickets != NULL) {
+
+            echo "<form method='post'>";
+            echo "<table border='2' cellpadding='2' cellspacing='2'>";
+                echo "<tr bgcolor='#b3edff'>";
+                echo "<th>Select</th>";
+                echo "<th>Ticket ID</th>";
+                echo "<th>Date Created</th>";
+                echo "<th>Priority</th>";
+                echo "<th>Created By</th>";
+                echo "<th>Description</th>";
+                echo "<th>Status</th>";
+                echo "</tr>";
+
+            while($tickets = mysqli_fetch_object($myTickets)) {
+
+                echo "<tr>";
+                echo "<td align='center'><input type='radio' name='id' value='".$tickets->ticket_id."' required></td>";
+                echo "<td align='center'>$tickets->ticket_id</td>";
+                echo "<td align='center'>$tickets->date_created</td>";
+                echo "<td align='center'>$tickets->priority</td>";
+                echo "<td align='center'>$tickets->created_by</td>";
+                echo "<td>$tickets->description</td>";
+                echo "<td align='center'>$tickets->status</td>";
+                echo "</tr>";
+            }
+
+            echo "</table><br><br>";
+            
+
+        } else {
+            // There was an issue with the mysql query
+            $errormsg = $ticket->getError();
+            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            header("refresh:0; url=index.php");
+        }
+        
         ?>
+
     </div>
 
  </body>
