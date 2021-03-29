@@ -40,6 +40,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
     <div class="main">
         <h3>Tickets currently assigned to an IT Support rep:</h3>
+        <hr><br>
         <div>
 
         <?php
@@ -85,7 +86,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "</tr>";
             }
 
-            echo "</table><br><br>";
+            echo "</table><br><hr><br>";
             // Find all the IT Support users
             $availAgents = $user->getDepartment($con, "IT Support");
 

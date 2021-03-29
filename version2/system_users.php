@@ -39,7 +39,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     </div>
 
     <div class="main">
-        <h3>Here are all of the users in the system.</h3>
+        <h3>Here are all of the users in the system:</h3>
+        <hr><br>
         <div>
         <?php
 

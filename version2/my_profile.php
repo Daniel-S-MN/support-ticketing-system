@@ -59,9 +59,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
     <div class="main">
         <h3>This is where you can view your profile information and change your password.</h3>
-        
+        <hr>
         <h1>User Information</h1>
-        <br>
         <h3>If you need to update your contact information, please submit a ticket.</h3><br>
         <p style="font-weight: normal;">User ID:  <?php echo $_SESSION['User_ID'];?></p>
         <p style="font-weight: normal;">Full Name:  <?php echo $_SESSION['First_Name'].' '.$_SESSION['Last_Name'];?></p>

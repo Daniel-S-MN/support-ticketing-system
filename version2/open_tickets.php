@@ -57,7 +57,8 @@ $level;
     </div>
 
     <div class="main">
-        <h3>Select an open ticket to begin troubleshooting.</h3>
+        <h3>Select an open ticket to begin troubleshooting:</h3>
+        <hr>
         <br>
 
         <?php
@@ -106,7 +107,7 @@ $level;
             if ($_SESSION['Position'] != 'Manager') {
 
                 // Non-managers can only assign open tickets to themselves
-                echo "</table><br><br>";
+                echo "</table><br><hr><br>";
                 echo "<input type = 'submit' name = 'assign' value = 'Assign Ticket'><br><br>";
                 echo "</form>";
 
@@ -118,7 +119,7 @@ $level;
                 // Testing an idea
                 $level = 2;
                 
-                echo "</table><br><br>";
+                echo "</table><br><hr><br>";
                 // Find all the IT Support users
                 $availAgents = $user->getDepartment($con, "IT Support");
 

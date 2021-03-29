@@ -59,6 +59,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
     <div class="main">
         <h3>This is where you can create a new ticket.</h3>
+        <hr>
         <h1>Submit a new ticket</h1>
         <form method="post">
         <label for="levels">Select the ticket priority level: </label>

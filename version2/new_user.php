@@ -39,7 +39,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     </div>
 
     <div class="main">
-        <h3>This is where you can add a new user to the system.</h3>
+        <h3>This is where you can add a new user to the system:</h3>
+        <hr>
         <div>
         <?php
 

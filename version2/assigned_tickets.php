@@ -55,7 +55,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     </div>
 
     <div class="main">
-        <h3>This is where you can view the tickets that have been assigned to you.</h3>
+        <h3>These tickets are assigned to you for troubleshooting:</h3>
+        <hr><br>
         <div>
 
         <?php

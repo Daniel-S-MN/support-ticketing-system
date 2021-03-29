@@ -43,7 +43,7 @@ class Ticket {
 
         $query = "SELECT ticket_id, date_created, priority, user_id, description, status, assigned_to 
                 FROM tickets 
-                WHERE assigned_to IS NOT NULL ";
+                WHERE assigned_to IS NOT NULL AND status != 'Closed'";
 
         if ($result = mysqli_query($con, $query)) {
             return $result;

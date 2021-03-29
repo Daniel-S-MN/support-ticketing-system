@@ -59,6 +59,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
     <div class="main">
         <h3>This is where you can view your tickets.</h3>
+        <hr>
         <div>
 
         <?php
@@ -76,7 +77,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         if ($myOpenTickets != NULL) {
 
             // Display all the user's open/pending tickets in a table
-            echo "<br><h2>My Open/Pending Tickets:</h2>";
+            echo "<h2>My Open/Pending Tickets:</h2>";
             echo "<table border='2' cellpadding='2' cellspacing='2'>";
                 echo "<tr bgcolor='#b3edff'>";
                 echo "<th>Ticket ID</th>";
@@ -99,7 +100,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "</tr>";
             }
 
-            echo "</table><br><br>";
+            echo "</table><br><hr>";
 
         } else {
             // There was an issue with the mysql query
@@ -114,7 +115,6 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         if ($myClosedTickets != NULL) {
 
             // Display all the user's closed tickets in a table
-            echo "<br><br>";
             echo "<h2>My Closed Tickets:</h2>";
             echo "<table border='2' cellpadding='2' cellspacing='2'>";
                 echo "<tr bgcolor='#b3edff'>";
@@ -138,7 +138,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "</tr>";
             }
 
-            echo "</table><br><br>";
+            echo "</table><br><hr>";
 
         } else {
             // There was an issue with the mysql query
