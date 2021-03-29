@@ -11,6 +11,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     header("Location: index.php");
 }
 
+$level;
+
 ?>
 
 <!DOCTYPE html>
@@ -93,7 +95,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "<td align='center'>$tickets->ticket_id</td>";
                 echo "<td align='center'>$tickets->date_created</td>";
                 echo "<td align='center'>$tickets->priority</td>";
-                echo "<td align='center'>$tickets->created_by</td>";
+                echo "<td align='center'>$tickets->user_id</td>";
                 echo "<td>$tickets->description</td>";
                 echo "<td align='center'>$tickets->status</td>";
                 echo "</tr>";
@@ -107,7 +109,14 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "</table><br><br>";
                 echo "<input type = 'submit' name = 'assign' value = 'Assign Ticket'><br><br>";
                 echo "</form>";
+
+                // Testing an idea
+                $level = 1;
+
             } else {
+
+                // Testing an idea
+                $level = 2;
                 
                 echo "</table><br><br>";
                 // Find all the IT Support users
@@ -130,6 +139,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 } else {
                     $agentError = $user->getError();
                     echo '<script type="text/javascript">alert("'.$agentError.'");</script>';
+                    $con->close();
                     header("refresh:0; url=index.php");
                 }
 
@@ -138,6 +148,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             // There was an issue with the mysql query
             $errormsg = $ticket->getError();
             echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            $con->close();
             header("refresh:0; url=index.php");
         }
 
@@ -147,3 +158,40 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
  </body>
 </html>
+
+<?php
+
+if (isset($_POST['assign'])) {
+
+    $user;
+
+    if ($level == 1) {
+        $user = $_SESSION['User_ID'];
+    } elseif ($level == 2) {
+        $user = $_POST['it_users'];
+    } else {
+        $errormsg = "YOUR IDEA FAILED!";
+        echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+        $con->close();
+        header("refresh:0; url=index.php");
+    }
+
+    $check = $ticket->assignRep($con, $user, $_POST['id']);
+
+    if ($check != "Success") {
+        // Couldn't assign the ticket
+        $errormsg = $ticket->getError();
+        echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+        $con->close();
+        header("refresh:0; url=index.php");
+    } else {
+        // Successfuly assigned
+        $msg = "Ticket has been successfully updated";
+        echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+        $con->close();
+        header("refresh:0; url=index.php");
+    }
+
+}
+
+?>

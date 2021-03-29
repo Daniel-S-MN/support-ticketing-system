@@ -85,6 +85,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             // There was an issue with the mysql query
             $errormsg = $user->getError();
             echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            $con->close();
             header("refresh:0; url=index.php");
         }
 

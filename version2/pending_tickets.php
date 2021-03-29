@@ -68,6 +68,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "<th>Created By</th>";
                 echo "<th>Description</th>";
                 echo "<th>Status</th>";
+                echo "<th>Assigned To</th>";
                 echo "</tr>";
 
             while($tickets = mysqli_fetch_object($openTickets)) {
@@ -77,9 +78,10 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "<td align='center'>$tickets->ticket_id</td>";
                 echo "<td align='center'>$tickets->date_created</td>";
                 echo "<td align='center'>$tickets->priority</td>";
-                echo "<td align='center'>$tickets->created_by</td>";
+                echo "<td align='center'>$tickets->user_id</td>";
                 echo "<td>$tickets->description</td>";
                 echo "<td align='center'>$tickets->status</td>";
+                echo "<td align='center'>$tickets->assigned_to</td>";
                 echo "</tr>";
             }
 
@@ -104,6 +106,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             } else {
                 $agentError = $user->getError();
                 echo '<script type="text/javascript">alert("'.$agentError.'");</script>';
+                $con->close();
                 header("refresh:0; url=index.php");
             }
 
@@ -111,6 +114,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             // There was an issue with the mysql query
             $errormsg = $ticket->getError();
             echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            $con->close();
             header("refresh:0; url=index.php");
         }
 
@@ -133,10 +137,12 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         if ($check != 'Success') {
             $errormsg = $ticket->getError();
             echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            $con->close();
             header("refresh:0; url=index.php");
         } else {
             $msg = "Ticket updated successfully";
             echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+            $con->close();
             header("refresh:0; url=pending_tickets.php");
         }
     }

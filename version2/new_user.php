@@ -97,13 +97,15 @@ if (isset($_POST['submit_new_user'])) {
         // User couldn't be added to the DB
         $errormsg = $user->getError();
         echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+        $con->close();
         header("refresh:0; url=index.php");
 
     } else {
         // User was added to the DB
         $msg = "User was successfully added to the database!";
         echo '<script type="text/javascript">alert("'.$msg.'");</script>';
-        header("refresh:0; url=system_users.php");
+        $con->close();
+        header("refresh:0; url=index.php");
     }
 }
 

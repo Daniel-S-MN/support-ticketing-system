@@ -58,11 +58,79 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     </div>
 
     <div class="main">
-        <h3>This is where you can view your profile information.</h3>
-        <div>
+        <h3>This is where you can view your profile information and change your password.</h3>
+        
+        <h1>User Information</h1>
+        <br>
+        <h3>If you need to update your contact information, please submit a ticket.</h3><br>
+        <p style="font-weight: normal;">User ID:  <?php echo $_SESSION['User_ID'];?></p>
+        <p style="font-weight: normal;">Full Name:  <?php echo $_SESSION['First_Name'].' '.$_SESSION['Last_Name'];?></p>
+        <p style="font-weight: normal;">Email:  <?php echo $_SESSION['Email'];?></p>
+        <p style="font-weight: normal;">Phone Number:  <?php echo $_SESSION['Phone_Num'];?></p>
+        <p style="font-weight: normal;">Department:  <?php echo $_SESSION['Department'];?></p>
+        <p style="font-weight: normal;">Position:  <?php echo $_SESSION['Position'];?></p>
+        <br><br>
+        <p style="font-weight: bold;">Need to update/change your password?</p><br>
+        <form method="post">
+            <input type="submit" name="password_change" value="Change Password">
+        </form>
+        </a><br><br>
+
         <?php
-        //echo 'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!';
+        
+        if (isset($_POST['password_change'])) {
+
+            echo '<form method="post">';
+            echo 'New Password: <input type="password" name="new_password" required><br><br>';
+            echo 'Verify New Password: <input type="password" name="verify_password" required><br><br>';
+            echo '<br><br>';
+            echo '<input id="button" type="submit" name="update_password" value="Update Password"><br><br>';
+            echo '</form>';
+        }
+
+        if (isset($_POST['update_password'])) {
+
+            $username = $_SESSION['User_ID'];
+            $newpassword = $_POST['new_password'];
+            $verpassword = $_POST['verify_password'];
+
+            // Make sure the the passwords match
+            if($newpassword != $verpassword) {
+
+                $message = "NEW PASSWORDS MUST MATCH";
+                echo "<script type='text/javascript'>alert('$message');</script>";
+            } else {
+
+                include ('classes/Database.php');
+                include ('classes/User.php');
+
+                $db = new Database();
+                $con = $db->connect();
+
+                $user = new User();
+
+                $check = $user->changePassword($con, $username, $newpassword);
+
+                // Verify if the password change was successful
+                if ($check != "Success") {
+                    // Couldn't update the password
+                    $errormsg = $user->getError();
+                    echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+                    $con->close();
+                    header("refresh:0; url=index.php");
+                } else {
+                    // Password was successfully updated
+                    $msg = "Password updated";
+                    echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+                    $con->close();
+                    header("refresh:0; url=index.php");
+                }
+            }
+
+        }
+
         ?>
+        
     </div>
 
  </body>

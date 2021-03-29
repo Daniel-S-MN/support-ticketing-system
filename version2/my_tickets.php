@@ -60,9 +60,96 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     <div class="main">
         <h3>This is where you can view your tickets.</h3>
         <div>
+
         <?php
-        //echo 'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!';
+
+        require('classes/Database.php');
+        require('classes/Ticket.php');
+
+        $db = new Database();
+        $con = $db->connect();
+
+        $ticket = new Ticket();
+
+        $myOpenTickets = $ticket->getMyOpenTickets($con, $_SESSION['User_ID']);
+
+        if ($myOpenTickets != NULL) {
+
+            // Display all the user's open/pending tickets in a table
+            echo "<br><h2>My Open/Pending Tickets:</h2>";
+            echo "<table border='2' cellpadding='2' cellspacing='2'>";
+                echo "<tr bgcolor='#b3edff'>";
+                echo "<th>Ticket ID</th>";
+                echo "<th>Date Created</th>";
+                echo "<th>Priority</th>";
+                echo "<th>Description</th>";
+                echo "<th>Assigned To</th>";
+                echo "<th>Status</th>";
+            echo "</tr>";
+
+            while($ticketInfo = mysqli_fetch_object($myOpenTickets)) {
+
+                echo "<tr>";
+                echo "<td align='center'>$ticketInfo->ticket_id</td>";
+                echo "<td align='center'>$ticketInfo->date_created</td>";
+                echo "<td align='center'>$ticketInfo->priority</td>";
+                echo "<td>$ticketInfo->description</td>";
+                echo "<td align='center'>$ticketInfo->assigned_to</td>";
+                echo "<td align='center'>$ticketInfo->status</td>";
+                echo "</tr>";
+            }
+
+            echo "</table><br><br>";
+
+        } else {
+            // There was an issue with the mysql query
+            $errormsg = $ticket->getError();
+            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            $con->close();
+            header("refresh:0; url=index.php");
+        }
+
+        $myClosedTickets = $ticket->getMyClosedTickets($con, $_SESSION['User_ID']);
+
+        if ($myClosedTickets != NULL) {
+
+            // Display all the user's closed tickets in a table
+            echo "<br><br>";
+            echo "<h2>My Closed Tickets:</h2>";
+            echo "<table border='2' cellpadding='2' cellspacing='2'>";
+                echo "<tr bgcolor='#b3edff'>";
+                echo "<th>Ticket ID</th>";
+                echo "<th>Date Created</th>";
+                echo "<th>Priority</th>";
+                echo "<th>Description</th>";
+                echo "<th>Assigned To</th>";
+                echo "<th>Status</th>";
+            echo "</tr>";
+
+            while($closedInfo = mysqli_fetch_object($myClosedTickets)) {
+
+                echo "<tr>";
+                echo "<td align='center'>$closedInfo->ticket_id</td>";
+                echo "<td align='center'>$closedInfo->date_created</td>";
+                echo "<td align='center'>$closedInfo->priority</td>";
+                echo "<td>$closedInfo->description</td>";
+                echo "<td align='center'>$closedInfo->assigned_to</td>";
+                echo "<td align='center'>$closedInfo->status</td>";
+                echo "</tr>";
+            }
+
+            echo "</table><br><br>";
+
+        } else {
+            // There was an issue with the mysql query
+            $errormsg = $ticket->getError();
+            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            $con->close();
+            header("refresh:0; url=index.php");
+        }
+        
         ?>
+
     </div>
 
  </body>

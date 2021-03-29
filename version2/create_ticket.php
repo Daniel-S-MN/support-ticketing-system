@@ -59,11 +59,61 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
     <div class="main">
         <h3>This is where you can create a new ticket.</h3>
-        <div>
-        <?php
-        //echo 'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!';
-        ?>
+        <h1>Submit a new ticket</h1>
+        <form method="post">
+        <label for="levels">Select the ticket priority level: </label>
+        <select name="levels" id="levels" required>
+            <option value="">-Select-</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+        </select>
+        <br><br>
+        <p>High: needs to be resolved within 1 business day.</p>
+        <p>Medium: needs to be resolved within 2-3 business days.</p>
+        <p>Low: needs to be resolved within 4-7 business days.</p>
+        <br>
+        <label for="description">Ticket Description:</label><br>
+        <textarea id="description" name="description" rows="10" cols="50" required></textarea>
+        <br><br>
+        <input type="submit" name="submit_ticket" value="Submit New Ticket"/>
+        </form>
     </div>
 
  </body>
 </html>
+
+<?php
+
+if (isset($_POST['submit_ticket'])) {
+
+    require('classes/Database.php');
+    require('classes/Ticket.php');
+
+    $db = new Database();
+    $con = $db->connect();
+
+    $ticket = new Ticket();
+
+    $userID = $_SESSION['User_ID'];
+
+    $status = $ticket->newTicket($con, $userID, $_POST['levels'], $_POST['description']);
+
+    if ($status != 'Success') {
+        // Ticket couldn't be added to the DB
+        $errormsg = $ticket->getError();
+        echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+        $con->close();
+        header("refresh:0; url=index.php");
+
+    } else {
+        // Ticket was added to the DB
+        $msg = "Ticket was successfully submitted!";
+        echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+        $con->close();
+        header("refresh:0; url=my_tickets.php");
+    }
+
+}
+
+?>

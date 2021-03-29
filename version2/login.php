@@ -12,12 +12,14 @@ if (isset($_POST['post_login'])) {
     $user = new User();
 
     if($user->login($con, $_POST['posted_username'], $_POST['posted_password'])) {
+        $con->close();
         // Send the user to the correct main page, based on department and/or position
         header("Location: index.php");
     } else {
         // Incorrect user ID or password
         $errormsg = $user->getError();
         echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+        $con->close();
         header("refresh:0; url=index.php");
         exit();
     }

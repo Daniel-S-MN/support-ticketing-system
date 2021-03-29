@@ -93,6 +93,24 @@ class User {
         }
     }
 
+    // Change the user's password
+    function changePassword($con, $userID, $password) {
+
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+
+        $sql = "UPDATE users
+                SET password = '$hash'
+                WHERE users.user_id = '$userID'";
+        
+        if (mysqli_query($con, $sql)) {
+            // Password was successfully updated
+            return "Success";
+        } else {
+            // Couldn't update the password
+            $this->error = "Unable to update password: " . mysqli_error($con);
+        }
+    }
+
     function getError() {
         $error = $this->error;
         unset($this->error);
