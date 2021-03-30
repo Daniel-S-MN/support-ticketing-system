@@ -115,19 +115,52 @@ class Ticket {
         }
     }
 
-    // Close a ticket
-    function closeTicket($con, $userID, $ticketID) {
+    // Get the comments from a specific ticket
+    function getComments($con, $ticketID) {
 
-        $sql = "UPDATE tickets 
-                SET status = Closed , assigned_to = '$userID' 
-                WHERE tickets.ticket_id = $ticketID";
+        $query = "SELECT comments
+                FROM tickets
+                WHERE tickets.ticket_id = '$ticketID'";
+        
+        if ($result = mysqli_query($con, $query)) {
+            return $result;
+        } else {
+            $this->error = "Error processing query. " . mysqli_error($con);
+            return NULL;
+        }
+    }
+
+    // Update the comments on a specific ticket
+    function addComment($con, $ticketID, $comment) {
+
+        $message = mysqli_real_escape_string($con, $comment);
+
+        $sql = "UPDATE tickets
+                SET comments = CONCAT(IFNULL(comments,''), '$message')
+                WHERE ticket_id = '$ticketID'";
 
         if (mysqli_query($con, $sql)) {
-            // Ticket was successfully updated
+            // Comment was successfully added to the ticket
             return "Success";
         } else {
-            // There was a problem
-            $this->error = "Unable to close the ticket: " . mysqli_error($con);
+            $this->error = "ERROR: Unable add comment to ticket: " . mysqli_error($con);
+        }
+    }
+
+    // Close a ticket
+    function closeTicket($con, $ticketID, $comment) {
+
+        $message = mysqli_real_escape_string($con, $comment);
+
+        $sql = "UPDATE tickets
+                SET comments = CONCAT(IFNULL(comments,''), '$message'), status = 'Closed'
+                WHERE ticket_id = '$ticketID'";
+
+        if (mysqli_query($con, $sql)) {
+            // Comment was successfully added to the ticket and closed
+            return "Success";
+        } else {
+            $this->error = "ERROR: Unable add comment to ticket: " . mysqli_error($con);
         }
 
     }
