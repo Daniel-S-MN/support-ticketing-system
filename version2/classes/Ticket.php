@@ -136,8 +136,8 @@ class Ticket {
         $message = mysqli_real_escape_string($con, $comment);
 
         $sql = "UPDATE tickets
-                SET comments = CONCAT(IFNULL(comments,''), '$message')
-                WHERE ticket_id = '$ticketID'";
+                SET comments= CONCAT(IFNULL(comments,''), '$message')
+                WHERE ticket_id= '$ticketID'";
 
         if (mysqli_query($con, $sql)) {
             // Comment was successfully added to the ticket
