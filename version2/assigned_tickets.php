@@ -127,7 +127,7 @@ $ticketID;
 
             $previous = mysqli_fetch_object($ticket->getComments($con, $_POST['id']));
 
-            $prevComms = $previous->troubleshooting;
+            $prevComms = $previous->comments;
 
             echo '<br><hr><p>Ticket ID: '. $_POST['id']  . '</p><hr><br>'; 
 
