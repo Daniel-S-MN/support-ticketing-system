@@ -65,9 +65,13 @@ if (isset($_POST['post_login'])) {
         <div class="loginInput">
             <i class="fa fa-lock icon fa-lg"></i>
             <input class="testField" type="password" name="posted_password" placeholder="Password" required>
-        </div><br>
+        </div>
         
-        <input class="loginButton" type="submit" name="post_login" value="Login" style="cursor:pointer"><br><br>
+        <input class="loginButton" type="submit" name="post_login" value="Login" style="cursor:pointer"><br>
+
+        <!--  Password reset link will be added to version 3 -->
+        
+        <p><a href="">Forgot Password?</a></p>
             
     </form>
 
