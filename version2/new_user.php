@@ -46,7 +46,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
         echo "<h3>Create New User</h3>";
         echo "<form method='post'>";
-            echo "<label for='userID'>New user ID: </label>";
+            echo "<label for='userID'>New username: </label>";
             echo "<input type='text' id='userID' name='userID' required><br><br>";
             echo "<label for='tempPswrd'>Temporary Password: </label>";
             echo "<input type='password' id='tempPswrd' name='tempPswrd' required><br><br>";
@@ -75,11 +75,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
 if (isset($_POST['submit_new_user'])) {
 
-    // require('classes/Database.php');
     require('classes/User.php');
-
-    // $db = new Database();
-    // $con = $db->connect();
 
     $user = new User();
 

@@ -2,12 +2,7 @@
 
 if (isset($_POST['post_login'])) {
 
-    // require('classes/Database.php');
     require('classes/User.php');
-
-    
-    // $db = new Database();
-    // $con = $db->connect();
 
     $user = new User();
 

@@ -62,7 +62,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <hr>
         <h1>User Information</h1>
         <h3>If you need to update your contact information, please submit a ticket.</h3><br>
-        <p style="font-weight: normal;">User ID:  <?php echo $_SESSION['User_ID'];?></p>
+        <p style="font-weight: normal;">Username:  <?php echo $_SESSION['User_ID'];?></p>
         <p style="font-weight: normal;">Full Name:  <?php echo $_SESSION['First_Name'].' '.$_SESSION['Last_Name'];?></p>
         <p style="font-weight: normal;">Email:  <?php echo $_SESSION['Email'];?></p>
         <p style="font-weight: normal;">Phone Number:  <?php echo $_SESSION['Phone_Num'];?></p>
@@ -100,11 +100,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "<script type='text/javascript'>alert('$message');</script>";
             } else {
 
-                // include ('classes/Database.php');
                 include ('classes/User.php');
-
-                // $db = new Database();
-                // $con = $db->connect();
 
                 $user = new User();
 

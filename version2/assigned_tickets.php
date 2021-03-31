@@ -64,12 +64,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         GLOBAL $ticketID;
         $ticketID = '';
 
-        //require('classes/Database.php');
         require('classes/Ticket.php');
-
-        //$db = new Database();
-
-        //$con = $db->connect();
 
         $ticket = new Ticket();
 
@@ -121,94 +116,6 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             $con->close();
             header("refresh:0; url=index.php");
         }
-
-        // // A ticket was selected to add a comment to and/or close the ticket
-        // if (isset($_POST['troubleshoot'])) {
-
-        //     GLOBAL $ticketID;
-
-        //     $ticketID = $_POST['select_ticket'];
-
-        //     $previous = mysqli_fetch_object($ticket->getComments($con, $_POST['select_ticket']));
-
-        //     $prevComms = $previous->comments;
-
-        //     echo '<br><hr><p>Ticket ID: '. $_POST['select_ticket']  . '</p><hr><br>'; 
-
-        //     echo '<label for="previous_comments">Previous Comments:</label><br>';
-        //     echo '<textarea disabled id="previous_comments" rows="10" cols="50">'.$prevComms.'</textarea>';
-
-        //     echo '<br><br><form method="post">';
-        //     echo '<label for="comment">New Comment:</label><br>';
-        //     echo '<textarea id="comment" name="comment" rows="10" cols="50" required></textarea>';
-        //     echo '<br><br>';
-        //     echo '<input type="submit" name="submit_comment" value="Add Comment"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-        //     echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="comment_and_close" value="Close Ticket"/>';
-        //     echo '</form>';
-        // }
-
-        // // Update the ticket without closing it
-        // if (isset($_POST['submit_comment'])) {
-
-        //     GLOBAL $ticketID;
-
-        //     $postedComment = $_POST['comment'];
-
-        //     $userID = $_SESSION['User_ID'];
-
-        //     $currentDateTime = date('Y-m-d H:i:s');
-        //     $break = "-------------------------\r\n";
-
-        //     $newComment = $break . $currentDateTime . "\r\n" . "User: " . $userID . "\r\n" . $break . $postedComment . "\r\n\r\n";
-
-        //     $check = $ticket->addComment($con, $ticketID, $newComment);
-
-        //     if ($check != "Success") {
-        //         // Unable to add comment to ticket
-        //         $errormsg = $ticket->getError();
-        //         echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-        //         $con->close();
-        //         header("refresh:0; url=index.php");
-        //     } else {
-        //         // Ticket updated
-        //         $msg = "Comment added";
-        //         echo '<script type="text/javascript">alert("'.$msg.'");</script>';
-        //         $con->close();
-        //         header("refresh:0; url=index.php");
-        //     }
-
-        // }
-
-        // // Update ticket and close it
-        // if (isset($_POST['comment_and_close'])) {
-
-        //     GLOBAL $ticketID;
-        //     $postedComment = $_POST['comment'];
-
-        //     $userID = $_SESSION['User_ID'];
-
-        //     $currentDateTime = date('Y-m-d H:i:s');
-        //     $break = "-------------------------\r\n";
-
-        //     $newComment = $break . $currentDateTime . "\r\n" . "User: " . $userID . "\r\n" . $break . $postedComment . "\r\n\r\n";
-
-        //     $check = $ticket->closeTicket($con, $ticketID, $newComment);
-
-        //     if ($check != "Success") {
-        //         // Unable to add comment to ticket
-        //         $errormsg = $ticket->getError();
-        //         echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-        //         $con->close();
-        //         header("refresh:0; url=index.php");
-        //     } else {
-        //         // Ticket updated
-        //         $msg = "Ticket has been updated and closed";
-        //         echo '<script type="text/javascript">alert("'.$msg.'");</script>';
-        //         $con->close();
-        //         header("refresh:0; url=index.php");
-        //     }
-
-        // }
         
         ?>
 

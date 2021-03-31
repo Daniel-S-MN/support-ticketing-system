@@ -45,12 +45,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
         <?php
 
-        // require('classes/Database.php');
         require('classes/Ticket.php');
         require('classes/User.php');
-
-        // $db = new Database();
-        // $con = $db->connect();
 
         $ticket = new Ticket();
 
@@ -133,8 +129,6 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
     if (isset($_POST['assign'])) {
 
-        //require('classes/Database.php');
-        //require('classes/Ticket.php');
         $agent = $_POST['it_users'];
         $ticketID = $_POST['id'];
         $check = $ticket->assignRep($con, $agent, $ticketID);

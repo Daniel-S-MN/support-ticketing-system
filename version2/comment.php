@@ -69,12 +69,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
          * be part of <form action="comment.php" method="post"> in "assigned_tickets.php"
         */
 
-        //require('classes/Database.php');
         require('classes/Ticket.php');
-
-        //$db = new Database();
-
-        //$con = $db->connect();
 
         $ticket = new Ticket();
 

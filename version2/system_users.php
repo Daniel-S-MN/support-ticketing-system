@@ -44,11 +44,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <div>
         <?php
 
-        // require('classes/Database.php');
         require('classes/User.php');
-
-        // $db = new Database();
-        // $con = $db->connect();
 
         $user = new User();
 
@@ -60,7 +56,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             // Display all the system users in a table
             echo "<table border='2' cellpadding='2' cellspacing='2'>";
                 echo "<tr bgcolor='#b3edff'>";
-                echo "<th>User ID</th>";
+                echo "<th>Username</th>";
                 echo "<th>First Name</th>";
                 echo "<th>Last Name</th>";
                 echo "<th>Email</th>";
