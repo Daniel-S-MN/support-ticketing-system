@@ -84,15 +84,16 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
         <?php
         echo 'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!';
 
-        if ($_SESSION['Department'] == 'IT Support') {
+        // if ($_SESSION['Department'] == 'IT Support') {
 
-            echo '<br><br><h3>Quick Look At Ticket Numbers:</h3>';
-            echo '<br><br>[OPEN, PENDING, AND TICKETS ASSIGNED TO "YOU" WILL APPEAR HERE]<br><br>';
-        } else {
+        //     echo '<br><br><h3>Quick Look At Ticket Numbers:</h3>';
+        //     echo '<br><br>[OPEN, PENDING, AND TICKETS ASSIGNED TO "YOU" WILL APPEAR HERE]<br><br>';
+        // } else {
 
-            echo '<br><br><h3>Non-IT Support Users:</h3>';
-            echo '<br><br>[THIS WILL BE A QUICK STATUS UPDATE FOR THE USER]<br><br>';
-        }
+        //     echo '<br><br><h3>Non-IT Support Users:</h3>';
+        //     echo '<br><br>[THIS WILL BE A QUICK STATUS UPDATE FOR THE USER]<br><br>';
+        // }
+
         ?>
     </div>
 

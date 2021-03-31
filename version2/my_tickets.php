@@ -64,13 +64,15 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
         <?php
 
-        require('classes/Database.php');
+        // require('classes/Database.php');
         require('classes/Ticket.php');
 
-        $db = new Database();
-        $con = $db->connect();
+        // $db = new Database();
+        // $con = $db->connect();
 
         $ticket = new Ticket();
+
+        $con = $ticket->connect();
 
         $myOpenTickets = $ticket->getMyOpenTickets($con, $_SESSION['User_ID']);
 

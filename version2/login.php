@@ -2,14 +2,16 @@
 
 if (isset($_POST['post_login'])) {
 
-    require('classes/Database.php');
+    // require('classes/Database.php');
     require('classes/User.php');
 
     
-    $db = new Database();
-    $con = $db->connect();
+    // $db = new Database();
+    // $con = $db->connect();
 
     $user = new User();
+
+    $con = $user->connect();
 
     if($user->login($con, $_POST['posted_username'], $_POST['posted_password'])) {
         $con->close();

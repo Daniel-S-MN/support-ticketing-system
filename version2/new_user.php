@@ -75,13 +75,15 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
 if (isset($_POST['submit_new_user'])) {
 
-    require('classes/Database.php');
+    // require('classes/Database.php');
     require('classes/User.php');
 
-    $db = new Database();
-    $con = $db->connect();
+    // $db = new Database();
+    // $con = $db->connect();
 
     $user = new User();
+
+    $con = $user->connect();
 
     $userID = $_POST['userID'];
     $tempPass = $_POST['tempPswrd'];

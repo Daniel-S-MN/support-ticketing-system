@@ -100,13 +100,15 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "<script type='text/javascript'>alert('$message');</script>";
             } else {
 
-                include ('classes/Database.php');
+                // include ('classes/Database.php');
                 include ('classes/User.php');
 
-                $db = new Database();
-                $con = $db->connect();
+                // $db = new Database();
+                // $con = $db->connect();
 
                 $user = new User();
+
+                $con = $user->connect();
 
                 $check = $user->changePassword($con, $username, $newpassword);
 

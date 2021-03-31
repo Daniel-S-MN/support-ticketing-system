@@ -1,8 +1,8 @@
 <?php
 
-//require('classes/DBConn.php');
+require_once('classes/Database.php');
 
-class Ticket {
+class Ticket extends Database {
 
     public $error;
 
@@ -162,6 +162,25 @@ class Ticket {
             $this->error = "ERROR: Unable add comment to ticket: " . mysqli_error($con);
         }
 
+    }
+
+    // Get a specific ticket
+    function getTicket($con, $ticketID) {
+
+        $stmt = mysqli_query($con, "SELECT *
+                                    FROM tickets
+                                    WHERE ticket_id = '$ticketID'");
+        
+        $row = mysqli_fetch_array($stmt);
+
+        if (!is_array($row)) {
+            $this->error = "Ticket not found";
+            //return NULL;
+        } else {
+            $arr = [];
+            array_push($arr, $row['user_id'], $row['date_created'], $row['description'], $row['comments']);
+            return $arr;
+        }
     }
 
     function getError() {

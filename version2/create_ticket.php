@@ -88,13 +88,15 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
 if (isset($_POST['submit_ticket'])) {
 
-    require('classes/Database.php');
+    // require('classes/Database.php');
     require('classes/Ticket.php');
 
-    $db = new Database();
-    $con = $db->connect();
+    // $db = new Database();
+    // $con = $db->connect();
 
     $ticket = new Ticket();
+
+    $con = $ticket->connect();
 
     $userID = $_SESSION['User_ID'];
 

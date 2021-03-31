@@ -1,8 +1,8 @@
 <?php
 
-//require('classes/DBConn.php');
+require_once('classes/Database.php');
 
-class User {
+class User extends Database {
 
     public $error;
     

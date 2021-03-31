@@ -44,13 +44,15 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <div>
         <?php
 
-        require('classes/Database.php');
+        // require('classes/Database.php');
         require('classes/User.php');
 
-        $db = new Database();
-        $con = $db->connect();
+        // $db = new Database();
+        // $con = $db->connect();
 
         $user = new User();
+
+        $con = $user->connect();
 
         $sysUsers = $user->getAllUsers($con);
 

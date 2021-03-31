@@ -63,14 +63,17 @@ $level;
 
         <?php
 
-        require('classes/Database.php');
+        // require('classes/Database.php');
         require('classes/Ticket.php');
         require('classes/User.php');
 
-        $db = new Database();
-        $con = $db->connect();
+        // $db = new Database();
+        // $con = $db->connect();
 
         $ticket = new Ticket();
+
+        $con = $ticket->connect();
+
         $user = new User();
 
         $openTickets = $ticket->getOpenTickets($con);

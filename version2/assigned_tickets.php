@@ -11,8 +11,6 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     header("Location: index.php");
 }
 
-$ticketID;
-
 ?>
 
 <!DOCTYPE html>
@@ -63,16 +61,19 @@ $ticketID;
 
         <?php
 
-        $ticketID;
+        GLOBAL $ticketID;
+        $ticketID = '';
 
-        require('classes/Database.php');
+        //require('classes/Database.php');
         require('classes/Ticket.php');
 
-        $db = new Database();
+        //$db = new Database();
 
-        $con = $db->connect();
+        //$con = $db->connect();
 
         $ticket = new Ticket();
+
+        $con = $ticket->connect();
 
         $myID = $_SESSION['User_ID'];
 
@@ -80,35 +81,37 @@ $ticketID;
 
         if ($myTickets != NULL) {
 
-            echo "<form method='post'>";
-            echo "<table border='2' cellpadding='2' cellspacing='2'>";
-                echo "<tr bgcolor='#b3edff'>";
-                echo "<th>Select</th>";
-                echo "<th>Ticket ID</th>";
-                echo "<th>Date Created</th>";
-                echo "<th>Priority</th>";
-                echo "<th>Created By</th>";
-                echo "<th>Description</th>";
-                echo "<th>Status</th>";
-                echo "</tr>";
+            echo'<form action="comment.php" method="post">';
+            // echo '<form method="post">';
+            echo '<table border="2" cellpadding="2" cellspacing="2">';
+                echo '<tr bgcolor="#b3edff">';
+                echo '<th>Select</th>';
+                echo '<th>Ticket ID</th>';
+                echo '<th>Date Created</th>';
+                echo '<th>Priority</th>';
+                echo '<th>Created By</th>';
+                echo '<th>Description</th>';
+                echo '<th>Status</th>';
+                echo '</tr>';
 
             while($tickets = mysqli_fetch_object($myTickets)) {
 
-                echo "<tr>";
-                echo "<td align='center'><input type='radio' name='id' value='".$tickets->ticket_id."' required></td>";
-                echo "<td align='center'>$tickets->ticket_id</td>";
-                echo "<td align='center'>$tickets->date_created</td>";
-                echo "<td align='center'>$tickets->priority</td>";
-                echo "<td align='center'>$tickets->user_id</td>";
-                echo "<td>$tickets->description</td>";
-                echo "<td align='center'>$tickets->status</td>";
-                echo "</tr>";
+                echo '<tr>';
+                echo '<td align="center"><input type="radio" name="select_ticket" value="'.$tickets->ticket_id.'" required></td>';
+                echo '<td align="center">'.$tickets->ticket_id.'</td>';
+                echo '<td align="center">'.$tickets->date_created.'</td>';
+                echo '<td align="center">'.$tickets->priority.'</td>';
+                echo '<td align="center">'.$tickets->user_id.'</td>';
+                echo '<td>'.$tickets->description.'</td>';
+                echo '<td align="center">'.$tickets->status.'</td>';
+                echo '</tr>';
             }
 
             // Select which ticket to troubleshoot
-            echo "</table><br><hr><br>";
-            echo "<input type = 'submit' name = 'troubleshoot' value = 'Select Ticket'><br><br>";
-            echo "</form>";
+            echo '</table><br><hr><br>';
+            // echo '<input type ="submit" name="troubleshoot" value ="Select Ticket"><br><br>';
+            echo '<input type ="submit" value ="Select Ticket"><br><br>';
+            echo '</form>';
             
 
         } else {
@@ -119,90 +122,93 @@ $ticketID;
             header("refresh:0; url=index.php");
         }
 
-        // A ticket was selected to add a comment to and/or close the ticket
-        if (isset($_POST['troubleshoot'])) {
+        // // A ticket was selected to add a comment to and/or close the ticket
+        // if (isset($_POST['troubleshoot'])) {
 
-            global $ticketID;
-            $ticketID = $_POST['id'];
+        //     GLOBAL $ticketID;
 
-            $previous = mysqli_fetch_object($ticket->getComments($con, $_POST['id']));
+        //     $ticketID = $_POST['select_ticket'];
 
-            $prevComms = $previous->comments;
+        //     $previous = mysqli_fetch_object($ticket->getComments($con, $_POST['select_ticket']));
 
-            echo '<br><hr><p>Ticket ID: '. $_POST['id']  . '</p><hr><br>'; 
+        //     $prevComms = $previous->comments;
 
-            echo '<label for="previous_comments">Previous Comments:</label><br>';
-            echo '<textarea disabled id="previous_comments" rows="10" cols="50">'.$prevComms.'</textarea>';
+        //     echo '<br><hr><p>Ticket ID: '. $_POST['select_ticket']  . '</p><hr><br>'; 
 
-            echo '<br><br><form method="post">';
-            echo '<label for="comment">New Comment:</label><br>';
-            echo '<textarea id="comment" name="comment" rows="10" cols="50" required></textarea>';
-            echo '<br><br>';
-            echo '<input type="submit" name="submit_comment" value="Add Comment"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-            echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="comment_and_close" value="Close Ticket"/>';
-            echo '</form>';
-        }
+        //     echo '<label for="previous_comments">Previous Comments:</label><br>';
+        //     echo '<textarea disabled id="previous_comments" rows="10" cols="50">'.$prevComms.'</textarea>';
 
-        // Update the ticket without closing it
-        if (isset($_POST['submit_comment'])) {
+        //     echo '<br><br><form method="post">';
+        //     echo '<label for="comment">New Comment:</label><br>';
+        //     echo '<textarea id="comment" name="comment" rows="10" cols="50" required></textarea>';
+        //     echo '<br><br>';
+        //     echo '<input type="submit" name="submit_comment" value="Add Comment"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        //     echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="comment_and_close" value="Close Ticket"/>';
+        //     echo '</form>';
+        // }
 
-            global $ticketID;
+        // // Update the ticket without closing it
+        // if (isset($_POST['submit_comment'])) {
 
-            $postedComment = $_POST['comment'];
+        //     GLOBAL $ticketID;
 
-            $userID = $_SESSION['User_ID'];
+        //     $postedComment = $_POST['comment'];
 
-            $currentDateTime = date('Y-m-d H:i:s');
-            $break = "-------------------------\r\n";
+        //     $userID = $_SESSION['User_ID'];
 
-            $newComment = $break . $currentDateTime . "\r\n" . "User: " . $userID . "\r\n" . $break . $postedComment . "\r\n\r\n";
+        //     $currentDateTime = date('Y-m-d H:i:s');
+        //     $break = "-------------------------\r\n";
 
-            $check = $ticket->addComment($con, $ticketID, $newComment);
+        //     $newComment = $break . $currentDateTime . "\r\n" . "User: " . $userID . "\r\n" . $break . $postedComment . "\r\n\r\n";
 
-            if ($check != "Success") {
-                // Unable to add comment to ticket
-                $errormsg = $ticket->getError();
-                echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-                $con->close();
-                header("refresh:0; url=index.php");
-            } else {
-                // Ticket updated
-                $msg = "Comment added";
-                echo '<script type="text/javascript">alert("'.$msg.'");</script>';
-                $con->close();
-                header("refresh:0; url=index.php");
-            }
+        //     $check = $ticket->addComment($con, $ticketID, $newComment);
 
-        }
+        //     if ($check != "Success") {
+        //         // Unable to add comment to ticket
+        //         $errormsg = $ticket->getError();
+        //         echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+        //         $con->close();
+        //         header("refresh:0; url=index.php");
+        //     } else {
+        //         // Ticket updated
+        //         $msg = "Comment added";
+        //         echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+        //         $con->close();
+        //         header("refresh:0; url=index.php");
+        //     }
 
-        // Update ticket and close it
-        if (isset($_POST['comment_and_close'])) {
+        // }
 
-            global $ticketID;
+        // // Update ticket and close it
+        // if (isset($_POST['comment_and_close'])) {
 
-            $userID = $_SESSION['User_ID'];
-            $currentDateTime = date('Y-m-d H:i:s');
-            $break = "-------------------------\r\n";
+        //     GLOBAL $ticketID;
+        //     $postedComment = $_POST['comment'];
 
-            $newComment = $break . $currentDateTime . '\r\n' . "User: " . $userID . "\r\n" . $break . "\r\n\r\n";
+        //     $userID = $_SESSION['User_ID'];
 
-            $check = $ticket->closeTicket($con, $ticketID, $newComment);
+        //     $currentDateTime = date('Y-m-d H:i:s');
+        //     $break = "-------------------------\r\n";
 
-            if ($check != "Success") {
-                // Unable to add comment to ticket
-                $errormsg = $ticket->getError();
-                echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-                $con->close();
-                header("refresh:0; url=index.php");
-            } else {
-                // Ticket updated
-                $msg = "Ticket has been updated and closed";
-                echo '<script type="text/javascript">alert("'.$msg.'");</script>';
-                $con->close();
-                header("refresh:0; url=index.php");
-            }
+        //     $newComment = $break . $currentDateTime . "\r\n" . "User: " . $userID . "\r\n" . $break . $postedComment . "\r\n\r\n";
 
-        }
+        //     $check = $ticket->closeTicket($con, $ticketID, $newComment);
+
+        //     if ($check != "Success") {
+        //         // Unable to add comment to ticket
+        //         $errormsg = $ticket->getError();
+        //         echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+        //         $con->close();
+        //         header("refresh:0; url=index.php");
+        //     } else {
+        //         // Ticket updated
+        //         $msg = "Ticket has been updated and closed";
+        //         echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+        //         $con->close();
+        //         header("refresh:0; url=index.php");
+        //     }
+
+        // }
         
         ?>
 

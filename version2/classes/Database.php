@@ -2,15 +2,15 @@
 
 class Database {
 
-    private $dbhost;
-    private $dbuser;
-    private $dbpass;
-    private $dbname;
+    private $dbhost = "localhost";
+    private $dbuser = "root";
+    private $dbpass = "";
+    private $dbname = "prototypev2";
 
+    public $con;
     public $error;
 
-    function __construct()
-    {
+    function __construct() {
         $this->dbhost = "localhost";
         $this->dbuser = "root";
         $this->dbpass = "";
@@ -19,7 +19,9 @@ class Database {
 
     function connect() {
 
-        $con = @mysqli_connect($this->dbhost, $this->dbuser, $this->dbpass, $this->dbname);
+        //$con = @mysqli_connect($this->dbhost, $this->dbuser, $this->dbpass, $this->dbname);
+
+        $this->con = new mysqli($this->dbhost, $this->dbuser, $this->dbpass, $this->dbname);
 
         // Check the connection
         if (mysqli_connect_errno()) {
@@ -31,7 +33,7 @@ class Database {
 
         } else {
             // Connection is good!
-            return $con;
+            return $this->con;
         }
     }
 
