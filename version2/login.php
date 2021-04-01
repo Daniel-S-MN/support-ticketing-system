@@ -20,6 +20,9 @@ if (isset($_POST['post_login'])) {
         header("refresh:0; url=index.php");
         exit();
     }
+
+    // Something something something
+    
     
 }
 
@@ -69,9 +72,11 @@ if (isset($_POST['post_login'])) {
         
         <input class="loginButton" type="submit" name="post_login" value="Login" style="cursor:pointer"><br>
 
-        <!--  Password reset link will be added to version 3 -->
+        <!--  Password reset link will be added to version 3 
         
         <p><a href="">Forgot Password?</a></p>
+
+        -->
             
     </form>
 
