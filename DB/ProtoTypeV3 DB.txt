@@ -10,7 +10,7 @@ USE ticketsystem;
 
 /* Create the user table (user level: 1 = users, 2 = IT rep, 3 = IT manager) */
 CREATE TABLE users (
-    user_id VARCHAR(100) NOT NULL PRIMARY KEY,
+    username VARCHAR(100) NOT NULL PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
     f_name VARCHAR(100) NOT NULL,
     l_name VARCHAR(100) NOT NULL,
@@ -24,12 +24,12 @@ CREATE TABLE users (
 
 /* Create the user status table (directs user to set questions and/or password) */
 CREATE TABLE userstatus (
-    user_id VARCHAR(100) NOT NULL PRIMARY KEY,
+    username VARCHAR(100) NOT NULL PRIMARY KEY,
     new_user VARCHAR(10) NOT NULL DEFAULT 'Yes',
     password_reset VARCHAR(10) NOT NULL DEFAULT 'Yes',
-    INDEX (user_id),
-    FOREIGN KEY (user_id)
-    REFERENCES users(user_id)
+    INDEX (username),
+    FOREIGN KEY (username)
+    REFERENCES users(username)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
@@ -37,7 +37,7 @@ CREATE TABLE userstatus (
 
 /* Create the password recovery table (questions and answers are hashed) */
 CREATE TABLE passwordrecovery (
-    user_id VARCHAR(100) NOT NULL PRIMARY KEY,
+    username VARCHAR(100) NOT NULL PRIMARY KEY,
     question1 TEXT NOT NULL,
     question2 TEXT NOT NULL,
     question3 TEXT NOT NULL,
@@ -48,9 +48,9 @@ CREATE TABLE passwordrecovery (
     answer3 TEXT NOT NULL,
     answer4 TEXT NOT NULL,
     answer5 TEXT NOT NULL,
-    INDEX (user_id),
-    FOREIGN KEY (user_id)
-    REFERENCES users(user_id)
+    INDEX (username),
+    FOREIGN KEY (username)
+    REFERENCES users(username)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
@@ -59,15 +59,15 @@ CREATE TABLE passwordrecovery (
 /* Create the ticket table */
 CREATE TABLE tickets (
     ticket_id SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    user_id VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL,
     date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     priority VARCHAR(20) NOT NULL,
     description TEXT NOT NULL,
     assigned_to VARCHAR(100) DEFAULT NULL,
     status VARCHAR(100) NOT NULL DEFAULT 'Open',
-    INDEX(user_id),
-    FOREIGN KEY (user_id)
-    REFERENCES users(user_id)
+    INDEX(username),
+    FOREIGN KEY (username)
+    REFERENCES users(username)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
@@ -77,17 +77,17 @@ CREATE TABLE tickets (
 CREATE TABLE comments (
     comment_id SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ticket_id SMALLINT NOT NULL,
-    user_id VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL,
     comment TEXT NOT NULL,
     time_stamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     INDEX(ticket_id),
-    INDEX(user_id),
+    INDEX(username),
     FOREIGN KEY (ticket_id)
     REFERENCES tickets(ticket_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-    FOREIGN KEY (user_id)
-    REFERENCES users(user_id)
+    FOREIGN KEY (username)
+    REFERENCES users(username)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
@@ -109,20 +109,20 @@ CREATE TABLE comments (
  *
 */
 
-INSERT INTO users (user_id, password, f_name, l_name, email, phone_num, department, title, level)
+INSERT INTO users (username, password, f_name, l_name, email, phone_num, department, title, level)
 VALUES ('bwayne', '$2y$10$cYE5chj1LIf.tQOpmNzBNOyCGJHZkNmpHrUfgVjZ7N5bJ8gLDxfji', 'Bruce', 'Wayne', 'batman@fakedomain.com', '123-456-7890', 'IT Support', 'Manager', '3');
 
-INSERT INTO users (user_id, password, f_name, l_name, email, phone_num, department, title, level)
+INSERT INTO users (username, password, f_name, l_name, email, phone_num, department, title, level)
 VALUES ('tdrake', '$2y$10$81QfchKFXoJ2QOg9RmNLTek/L8ptUABxMr31MOF0hpMBw6Wxb9DHu', 'Tim', 'Drake', 'robin@fakedomain.com', '123-456-7891', 'IT Support', 'Rep', '2');
 
-INSERT INTO users (user_id, password, f_name, l_name, email, phone_num, department, title, level)
+INSERT INTO users (username, password, f_name, l_name, email, phone_num, department, title, level)
 VALUES ('ballen', '$2y$10$cs2nABL6YflSZUYr8qGRje3FVY1bg6qEDwWumkuFpPcmr2WiGf8TS', 'Barry', 'Allen', 'flash@fakedomain.com', '123-456-7892', 'Shipping', 'Manager', '1');
 
-INSERT INTO userstatus (user_id, new_user, password_reset)
+INSERT INTO userstatus (username, new_user, password_reset)
 VALUES ('bwayne', 'No', 'No');
 
-INSERT INTO userstatus (user_id, new_user, password_reset)
+INSERT INTO userstatus (username, new_user, password_reset)
 VALUES ('tdrake', 'No', 'No');
 
-INSERT INTO userstatus (user_id, new_user, password_reset)
+INSERT INTO userstatus (username, new_user, password_reset)
 VALUES ('ballen', 'No', 'No');
