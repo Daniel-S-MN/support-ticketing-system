@@ -1,0 +1,128 @@
+/*
+ * Here is the final version of the database for the project.
+ *
+ * Just copy+paste this file into SQL (I'm using phpMyAdmin) and run it to create the database.
+*/
+
+CREATE DATABASE ticketsystem;
+
+USE ticketsystem;
+
+/* Create the user table (user level: 1 = users, 2 = IT rep, 3 = IT manager) */
+CREATE TABLE users (
+    user_id VARCHAR(100) NOT NULL PRIMARY KEY,
+    password VARCHAR(255) NOT NULL,
+    f_name VARCHAR(100) NOT NULL,
+    l_name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    phone_num VARCHAR(100) NOT NULL,
+    department VARCHAR(100) NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    level SMALLINT NOT NULL
+);
+
+
+/* Create the user status table (directs user to set questions and/or password) */
+CREATE TABLE userstatus (
+    user_id VARCHAR(100) NOT NULL PRIMARY KEY,
+    new_user VARCHAR(10) NOT NULL DEFAULT 'Yes',
+    password_reset VARCHAR(10) NOT NULL DEFAULT 'Yes',
+    INDEX (user_id),
+    FOREIGN KEY (user_id)
+    REFERENCES users(user_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+
+/* Create the password recovery table (questions and answers are hashed) */
+CREATE TABLE passwordrecovery (
+    user_id VARCHAR(100) NOT NULL PRIMARY KEY,
+    question1 TEXT NOT NULL,
+    question2 TEXT NOT NULL,
+    question3 TEXT NOT NULL,
+    question4 TEXT NOT NULL,
+    question5 TEXT NOT NULL,
+    answer1 TEXT NOT NULL,
+    answer2 TEXT NOT NULL,
+    answer3 TEXT NOT NULL,
+    answer4 TEXT NOT NULL,
+    answer5 TEXT NOT NULL,
+    INDEX (user_id),
+    FOREIGN KEY (user_id)
+    REFERENCES users(user_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+
+/* Create the ticket table */
+CREATE TABLE tickets (
+    ticket_id SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(100) NOT NULL,
+    date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    priority VARCHAR(20) NOT NULL,
+    description TEXT NOT NULL,
+    assigned_to VARCHAR(100) DEFAULT NULL,
+    status VARCHAR(100) NOT NULL DEFAULT 'Open',
+    INDEX(user_id),
+    FOREIGN KEY (user_id)
+    REFERENCES users(user_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+
+/* Create the comments table (all the troubleshooting comments for each ticket) */
+CREATE TABLE comments (
+    comment_id SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    ticket_id SMALLINT NOT NULL,
+    user_id VARCHAR(100) NOT NULL,
+    comment TEXT NOT NULL,
+    time_stamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    INDEX(ticket_id),
+    INDEX(user_id),
+    FOREIGN KEY (ticket_id)
+    REFERENCES tickets(ticket_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    FOREIGN KEY (user_id)
+    REFERENCES users(user_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+/*
+ * Here are a couple of the first users for each user type:
+ *
+ * Username: bwayne
+ * Password: I'mBatman
+ * Title: IT Support Manager
+ *
+ * Username: tdrake
+ * Password: Robin
+ * Title: IT Support rep
+ *
+ * Username: ballen
+ * Password: TheFlash
+ * Title: Manager (non-IT)
+ *
+*/
+
+INSERT INTO users (user_id, password, f_name, l_name, email, phone_num, department, title, level)
+VALUES ('bwayne', '$2y$10$cYE5chj1LIf.tQOpmNzBNOyCGJHZkNmpHrUfgVjZ7N5bJ8gLDxfji', 'Bruce', 'Wayne', 'batman@fakedomain.com', '123-456-7890', 'IT Support', 'Manager', '3');
+
+INSERT INTO users (user_id, password, f_name, l_name, email, phone_num, department, title, level)
+VALUES ('tdrake', '$2y$10$81QfchKFXoJ2QOg9RmNLTek/L8ptUABxMr31MOF0hpMBw6Wxb9DHu', 'Tim', 'Drake', 'robin@fakedomain.com', '123-456-7891', 'IT Support', 'Rep', '2');
+
+INSERT INTO users (user_id, password, f_name, l_name, email, phone_num, department, title, level)
+VALUES ('ballen', '$2y$10$cs2nABL6YflSZUYr8qGRje3FVY1bg6qEDwWumkuFpPcmr2WiGf8TS', 'Barry', 'Allen', 'flash@fakedomain.com', '123-456-7892', 'Shipping', 'Manager', '1');
+
+INSERT INTO userstatus (user_id, new_user, password_reset)
+VALUES ('bwayne', 'No', 'No');
+
+INSERT INTO userstatus (user_id, new_user, password_reset)
+VALUES ('tdrake', 'No', 'No');
+
+INSERT INTO userstatus (user_id, new_user, password_reset)
+VALUES ('ballen', 'No', 'No');

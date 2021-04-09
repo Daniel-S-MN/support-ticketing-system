@@ -1,0 +1,93 @@
+       body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .login {
+            margin: auto;
+            border-radius: 20px;
+            background-color: grey;
+            padding: 20px;
+            width: 350px;
+            height: auto;
+            text-align: center;
+        }
+
+        .loginButton {
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: rgb(34, 110, 136);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px #999;
+        }
+          
+        input[type="submit"].loginButton:hover {
+            background-color: rgb(22, 87, 109)
+        }
+          
+        .loginButton:active {
+            background-color: rgb(22, 87, 109);
+            box-shadow: 0 4px #666;
+            transform: translateY(4px);
+        }
+
+        .loginInput i {
+            position: absolute;
+        }
+  
+        .loginInput {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+  
+        .icon {
+            padding: 10px;
+            color: black;
+            min-width: 50px;
+            text-align: center;
+        }
+  
+        .testField {
+            width: 300px;
+            padding: 4px;
+            text-align: center;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgb(14, 83, 104);
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+        .sidenav a {
+            padding: 6px 10px 6px 25px;
+            text-decoration: none;
+            font-size: 25px;
+            font-weight: bolder;
+            color: darkgray;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .main {
+            margin-left: 200px; /* Same as the width of the sidenav */
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+        }
