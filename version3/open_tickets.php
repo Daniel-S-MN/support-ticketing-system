@@ -2,12 +2,11 @@
 
 session_start();
 
-// Make sure only people logged in AND in IT Support can view this page
-
+// Make sure only people logged in AND IT Support users can view this page
 if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 	header("Location: login.php");
 	exit();
-} elseif ($_SESSION['Department'] != 'IT Support') {
+} elseif ($_SESSION['Access'] < 2) {
     header("Location: index.php");
 }
 
@@ -31,15 +30,16 @@ $level;
         <a href="index.php">Home</a>
 
         <?php
+        
         // Menu items will only display for the correct permissions of each user
-        if ($_SESSION['Position'] != 'Manager') {
+        if ($_SESSION['Access'] == 2) {
             // IT Support non-managers
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
             echo '<a href="create_ticket.php">Create Ticket</a>';
             echo '<a href="my_tickets.php">My Tickets</a>';
             echo '<a href="my_profile.php">My Profile</a>';
-        } else {
+        } elseif ($_SESSION['Access'] == 3) {
             // IT Support Managers (admins)
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="pending_tickets.php">Pending Tickets</a>';
@@ -84,6 +84,7 @@ $level;
                 echo "<th>Date Created</th>";
                 echo "<th>Priority</th>";
                 echo "<th>Created By</th>";
+                echo "<th>Title</th>";
                 echo "<th>Description</th>";
                 echo "<th>Status</th>";
                 echo "</tr>";
@@ -95,7 +96,8 @@ $level;
                 echo "<td align='center'>$tickets->ticket_id</td>";
                 echo "<td align='center'>$tickets->date_created</td>";
                 echo "<td align='center'>$tickets->priority</td>";
-                echo "<td align='center'>$tickets->user_id</td>";
+                echo "<td align='center'>$tickets->username</td>";
+                echo "<td>$tickets->title</td>";
                 echo "<td>$tickets->description</td>";
                 echo "<td align='center'>$tickets->status</td>";
                 echo "</tr>";
@@ -103,24 +105,18 @@ $level;
 
 
             // Different options based on permissions
-            if ($_SESSION['Position'] != 'Manager') {
+            if ($_SESSION['Access'] == 2) {
 
                 // Non-managers can only assign open tickets to themselves
                 echo "</table><br><hr><br>";
                 echo "<input type = 'submit' name = 'assign' value = 'Assign Ticket'><br><br>";
                 echo "</form>";
 
-                // Testing an idea
-                $level = 1;
-
-            } else {
-
-                // Testing an idea
-                $level = 2;
+            } elseif ($_SESSION['Access'] == 3) {
                 
                 echo "</table><br><hr><br>";
                 // Find all the IT Support users
-                $availAgents = $user->getDepartment($con, "IT Support");
+                $availAgents = $user->getITReps($con);
 
                 if ($availAgents != NULL) {
                     echo "<label for='it_users'>Select IT Support user to assign ticket to: </label>";
@@ -129,7 +125,7 @@ $level;
 
                     while($ticket2 = mysqli_fetch_object($availAgents)) {
 
-                        echo "<option value='".$ticket2->user_id."'>".$ticket2->user_id."</option>";
+                        echo "<option value='".$ticket2->username."'>".$ticket2->username."</option>";
                     }
 
                     echo "</select><br><br>";
@@ -163,20 +159,15 @@ $level;
 
 if (isset($_POST['assign'])) {
 
-    $user;
-
-    if ($level == 1) {
-        $user = $_SESSION['User_ID'];
-    } elseif ($level == 2) {
-        $user = $_POST['it_users'];
-    } else {
-        $errormsg = "YOUR IDEA FAILED!";
-        echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-        $con->close();
-        header("refresh:0; url=index.php");
+    // Is the ticket going to be assigned to whoever is logged in, or
+    // is a manager assigning the open ticket to an IT Support rep?
+    if ($_SESSION['Access'] == 2) {
+        $agent = $_SESSION['Username'];
+    } elseif ($_SESSION['Access'] ==3) {
+        $agent = $_POST['it_users'];
     }
 
-    $check = $ticket->assignRep($con, $user, $_POST['id']);
+    $check = $ticket->assignRep($con, $agent, $_POST['id']);
 
     if ($check != "Success") {
         // Couldn't assign the ticket

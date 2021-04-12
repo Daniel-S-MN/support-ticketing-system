@@ -59,12 +59,32 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
     </div>
 
     <div class="main">
-        <h3>This is the testing "Home" page for ALL users.</h3>
-        <hr><br>
-        <div>
+
         <?php
-        echo 'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!';
+
+            echo "<h3>".'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!' . "</h3>";
+            echo "<hr>";
+            echo "<div>";
+
+            if ($_SESSION['Access'] > 1) {
+
+                echo "<h3>Here is a quick break-down of what's going on:</h3>";
+
+                require('classes/Ticket.php');
+
+                $ticket = new Ticket();
+
+                $con = $ticket->connect();
+
+                $numOpen = $ticket->getNumPendingTickets($con);
+                $numPend = $ticket->getNumWorkingTickets($con);
+
+                echo "<h3>Number of open tickets: ".$numOpen."</h3>";
+                echo "<h3>Number of pending tickets: ".$numPend."</h3>";
+            }
+
         ?>
+
     </div>
 
  </body>

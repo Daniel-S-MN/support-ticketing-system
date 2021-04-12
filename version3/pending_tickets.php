@@ -3,11 +3,10 @@
 session_start();
 
 // Make sure only people logged in AND IT Support managers can view this page
-
 if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 	header("Location: login.php");
 	exit();
-} elseif ($_SESSION['Department'] != 'IT Support' || $_SESSION['Position'] != 'Manager') {
+} elseif ($_SESSION['Access'] != 3) {
     header("Location: index.php");
 }
 
@@ -66,6 +65,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "<th>Date Created</th>";
                 echo "<th>Priority</th>";
                 echo "<th>Created By</th>";
+                echo "<th>Title</th>";
                 echo "<th>Description</th>";
                 echo "<th>Status</th>";
                 echo "<th>Assigned To</th>";
@@ -78,7 +78,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "<td align='center'>$tickets->ticket_id</td>";
                 echo "<td align='center'>$tickets->date_created</td>";
                 echo "<td align='center'>$tickets->priority</td>";
-                echo "<td align='center'>$tickets->user_id</td>";
+                echo "<td align='center'>$tickets->username</td>";
+                echo "<td>$tickets->title</td>";
                 echo "<td>$tickets->description</td>";
                 echo "<td align='center'>$tickets->status</td>";
                 echo "<td align='center'>$tickets->assigned_to</td>";
@@ -87,7 +88,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
             echo "</table><br><hr><br>";
             // Find all the IT Support users
-            $availAgents = $user->getDepartment($con, "IT Support");
+            $availAgents = $user->getITReps($con);
 
             if ($availAgents != NULL) {
                 echo "<label for='it_users'>Select IT Support user to assign ticket to: </label>";
@@ -96,7 +97,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
                 while($ticket2 = mysqli_fetch_object($availAgents)) {
 
-                    echo "<option value='".$ticket2->user_id."'>".$ticket2->user_id."</option>";
+                    echo "<option value='".$ticket2->username."'>".$ticket2->username."</option>";
                 }
 
                 echo "</select><br><br>";

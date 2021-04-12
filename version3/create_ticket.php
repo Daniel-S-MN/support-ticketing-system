@@ -3,7 +3,6 @@
 session_start();
 
 // Make sure only people logged in can view this page
-
 if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 	header("Location: login.php");
 	exit();
@@ -27,20 +26,21 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <a href="index.php">Home</a>
 
         <?php
-        // Menu items will only display for the correct permissions of each user
-        if ($_SESSION['Department'] != 'IT Support') {
-            // Customers
+        
+        // Some menu items are only displayed based on the user permissions level
+        if ($_SESSION['Access'] == 1) {
+            // Non-IT Support users
             echo '<a href="create_ticket.php">Create Ticket</a>';
             echo '<a href="my_tickets.php">My Tickets</a>';
             echo '<a href="my_profile.php">My Profile</a>';
-        } elseif ($_SESSION['Position'] != 'Manager') {
+        } elseif ($_SESSION['Access'] == 2) {
             // IT Support non-managers
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
             echo '<a href="create_ticket.php">Create Ticket</a>';
             echo '<a href="my_tickets.php">My Tickets</a>';
             echo '<a href="my_profile.php">My Profile</a>';
-        } else {
+        } elseif ($_SESSION['Access'] == 3) {
             // IT Support Managers (admins)
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="pending_tickets.php">Pending Tickets</a>';
@@ -62,8 +62,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <hr>
         <h1>Submit a new ticket</h1>
         <form method="post">
-        <label for="levels">Select the ticket priority level: </label>
-        <select name="levels" id="levels" required>
+        <label for="priority">Select the ticket priority level: </label>
+        <select name="priority" id="priority" required>
             <option value="">-Select-</option>
             <option value="High">High</option>
             <option value="Medium">Medium</option>
@@ -74,6 +74,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <p>Medium: needs to be resolved within 2-3 business days.</p>
         <p>Low: needs to be resolved within 4-7 business days.</p>
         <br>
+        <label for="title">Ticket Title:</lable><br>
+        <textarea id="title" name="title" rows="2" cols="50" required></textarea><br><br>
         <label for="description">Ticket Description:</label><br>
         <textarea id="description" name="description" rows="10" cols="50" required></textarea>
         <br><br>
@@ -94,9 +96,9 @@ if (isset($_POST['submit_ticket'])) {
 
     $con = $ticket->connect();
 
-    $userID = $_SESSION['User_ID'];
+    $username = $_SESSION['Username'];
 
-    $status = $ticket->newTicket($con, $userID, $_POST['levels'], $_POST['description']);
+    $status = $ticket->newTicket($con, $username, $_POST['priority'], $_POST['title'], $_POST['description']);
 
     if ($status != 'Success') {
         // Ticket couldn't be added to the DB

@@ -81,6 +81,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "<th>Ticket ID</th>";
                 echo "<th>Date Created</th>";
                 echo "<th>Priority</th>";
+                echo "<th>Title</th>";
                 echo "<th>Description</th>";
                 echo "<th>Assigned To</th>";
                 echo "<th>Status</th>";
@@ -92,6 +93,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "<td align='center'>$ticketInfo->ticket_id</td>";
                 echo "<td align='center'>$ticketInfo->date_created</td>";
                 echo "<td align='center'>$ticketInfo->priority</td>";
+                echo "<td>$ticketInfo->title</td>";
                 echo "<td>$ticketInfo->description</td>";
                 echo "<td align='center'>$ticketInfo->assigned_to</td>";
                 echo "<td align='center'>$ticketInfo->status</td>";
@@ -108,7 +110,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             header("refresh:0; url=index.php");
         }
 
-        $myClosedTickets = $ticket->getMyClosedTickets($con, $_SESSION['User_ID']);
+        $myClosedTickets = $ticket->getMyClosedTickets($con, $_SESSION['Username']);
 
         if ($myClosedTickets != NULL) {
 
@@ -119,6 +121,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "<th>Ticket ID</th>";
                 echo "<th>Date Created</th>";
                 echo "<th>Priority</th>";
+                echo "<th>Title</th>";
                 echo "<th>Description</th>";
                 echo "<th>Assigned To</th>";
                 echo "<th>Status</th>";
@@ -130,6 +133,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "<td align='center'>$closedInfo->ticket_id</td>";
                 echo "<td align='center'>$closedInfo->date_created</td>";
                 echo "<td align='center'>$closedInfo->priority</td>";
+                echo "<td>$closedInfo->title</td>";
                 echo "<td>$closedInfo->description</td>";
                 echo "<td align='center'>$closedInfo->assigned_to</td>";
                 echo "<td align='center'>$closedInfo->status</td>";

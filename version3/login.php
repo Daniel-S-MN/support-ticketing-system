@@ -23,6 +23,9 @@ if (isset($_POST['post_login'])) {
     
 }
 
+// Bootstrap Modal example used:
+// https://www.w3schools.com/bootstrap/bootstrap_modal.asp
+
 /*
  * Here is the source for the background image:
  * By McGhiever - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=79432904
@@ -38,7 +41,9 @@ if (isset($_POST['post_login'])) {
  
   <title>Login - Support Ticket System</title>
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="styles/login.css">
   
@@ -55,8 +60,8 @@ if (isset($_POST['post_login'])) {
 </style>
 
 <body>
-    
-    <div class="login-form">
+
+<div class="login-form">
         <form method="post">
             <h3 class="text-center">Support Ticket System</h3>
             <div class="form-group">
@@ -70,9 +75,37 @@ if (isset($_POST['post_login'])) {
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block" name="post_login">Login</button>
             </div>
-                <a href="#" class="btn btn-info btn-block" role="button">Forgot Password?</a>
+                <!-- <a href="#" class="btn btn-info btn-block" role="button">Forgot Password?</a> 
+                Trigger the modal with a button -->
+                <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal">Forgot Password?</button>
         </form>
     </div>
+
+<div class="container">
+
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Forgot Password - Verify Identity</h4>
+        </div>
+        <div class="modal-body">
+          <p>This is where we verify the user's identity before resetting their password.</p>
+          <p>Not sure how to do that YET...</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
 
 </body>
 

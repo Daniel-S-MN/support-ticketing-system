@@ -27,7 +27,9 @@ class User extends Database {
             $verify = password_verify($password, $passcode);
 
             if (!$verify) {
-                $this->error = "Incorrect password";
+                // For security reasons, can't let the error message state that the
+                // entered usename is correct, but the password is wrong.
+                $this->error = "Invalid username or password";
                 return false;
             } else {
                 // Set the session for the user
@@ -121,21 +123,20 @@ class User extends Database {
         }
     }
 
-    // TODO: make sure I don't ACTUALLY need this function anymore...
-    // // Get all the users from a specific department
-    // function getDepartment($con, $department) {
+    // Used to display all the users in IT Support
+    function getITReps($con) {
         
-    //     $query = "SELECT username 
-    //         FROM users 
-    //         WHERE department='$department'";
+        $query = "SELECT username 
+            FROM users 
+            WHERE level > 1";
         
-    //     if ($result = mysqli_query($con, $query)) {
-    //         return $result;
-    //     } else {
-    //         $this->error = "Unable to process department query: " . mysql_error();
-    //         return NULL;
-    //     }
-    // }
+        if ($result = mysqli_query($con, $query)) {
+            return $result;
+        } else {
+            $this->error = "Unable to process department query: " . mysql_error();
+            return NULL;
+        }
+    }
 
     // Get all of the users from the DB
     function getAllUsers($con) {

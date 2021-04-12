@@ -3,11 +3,10 @@
 session_start();
 
 // Make sure only people logged in AND IT Support users can view this page
-
 if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 	header("Location: login.php");
 	exit();
-} elseif ($_SESSION['Department'] != 'IT Support') {
+} elseif ($_SESSION['Access'] < 2) {
     header("Location: index.php");
 }
 
@@ -30,14 +29,14 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
         <?php
         // Menu items will only display for the correct permissions of each user
-        if ($_SESSION['Position'] != 'Manager') {
+        if ($_SESSION['Access'] == 2) {
             // IT Support non-managers
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
             echo '<a href="create_ticket.php">Create Ticket</a>';
             echo '<a href="my_tickets.php">My Tickets</a>';
             echo '<a href="my_profile.php">My Profile</a>';
-        } else {
+        } elseif ($_SESSION['Access'] == 3) {
             // IT Support Managers (admins)
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="pending_tickets.php">Pending Tickets</a>';
@@ -61,22 +60,19 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
         <?php
 
-        GLOBAL $ticketID;
-        $ticketID = '';
-
         require('classes/Ticket.php');
 
         $ticket = new Ticket();
 
         $con = $ticket->connect();
 
-        $myID = $_SESSION['User_ID'];
+        $myID = $_SESSION['Username'];
 
         $myTickets = $ticket->getMyAssignedTickets($con, $myID);
 
         if ($myTickets != NULL) {
-
-            echo'<form action="comment.php" method="post">';
+            // TODO: Fix this to bring up the comments
+            echo'<form action="#" method="post">';
             // echo '<form method="post">';
             echo '<table border="2" cellpadding="2" cellspacing="2">';
                 echo '<tr bgcolor="#b3edff">';
@@ -85,6 +81,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo '<th>Date Created</th>';
                 echo '<th>Priority</th>';
                 echo '<th>Created By</th>';
+                echo '<th>Title</th>';
                 echo '<th>Description</th>';
                 echo '<th>Status</th>';
                 echo '</tr>';
@@ -96,7 +93,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo '<td align="center">'.$tickets->ticket_id.'</td>';
                 echo '<td align="center">'.$tickets->date_created.'</td>';
                 echo '<td align="center">'.$tickets->priority.'</td>';
-                echo '<td align="center">'.$tickets->user_id.'</td>';
+                echo '<td align="center">'.$tickets->username.'</td>';
+                echo '<td>'.$tickets->title.'</td>';
                 echo '<td>'.$tickets->description.'</td>';
                 echo '<td align="center">'.$tickets->status.'</td>';
                 echo '</tr>';
