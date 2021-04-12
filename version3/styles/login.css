@@ -1,0 +1,36 @@
+.login-form {
+    width: 350px;
+    margin: auto;
+}
+.login-form form {
+    margin-bottom: 15px;
+    background: #808080;
+    padding: 30px;
+    border-radius: 20px;
+}
+.login-form h3 {
+    margin: 0 0 20px;
+    color: white; 
+    font-weight: bold;
+}
+
+.form-control, .btn {
+    min-height: auto;
+    border-radius: 2px;
+    text-align: center;
+}
+.btn {        
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.form-group i {
+    position: absolute;
+}
+
+.icon {
+    padding: 10px;
+    color: black;
+    min-width: 50px;
+    text-align: center;
+}

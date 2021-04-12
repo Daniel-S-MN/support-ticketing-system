@@ -41,6 +41,7 @@ class User extends Database {
                 $_SESSION['Phone_Num'] = $row['phone_num'];
                 $_SESSION['Department'] = $row['department'];
                 $_SESSION['Title'] = $row['title'];
+                $_SESSION['Access'] = $row['level'];
 
                 return true;
             }
@@ -48,13 +49,13 @@ class User extends Database {
     }
 
     // Add a new user to the DB
-    function addUser($con, $username, $psw, $fName, $lName, $email, $phone, $dept, $title) {
+    function addUser($con, $username, $psw, $fName, $lName, $email, $phone, $dept, $title, $level) {
 
         // Can't store plaintext passwords in the DB
         $passcode = password_hash($psw, PASSWORD_DEFAULT);
         
-        $sql = "INSERT INTO users (username, password, f_name, l_name, email, phone_num, department, title)
-        VALUES ('$username', '$passcode', '$fName', '$lName', '$email', '$phone', '$dept', '$title')";
+        $sql = "INSERT INTO users (username, password, f_name, l_name, email, phone_num, department, title, level)
+        VALUES ('$username', '$passcode', '$fName', '$lName', '$email', '$phone', '$dept', '$title', '$level')";
 
         if (mysqli_query($con, $sql)) {
             // User was successfully added to the DB

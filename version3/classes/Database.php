@@ -2,10 +2,10 @@
 
 class Database {
 
-    private $dbhost = "localhost";
-    private $dbuser = "root";
-    private $dbpass = "";
-    private $dbname = "ticketsystem";
+    private $dbhost;
+    private $dbuser;
+    private $dbpass;
+    private $dbname;
 
     public $con;
     public $error;
@@ -14,7 +14,7 @@ class Database {
         $this->dbhost = "localhost";
         $this->dbuser = "root";
         $this->dbpass = "";
-        $this->dbname = "prototypev2";
+        $this->dbname = "ticketsystem";
     }
 
     function connect() {

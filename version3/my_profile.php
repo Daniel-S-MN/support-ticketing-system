@@ -3,7 +3,6 @@
 session_start();
 
 // Make sure only people logged in can view this page
-
 if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 	header("Location: login.php");
 	exit();
@@ -27,20 +26,21 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <a href="index.php">Home</a>
 
         <?php
-        // Menu items will only display for the correct permissions of each user
-        if ($_SESSION['Department'] != 'IT Support') {
-            // Customers
+        
+        // Some menu items are only displayed based on the user permissions level
+        if ($_SESSION['Access'] == 1) {
+            // Non-IT Support users
             echo '<a href="create_ticket.php">Create Ticket</a>';
             echo '<a href="my_tickets.php">My Tickets</a>';
             echo '<a href="my_profile.php">My Profile</a>';
-        } elseif ($_SESSION['Position'] != 'Manager') {
+        } elseif ($_SESSION['Access'] == 2) {
             // IT Support non-managers
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
             echo '<a href="create_ticket.php">Create Ticket</a>';
             echo '<a href="my_tickets.php">My Tickets</a>';
             echo '<a href="my_profile.php">My Profile</a>';
-        } else {
+        } elseif ($_SESSION['Access'] == 3) {
             // IT Support Managers (admins)
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="pending_tickets.php">Pending Tickets</a>';
@@ -62,12 +62,12 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <hr>
         <h1>User Information</h1>
         <h3>If you need to update your contact information, please submit a ticket.</h3><br>
-        <p style="font-weight: normal;">Username:  <?php echo $_SESSION['User_ID'];?></p>
+        <p style="font-weight: normal;">Username:  <?php echo $_SESSION['Username'];?></p>
         <p style="font-weight: normal;">Full Name:  <?php echo $_SESSION['First_Name'].' '.$_SESSION['Last_Name'];?></p>
         <p style="font-weight: normal;">Email:  <?php echo $_SESSION['Email'];?></p>
         <p style="font-weight: normal;">Phone Number:  <?php echo $_SESSION['Phone_Num'];?></p>
         <p style="font-weight: normal;">Department:  <?php echo $_SESSION['Department'];?></p>
-        <p style="font-weight: normal;">Position:  <?php echo $_SESSION['Position'];?></p>
+        <p style="font-weight: normal;">Position:  <?php echo $_SESSION['Title'];?></p>
         <br><br>
         <p style="font-weight: bold;">Need to update/change your password?</p><br>
         <form method="post">
@@ -89,7 +89,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
         if (isset($_POST['update_password'])) {
 
-            $username = $_SESSION['User_ID'];
+            $username = $_SESSION['Username'];
             $newpassword = $_POST['new_password'];
             $verpassword = $_POST['verify_password'];
 

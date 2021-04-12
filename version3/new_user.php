@@ -3,11 +3,10 @@
 session_start();
 
 // Make sure only people logged in AND IT Support managers can view this page
-
 if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 	header("Location: login.php");
 	exit();
-} elseif ($_SESSION['Department'] != 'IT Support' || $_SESSION['Position'] != 'Manager') {
+} elseif ($_SESSION['Access'] != 3) {
     header("Location: index.php");
 }
 
@@ -61,7 +60,14 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             echo "<label for='userDept'>Department: </label>";
             echo "<input type='text' id='userDept' name='userDept' required><br><br>";
             echo "<label for='userPost'>Position: </label>";
-            echo "<input type='text' id='userPost' name='userPost' required><br><br>";
+            echo "<input type='text' id='userPost' name='userTitle' required><br><br>";
+            echo "<label for='levels'>Select the new user's access level: </lable>";
+            echo "<select name='levels' id='levels' required>";
+            echo "<option value=''>--Select--</option>";
+            echo "<option value='1'>1 (non-IT Support)</option>";
+            echo "<option value='2'>2 (IT Support non-manager)</option>";
+            echo "<option value='3'>3 (IT Support manager)</option>";
+            echo "</select><br><br>";
             echo "<input type='submit' name='submit_new_user' value='Create New User'>";
         echo "</form>";
 
@@ -88,9 +94,10 @@ if (isset($_POST['submit_new_user'])) {
     $email = $_POST['userEmail'];
     $phoneNum = $_POST['phoneNum'];
     $dept = $_POST['userDept'];
-    $position = $_POST['userPost'];
+    $title = $_POST['userTitle'];
+    $level = $_POST['levels'];
 
-    $status = $user->addUser($con, $userID, $tempPass, $fName, $lName, $email, $phoneNum, $dept, $position);
+    $status = $user->addUser($con, $userID, $tempPass, $fName, $lName, $email, $phoneNum, $dept, $title, $level);
 
     if ($status != 'Success') {
         // User couldn't be added to the DB
@@ -100,11 +107,21 @@ if (isset($_POST['submit_new_user'])) {
         header("refresh:0; url=index.php");
 
     } else {
-        // User was added to the DB
-        $msg = "User was successfully added to the database!";
-        echo '<script type="text/javascript">alert("'.$msg.'");</script>';
-        $con->close();
-        header("refresh:0; url=index.php");
+        // User was added to the DB, now flag the user as a new user in the DB
+        $flagged = $user->flagNewUser($con, $userID);
+
+        if ($flagged != 'Success') {
+            // The user couldn't be added to the userstatus table in the DB
+            $errormsg = $user->getError();
+            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            $con->close();
+            header("refresh:0; url=index.php");
+        } else {
+            $msg = "User was successfully added to the database!";
+            echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+            $con->close();
+            header("refresh:0; url=index.php");
+        }
     }
 }
 

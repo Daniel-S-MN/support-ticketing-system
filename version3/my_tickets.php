@@ -3,7 +3,6 @@
 session_start();
 
 // Make sure only people logged in can view this page
-
 if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 	header("Location: login.php");
 	exit();
@@ -27,20 +26,21 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <a href="index.php">Home</a>
 
         <?php
-        // Menu items will only display for the correct permissions of each user
-        if ($_SESSION['Department'] != 'IT Support') {
-            // Customers
+        
+        // Some menu items are only displayed based on the user permissions level
+        if ($_SESSION['Access'] == 1) {
+            // Non-IT Support users
             echo '<a href="create_ticket.php">Create Ticket</a>';
             echo '<a href="my_tickets.php">My Tickets</a>';
             echo '<a href="my_profile.php">My Profile</a>';
-        } elseif ($_SESSION['Position'] != 'Manager') {
+        } elseif ($_SESSION['Access'] == 2) {
             // IT Support non-managers
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
             echo '<a href="create_ticket.php">Create Ticket</a>';
             echo '<a href="my_tickets.php">My Tickets</a>';
             echo '<a href="my_profile.php">My Profile</a>';
-        } else {
+        } elseif ($_SESSION['Access'] == 3) {
             // IT Support Managers (admins)
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="pending_tickets.php">Pending Tickets</a>';
@@ -70,7 +70,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
         $con = $ticket->connect();
 
-        $myOpenTickets = $ticket->getMyOpenTickets($con, $_SESSION['User_ID']);
+        $myOpenTickets = $ticket->getMyOpenTickets($con, $_SESSION['Username']);
 
         if ($myOpenTickets != NULL) {
 

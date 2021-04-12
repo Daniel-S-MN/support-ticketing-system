@@ -1,28 +1,8 @@
 <?php
 
-/*
- * Daniel Schwen
- * March 27, 2021
- * 
- * I'm planning on learning more about AJAX to try and reduce the amount of pages
- * that are used in the ticket system, but due to time constraints (iteration 3 is
- * due in a couple days), it will have to wait for the final product.
- * 
- * For now, I'm going to be using separate pages for:
- *  - Viewing all open/unassigned tickets
- *  - Creating a new ticket
- *  - Viewing your tickets
- *  - Viewing+working on tickets assigned to you
- *  - Viewing+reassigning pending tickets (Managers)
- *  - Viewing all users in the system and creating new users
- * 
- * Thanks to restricing view access, I no longer need multipe version of the above 
- * pages for each user type.
-*/
-
-
 session_start();
 
+// Make sure only people logged in can view this page
 if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
 {
 	header("Location: login.php");
@@ -47,20 +27,21 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
         <a href="index.php">Home</a>
         
         <?php
-        // Menu items will only display for the correct permissions of each user
-        if ($_SESSION['Department'] != 'IT Support') {
-            // Customers
+
+        // Some menu items are only displayed based on the user permissions level
+        if ($_SESSION['Access'] == 1) {
+            // Non-IT Support users
             echo '<a href="create_ticket.php">Create Ticket</a>';
             echo '<a href="my_tickets.php">My Tickets</a>';
             echo '<a href="my_profile.php">My Profile</a>';
-        } elseif ($_SESSION['Position'] != 'Manager') {
+        } elseif ($_SESSION['Access'] == 2) {
             // IT Support non-managers
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
             echo '<a href="create_ticket.php">Create Ticket</a>';
             echo '<a href="my_tickets.php">My Tickets</a>';
             echo '<a href="my_profile.php">My Profile</a>';
-        } else {
+        } elseif ($_SESSION['Access'] == 3) {
             // IT Support Managers (admins)
             echo '<a href="open_tickets.php">Open Tickets</a>';
             echo '<a href="pending_tickets.php">Pending Tickets</a>';

@@ -62,6 +62,7 @@ CREATE TABLE tickets (
     username VARCHAR(100) NOT NULL,
     date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     priority VARCHAR(20) NOT NULL,
+    title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     assigned_to VARCHAR(100) DEFAULT NULL,
     status VARCHAR(100) NOT NULL DEFAULT 'Open',

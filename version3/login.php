@@ -38,41 +38,41 @@ if (isset($_POST['post_login'])) {
  
   <title>Login - Support Ticket System</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="styles/stylesheet.css" type="text/css">
+  <link rel="stylesheet" href="styles/login.css">
   
-  <style>
-      h3{color:white;}
-      body {
+</head>
+
+<style>
+    body{
         background-image: url('./images/Metropolitan_State_University_New_Main_V2.jpg');
         background-repeat: no-repeat;
         background-size: auto;
         background-position: center center;
         padding-top: 25vh;
-      }
-  </style>
-</head>
+    }
+</style>
 
 <body>
     
-    <form class="login" method="post">
-        <h3>Support Ticket System</h3><br>
-        
-        <div class="loginInput">
-            <i class="fa fa-user-circle-o icon fa-lg"></i>
-            <input class="testField" type="text" name="posted_username" placeholder="Username" required>
-        </div>
-            
-        <div class="loginInput">
-            <i class="fa fa-lock icon fa-lg"></i>
-            <input class="testField" type="password" name="posted_password" placeholder="Password" required>
-        </div>
-        
-        <input class="loginButton" type="submit" name="post_login" value="Login" style="cursor:pointer"><br>
-            
-    </form>
-
+    <div class="login-form">
+        <form method="post">
+            <h3 class="text-center">Support Ticket System</h3>
+            <div class="form-group">
+                <i class="fa fa-user-circle-o icon fa-lg"></i>
+                <input type="text" class="form-control" name="posted_username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <i class="fa fa-lock icon fa-lg"></i>
+                <input type="password" class="form-control" name="posted_password" placeholder="Password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block" name="post_login">Login</button>
+            </div>
+                <a href="#" class="btn btn-info btn-block" role="button">Forgot Password?</a>
+        </form>
+    </div>
 
 </body>
 

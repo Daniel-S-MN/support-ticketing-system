@@ -3,11 +3,10 @@
 session_start();
 
 // Make sure only people logged in AND IT Support managers can view this page
-
 if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 	header("Location: login.php");
 	exit();
-} elseif ($_SESSION['Department'] != 'IT Support' || $_SESSION['Position'] != 'Manager') {
+} elseif ($_SESSION['Access'] != 3) {
     header("Location: index.php");
 }
 
@@ -62,19 +61,19 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 echo "<th>Email</th>";
                 echo "<th>Phone #</th>";
                 echo "<th>Department</th>";
-                echo "<th>Position</th>";
+                echo "<th>Title</th>";
                 echo "</tr>";
 
             while($systemUsers = mysqli_fetch_object($sysUsers)) {
 
                 echo "<tr>";
-                echo "<td align='center'>$systemUsers->user_id</td>";
-                echo "<td align='center'>$systemUsers->first_name</td>";
-                echo "<td align='center'>$systemUsers->last_name</td>";
+                echo "<td align='center'>$systemUsers->username</td>";
+                echo "<td align='center'>$systemUsers->f_name</td>";
+                echo "<td align='center'>$systemUsers->l_name</td>";
                 echo "<td align='center'>$systemUsers->email</td>";
-                echo "<td align='center'>$systemUsers->phone_number</td>";
+                echo "<td align='center'>$systemUsers->phone_num</td>";
                 echo "<td align='center'>$systemUsers->department</td>";
-                echo "<td align='center'>$systemUsers->position</td>";
+                echo "<td align='center'>$systemUsers->title</td>";
                 echo "</tr>";
             }
 
