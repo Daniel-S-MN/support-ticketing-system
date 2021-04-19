@@ -11,17 +11,20 @@ class User extends Database {
     // Check to see if the user is able to log into the system
     function login($con, $username, $password) {
         
-        // Perform a MySQL search to see if that user exists in the users table
-        $stmt = mysqli_query($con, "SELECT *
-                                    FROM users
-                                    WHERE username = '$username'");
-        $row = mysqli_fetch_array($stmt);
+        // Check if the user is in the users table in the DB
+        $stmt = $con->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
         
-        // Determine if the MySQL search found the user
-        if (!is_array($row)) {
+        if ($result->num_rows != 1) {
             $this->error = "User not found";
             return false;
         } else {
+            // TODO testing
+            $row = $result->fetch_assoc();
+
             // Verify that the password matches with the hashed password in the DB
             $passcode = $row['password'];
             $verify = password_verify($password, $passcode);
