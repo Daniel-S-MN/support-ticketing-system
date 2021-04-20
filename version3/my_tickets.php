@@ -17,7 +17,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
   <meta name="viewport"
      content="width=device-width, initial-scale=1, user-scalable=yes">
  
-  <title>My Tickets</title>    
+  <title>My Tickets</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
   <link rel="stylesheet" href="styles/stylesheet.css" type="text/css" media="screen">
 </head>
 <body>
@@ -58,8 +59,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     </div>
 
     <div class="main">
-        <h3>This is where you can view your tickets.</h3>
-        <hr>
+        <br><h4>This is where you can view your tickets.</h4><br>
         <div>
 
         <?php
@@ -74,33 +74,43 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
         if ($myOpenTickets != NULL) {
 
+            echo "<style>";
+            echo ".tablecenterheadCSS th, td{";
+                echo "text-align:center;";
+                echo "vertical-align: middle;";
+                echo "}";
+            echo "</style>";
+
             // Display all the user's open/pending tickets in a table
-            echo "<h2>My Open/Pending Tickets:</h2>";
-            echo "<table border='2' cellpadding='2' cellspacing='2'>";
-                echo "<tr bgcolor='#b3edff'>";
-                echo "<th>Ticket ID</th>";
-                echo "<th>Date Created</th>";
-                echo "<th>Priority</th>";
-                echo "<th>Title</th>";
-                echo "<th>Description</th>";
-                echo "<th>Assigned To</th>";
-                echo "<th>Status</th>";
-            echo "</tr>";
-
-            while($ticketInfo = mysqli_fetch_object($myOpenTickets)) {
-
+            echo "<h4>My Open/Pending Tickets:</h4>";
+            echo "<table class='tablecenterheadCSS table table-hover table-bordered'>";
+            echo "<thead>";
                 echo "<tr>";
-                echo "<td align='center'>$ticketInfo->ticket_id</td>";
-                echo "<td align='center'>$ticketInfo->date_created</td>";
-                echo "<td align='center'>$ticketInfo->priority</td>";
-                echo "<td>$ticketInfo->title</td>";
-                echo "<td>$ticketInfo->description</td>";
-                echo "<td align='center'>$ticketInfo->assigned_to</td>";
-                echo "<td align='center'>$ticketInfo->status</td>";
+                    echo "<th scope='col'>Ticket ID</th>";
+                    echo "<th scope='col'>Date Created</th>";
+                    echo "<th scope='col'>Priority</th>";
+                    echo "<th scope='col'>Title</th>";
+                    echo "<th scope='col'>Description</th>";
+                    echo "<th scope='col'>Assigned To</th>";
+                    echo "<th scope='col'>Status</th>";
+                    echo "<th scope='col'>Edit</th>";
+                echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+            while($ticketInfo = mysqli_fetch_object($myOpenTickets)) {
+                echo "<tr>";
+                    echo "<th scope='row'>$ticketInfo->ticket_id</td>";
+                    echo "<td>$ticketInfo->date_created</td>";
+                    echo "<td>$ticketInfo->priority</td>";
+                    echo "<td>$ticketInfo->title</td>";
+                    echo "<td>$ticketInfo->description</td>";
+                    echo "<td>$ticketInfo->assigned_to</td>";
+                    echo "<td>$ticketInfo->status</td>";
+                    echo "<td><button type='button' class='btn btn-primary'>Edit</button></td>";
                 echo "</tr>";
             }
-
-            echo "</table><br><hr>";
+            echo "</tbody>";
+            echo "</table>";
 
         } else {
             // There was an issue with the mysql query
@@ -115,33 +125,34 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         if ($myClosedTickets != NULL) {
 
             // Display all the user's closed tickets in a table
-            echo "<h2>My Closed Tickets:</h2>";
-            echo "<table border='2' cellpadding='2' cellspacing='2'>";
-                echo "<tr bgcolor='#b3edff'>";
-                echo "<th>Ticket ID</th>";
-                echo "<th>Date Created</th>";
-                echo "<th>Priority</th>";
-                echo "<th>Title</th>";
-                echo "<th>Description</th>";
-                echo "<th>Assigned To</th>";
-                echo "<th>Status</th>";
-            echo "</tr>";
-
-            while($closedInfo = mysqli_fetch_object($myClosedTickets)) {
-
+            echo "<br><h4>My Closed Tickets:</h4>";
+            echo "<table class='tablecenterheadCSS table table-hover table-bordered'>";
+            echo "<thead>";
                 echo "<tr>";
-                echo "<td align='center'>$closedInfo->ticket_id</td>";
-                echo "<td align='center'>$closedInfo->date_created</td>";
-                echo "<td align='center'>$closedInfo->priority</td>";
-                echo "<td>$closedInfo->title</td>";
-                echo "<td>$closedInfo->description</td>";
-                echo "<td align='center'>$closedInfo->assigned_to</td>";
-                echo "<td align='center'>$closedInfo->status</td>";
+                    echo "<th scope='col'>Ticket ID</th>";
+                    echo "<th scope='col'>Date Created</th>";
+                    echo "<th scope='col'>Priority</th>";
+                    echo "<th scope='col'>Title</th>";
+                    echo "<th scope='col'>Description</th>";
+                    echo "<th scope='col'>Assigned To</th>";
+                    echo "<th scope='col'>Status</th>";
+                echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+            while($ticketInfo = mysqli_fetch_object($myClosedTickets)) {
+                echo "<tr>";
+                    echo "<th scope='row'>$closedInfo->ticket_id</td>";
+                    echo "<td>$closedInfo->date_created</td>";
+                    echo "<td>$closedInfo->priority</td>";
+                    echo "<td>$closedInfo->title</td>";
+                    echo "<td>$closedInfo->description</td>";
+                    echo "<td>$closedInfo->assigned_to</td>";
+                    echo "<td>$closedInfo->status</td>";
                 echo "</tr>";
             }
-
-            echo "</table><br><hr>";
-
+            echo "</tbody>";
+            echo "</table>";
+            
         } else {
             // There was an issue with the mysql query
             $errormsg = $ticket->getError();
@@ -153,6 +164,6 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         ?>
 
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
  </body>
 </html>

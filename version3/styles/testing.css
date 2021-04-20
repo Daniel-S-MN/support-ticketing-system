@@ -1,63 +1,80 @@
-#body-row {
-    margin-left:0;
-    margin-right:0;
-}
-#sidebar-container {
-    min-height: 100vh;   
-    background-color: #333;
-    padding: 0;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+body {
+    font-family: 'Roboto', sans-serif;;
 }
 
-/* Sidebar sizes when expanded and expanded */
-.sidebar-expanded {
-    width: 230px;
-}
-.sidebar-collapsed {
-    width: 60px;
+a, a:hover, a:focus {
+    color: #fff;
+    text-decoration: none;
 }
 
-/* Menu item*/
-#sidebar-container .list-group a {
-    height: 50px;
-    color: white;
+.navbar {
+    margin-bottom: 40px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Submenu item*/
-#sidebar-container .list-group .sidebar-submenu a {
-    height: 45px;
-    padding-left: 30px;
-}
-.sidebar-submenu {
-    font-size: 0.9rem;
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+.wrapper {
+    display: flex;
+    width: 100%;
 }
 
-/* Separators */
-.sidebar-separator-title {
-    background-color: #333;
-    height: 35px;
-}
-.sidebar-separator {
-    background-color: #333;
-    height: 25px;
-}
-.logo-separator {
-    background-color: #333;    
-    height: 60px;
+#sidebar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(14, 83, 104);
+    color: #fff;
 }
 
-/* Closed submenu icon */
-#sidebar-container .list-group .list-group-item[aria-expanded="false"] .submenu-icon::after {
-  content: " \f0d7";
-  font-family: FontAwesome;
-  display: inline;
-  text-align: right;
-  padding-left: 10px;
+#sidebar ul.components {
+    padding: 30px 0;
 }
-/* Opened submenu icon */
-#sidebar-container .list-group .list-group-item[aria-expanded="true"] .submenu-icon::after {
-  content: " \f0da";
-  font-family: FontAwesome;
-  display: inline;
-  text-align: right;
-  padding-left: 10px;
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+
+#sidebar ul li a:hover {
+    color: rgb(14, 83, 104);
+    background: #fff;
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: rgb(14, 83, 104);
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content {
+    width: calc(100% - 200px);
+    padding: 40px;
+    min-height: 100vh;
+    transition: all 0.3s;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#content.active {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    #sidebar {margin-left: -250px;}
+    #sidebar.active {margin-left: 0;}
+    #content {width: 100%;}
+    #content.active {width: calc(100% - 250px);}
 }

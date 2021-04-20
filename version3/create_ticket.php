@@ -18,6 +18,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
      content="width=device-width, initial-scale=1, user-scalable=yes">
  
   <title>Create New Ticket</title>    
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
   <link rel="stylesheet" href="styles/stylesheet.css" type="text/css" media="screen">
 </head>
 <body>
@@ -56,11 +57,11 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
         <a href="logout.php">Logout</a>
     </div>
-
+    
     <div class="main">
-        <h3>This is where you can create a new ticket.</h3>
+        <h4>This is where you can create a new ticket.</h4>
         <hr>
-        <h1>Submit a new ticket</h1>
+        <h4>Submit a new ticket</h4>
         <form method="post">
         <label for="priority">Select the ticket priority level: </label>
         <select name="priority" id="priority" required>
@@ -82,6 +83,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <input type="submit" name="submit_ticket" value="Submit New Ticket"/>
         </form>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 
  </body>
 </html>
