@@ -16,109 +16,194 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport"
-     content="width=device-width, initial-scale=1, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
   <title>Assigned Tickets</title>    
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-  <link rel="stylesheet" href="styles/stylesheet.css" type="text/css" media="screen">
+  
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Font Awesome (for the icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+    <!-- Our CSS file for the site after the login page -->
+    <link rel="stylesheet" href="styles/testing.css">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/css/jasny-bootstrap.min.css">
+  
 </head>
-<body>
-    
-    <div class="sidenav">
-        <a href="index.php">Home</a>
+  <body>
 
-        <?php
-        // Menu items will only display for the correct permissions of each user
-        if ($_SESSION['Access'] == 2) {
-            // IT Support non-managers
-            echo '<a href="open_tickets.php">Open Tickets</a>';
-            echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
-            echo '<a href="create_ticket.php">Create Ticket</a>';
-            echo '<a href="my_tickets.php">My Tickets</a>';
-            echo '<a href="my_profile.php">My Profile</a>';
-        } elseif ($_SESSION['Access'] == 3) {
-            // IT Support Managers (admins)
-            echo '<a href="open_tickets.php">Open Tickets</a>';
-            echo '<a href="pending_tickets.php">Pending Tickets</a>';
-            echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
-            echo '<a href="create_ticket.php">Create Ticket</a>';
-            echo '<a href="my_tickets.php">My Tickets</a>';
-            echo '<a href="my_profile.php">My Profile</a>';
-            echo '<a href="system_users.php">System Users</a>';
-            echo '<a href="new_user.php">New User</a>';
-        }
+    <div class="wrapper">
+        <!-- The sidebar and navigation links -->
+        <nav id="sidebar">
+            <ul class="list-unstyled components">
+                <li><a href="index.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
 
-        ?>
+                <?php
 
-        <a href="logout.php">Logout</a>
-    </div>
+                    // Only IT Support users can access this page
+                    if ($_SESSION['Access'] == 2) {
+                        // IT Support non-managers
+                        echo '<li><a href="#troubleshooting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench" aria-hidden="true"></i> Troubleshooting</a>';
+                            echo '<ul class="collapse list-unstyled" id="troubleshooting">';
+                                echo '<li><a href="open_tickets.php">Open Tickets</a></li>';
+                                echo '<li><a href="assigned_tickets.php">Tickets Assigned To Me</a></li>';
+                            echo '</ul>';
+                        echo '</li>';
+                        echo '<li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>';
+                        echo '<li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>';
+                        echo '<li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>';
 
-    <div class="main">
-        <br><h4>These tickets are assigned to you for troubleshooting:</h4><br>
-        <div>
+                    } elseif ($_SESSION['Access'] == 3) {
+                        // IT Support managers (admin)
+                        echo '<li><a href="#troubleshooting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench" aria-hidden="true"></i> Troubleshooting</a>';
+                            echo '<ul class="collapse list-unstyled" id="troubleshooting">';
+                                echo '<li><a href="open_tickets.php">Open Tickets</a></li>';
+                                echo '<li><a href="pending_tickets.php">Pending Tickets</a></li>';
+                                echo '<li><a href="assigned_tickets.php">Tickets Assigned To Me</a></li>';
+                            echo '</ul>';
+                        echo '</li>';
+                        echo '<li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>';
+                        echo '<li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>';
+                        echo '<li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>';
+                        echo '<li>';
+                            echo '<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-users" aria-hidden="true"></i> System Users</a>';
+                            echo '<ul class="collapse list-unstyled" id="pageSubmenu">';
+                                echo '<li><a href="system_users.php">View/Edit Users</a></li>';
+                                echo '<li><a href="new_user.php">Create New User</a></li>';
+                            echo '</ul>';
+                        echo '</li>';
+                    }
 
-        <?php
+                ?>
 
-        require('classes/Ticket.php');
+                <li><a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+            </ul>
+        </nav>
 
-        $ticket = new Ticket();
+        <!-- 
+            Here is the page content and mobile menu bar. The mobile bar is only visible when the screen
+            size is smaller. The main navbar from above will not be displayed as well.
+        -->
+        <div id="content">
 
-        $con = $ticket->connect();
+            <!-- Mobile navbar (this is only intended for non-IT Support users) -->
+            <nav class="d-block d-md-none navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <span class="navbar-brand mb-2 h1">Support Ticket System</span>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                        </button>
 
-        $myID = $_SESSION['Username'];
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="nav navbar-nav ml-auto">
+                                <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li>
+                                <li class="nav-item"><a class="nav-link" href="create_ticket.php">Create Ticket</a></li>
+                                <li class="nav-item"><a class="nav-link" href="my_tickets.php">My Tickets</a></li>
+                                <li class="nav-item"><a class="nav-link" href="my_profile.php">My Profile</a></li>
+                                <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+                            </ul>
+                        </div>
+                </div>
+            </nav>
+            
+            <h4>These tickets are assigned to you for troubleshooting:</h4><br>
+            <!-- Display the tickets that are assigned to the IT Support user -->
+            <?php
+            
+                require('classes/Ticket.php');
 
-        $myTickets = $ticket->getMyAssignedTickets($con, $myID);
-
-        if ($myTickets != NULL) {
-
-            echo "<style>";
-            echo ".tablecenterheadCSS th, td{";
-                echo "text-align:center;";
-                echo "vertical-align: middle;";
-                echo "}";
-            echo "</style>";
-
-            echo "<table class='tablecenterheadCSS table table-hover table-bordered'>";
-            echo "<thead>";
-                echo "<tr>";
-                    echo "<th scope='col'></th>";
-                    echo "<th scope='col'>Ticket ID</th>";
-                    echo "<th scope='col'>Date Created</th>";
-                    echo "<th scope='col'>Priority</th>";
-                    echo "<th scope='col'>Created By</th>";
-                    echo "<th scope='col'>Title</th>";
-                    echo "<th scope='col'>Description</th>";
-                    echo "<th scope='col'>Status</th>";
-                echo "</tr>";
-            echo "</thead>";
-            echo "<tbody>";
-            while($tickets = mysqli_fetch_object($myTickets)) {
-                echo "<tr>";
-                    echo "<td><button type='button' class='btn btn-primary'>Troubleshoot</button></td>";
-                    echo "<th scope='row'>$tickets->ticket_id</td>";
-                    echo "<td>$tickets->date_created</td>";
-                    echo "<td>$tickets->priority</td>";
-                    echo "<td>$tickets->username</td>";
-                    echo "<td>$tickets->title</td>";
-                    echo "<td>$tickets->description</td>";
-                    echo "<td>$tickets->status</td>";
-                echo "</tr>";
-            }
-            echo "</tbody>";
-            echo "</table>";            
-
-        } else {
-            // There was an issue with the mysql query
-            $errormsg = $ticket->getError();
-            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-            $con->close();
-            header("refresh:0; url=index.php");
-        }
+                $ticket = new Ticket();
         
-        ?>
+                $con = $ticket->connect();
+        
+                $myID = $_SESSION['Username'];
+        
+                $myTickets = $ticket->getMyAssignedTickets($con, $myID);
+        
+                if ($myTickets != NULL) {
+                    
+                    echo "<style>";
+                    echo ".table th, td{";
+                        echo "text-align:center;";
+                        echo "vertical-align: middle;";
+                        echo "}";
+                    echo "</style>";
+                    
+                    echo "<table class='table table-hover table-bordered'>";
+                    echo "<thead>";
+                        echo "<tr>";
+                            echo "<th>Ticket ID</th>";
+                            echo "<th>Date Created</th>";
+                            echo "<th>Priority</th>";
+                            echo "<th>Created By</th>";
+                            echo "<th>Title</th>";
+                            // echo "<th>Description</th>";
+                            echo "<th>Status</th>";
+                        echo "</tr>";
+                    echo "</thead>";
+                    echo "<tbody data-link='row' class='rowlink'>";
+                    while($tickets = mysqli_fetch_object($myTickets)) {
+                        echo "<tr>";
+                            echo "<td><a href='#ticketInfo' data-toggle='modal'>$tickets->ticket_id</a></td>";
+                            echo "<td>$tickets->date_created</td>";
+                            echo "<td>$tickets->priority</td>";
+                            echo "<td>$tickets->username</td>";
+                            echo "<td>$tickets->title</td>";
+                            // echo "<td>$tickets->description</td>";
+                            echo "<td>$tickets->status</td>";
+                        echo "</tr>";
+                    }
+                    echo "</tbody>";
+                    echo "</table>";            
+        
+                } else {
+                    // There was an issue with the mysql query
+                    $errormsg = $ticket->getError();
+                    echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+                    $con->close();
+                    header("refresh:0; url=index.php");
+                }
+            
+            ?>
 
+            <!--
+                Here is where I found how to make a bootstrap table row "clickable":
+                https://www.jasny.net/bootstrap/components/#rowlink
+            -->
+
+            <div id="ticketInfo" class="modal" role="dialog" aria-labelledby="ticketInfoTitle" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100" id="ticketInfoTitle">Ticket Details and Troubleshooting</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This is where the ticket information will be displayed.</p>
+                        <p>It is also where the IT Support user will be able to comment on a ticket and even close it.</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-info">Update Ticket</button>
+                        <button type="button" class="btn btn-danger">Update and Close Ticket</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap 4 JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/js/jasny-bootstrap.min.js"></script>
+
  </body>
 </html>

@@ -89,9 +89,9 @@ if (isset($_POST['post_login'])) {
     
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header text-center">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Forgot Password - Verify Identity</h4>
+          <h4 class="modal-title w-100">Forgot Password - Verify Identity</h4>
         </div>
         <div class="modal-body">
           <p>This is where we verify the user's identity before resetting their password.</p>
