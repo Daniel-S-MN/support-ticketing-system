@@ -124,7 +124,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 if ($myTickets != NULL) {
                     
                     echo "<style>";
-                    echo ".table th, td{";
+                    echo ".table td, th{";
                         echo "text-align:center;";
                         echo "vertical-align: middle;";
                         echo "}";
