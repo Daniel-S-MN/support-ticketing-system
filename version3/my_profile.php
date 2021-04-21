@@ -63,7 +63,7 @@ if (isset($_POST['update_password'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
     <!-- Our CSS file for the site after the login page -->
     <link rel="stylesheet" href="styles/testing.css">
-  
+
 </head>
   <body>
 
@@ -164,31 +164,31 @@ if (isset($_POST['update_password'])) {
         <div class="modal fade" id="passwordChange" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
             <!-- Modal content-->
-            <div class="modal-content">
-            <div class="modal-header text-center">
-                <h4 class="modal-title w-100">Change Your Password</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form method="post">
-                <div class="form-group">
-                    <label for="pswrd1">New Password:</label>
-                    <input type="text" class="form-control" id="pswrd1" name="new_password" required></textarea>
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100">Change Your Password</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post">
+                        <div class="form-group">
+                            <label for="pswrd1">New Password:</label>
+                            <input type="password" class="form-control" id="pswrd1" name="new_password" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="pswrd2">Verify Password:</label>
+                            <input type="password" class="form-control" id="pswrd2" name="verify_password" required></textarea>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <input type="submit" class="btn btn-info" name="update_password" value="Update Password">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                        </form>
                 </div>
-                <div class="form-group">
-                    <label for="pswrd2">Verify Password:</label>
-                    <input type="text" class="form-control" id="pswrd2" name="verify_password" required></textarea>
-                </div>
-                
-            </div>
-            <div class="modal-footer justify-content-between">
-                <input type="submit" class="btn btn-info" name="update_password" value="Update Password">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            </div>
-                </form>
-            </div>
             
             </div>
         </div>
