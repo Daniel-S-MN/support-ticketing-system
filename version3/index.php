@@ -38,56 +38,54 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
 
                 <?php
 
-                // Some menu items are only displayed based on the user permissions level
-                // if ($_SESSION['Access'] == 1) {
-                //     // Non-IT Support users
-                //     echo '<a href="create_ticket.php">Create Ticket</a>';
-                //     echo '<a href="my_tickets.php">My Tickets</a>';
-                //     echo '<a href="my_profile.php">My Profile</a>';
-                // } elseif ($_SESSION['Access'] == 2) {
-                //     // IT Support non-managers
-                //     echo '<a href="open_tickets.php">Open Tickets</a>';
-                //     echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
-                //     echo '<a href="create_ticket.php">Create Ticket</a>';
-                //     echo '<a href="my_tickets.php">My Tickets</a>';
-                //     echo '<a href="my_profile.php">My Profile</a>';
-                // } elseif ($_SESSION['Access'] == 3) {
-                //     // IT Support Managers (admins)
-                //     echo '<a href="open_tickets.php">Open Tickets</a>';
-                //     echo '<a href="pending_tickets.php">Pending Tickets</a>';
-                //     echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
-                //     echo '<a href="create_ticket.php">Create Ticket</a>';
-                //     echo '<a href="my_tickets.php">My Tickets</a>';
-                //     echo '<a href="my_profile.php">My Profile</a>';
-                //     echo '<a href="system_users.php">System Users</a>';
-                //     echo '<a href="new_user.php">New User</a>';
-                // }
+                    // Some menu items are only displayed based on the user permissions level
+                    if ($_SESSION['Access'] == 1) {
+                        // Non-IT Support users
+                        echo '<li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>';
+                        echo '<li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>';
+                        echo '<li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>';
+
+                    } elseif ($_SESSION['Access'] == 2) {
+                        // IT Support non-managers
+                        echo '<li><a href="#troubleshooting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench" aria-hidden="true"></i> Troubleshooting</a>';
+                            echo '<ul class="collapse list-unstyled" id="troubleshooting">';
+                                echo '<li><a href="open_tickets.php">Open Tickets</a></li>';
+                                echo '<li><a href="assigned_tickets.php">Tickets Assigned To Me</a></li>';
+                            echo '</ul>';
+                        echo '</li>';
+                        echo '<li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>';
+                        echo '<li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>';
+                        echo '<li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>';
+
+                    } elseif ($_SESSION['Access'] == 3) {
+                        // IT Support managers (admin)
+                        echo '<li><a href="#troubleshooting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench" aria-hidden="true"></i> Troubleshooting</a>';
+                            echo '<ul class="collapse list-unstyled" id="troubleshooting">';
+                                echo '<li><a href="open_tickets.php">Open Tickets</a></li>';
+                                echo '<li><a href="pending_tickets.php">Pending Tickets</a></li>';
+                                echo '<li><a href="assigned_tickets.php">Tickets Assigned To Me</a></li>';
+                            echo '</ul>';
+                        echo '</li>';
+                        echo '<li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>';
+                        echo '<li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>';
+                        echo '<li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>';
+                        echo '<li>';
+                            echo '<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-users" aria-hidden="true"></i> System Users</a>';
+                            echo '<ul class="collapse list-unstyled" id="pageSubmenu">';
+                                echo '<li><a href="system_users.php">View/Edit Users</a></li>';
+                                echo '<li><a href="new_user.php">Create New User</a></li>';
+                            echo '</ul>';
+                        echo '</li>';
+                    }
 
                 ?>
 
-                <li><a href="#troubleshooting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench" aria-hidden="true"></i> Troubleshooting</a>
-                    <ul class="collapse list-unstyled" id="troubleshooting">
-                        <li><a href="#">Open Tickets</a></li>
-                        <li><a href="#">Pending Tickets</a></li>
-                        <li><a href="#">Tickets Assigned To Me</a></li>
-                    </ul>
-                </li>
-                <li><a href="#"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>
-                <li><a href="#"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>
-                <li>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-users" aria-hidden="true"></i> System Users</a>
-                    <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li><a href="#">View/Edit Users</a></li>
-                        <li><a href="#">Create New User</a></li>
-                    </ul>
-                </li>
                 <li><a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
             </ul>
         </nav>
 
         <!-- Page Content  -->
         <div id="content">
-
         <nav class="d-block d-md-none navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                 <span class="navbar-brand mb-2 h1">Ticketing Support System</span>
@@ -139,72 +137,6 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <!-- jQuery Custom Scroller CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
-    <!--
-    <div class="sidenav">
-        <a href="index.php">Home</a>
-        
-        <?php
-
-        // Some menu items are only displayed based on the user permissions level
-        // if ($_SESSION['Access'] == 1) {
-        //     // Non-IT Support users
-        //     echo '<a href="create_ticket.php">Create Ticket</a>';
-        //     echo '<a href="my_tickets.php">My Tickets</a>';
-        //     echo '<a href="my_profile.php">My Profile</a>';
-        // } elseif ($_SESSION['Access'] == 2) {
-        //     // IT Support non-managers
-        //     echo '<a href="open_tickets.php">Open Tickets</a>';
-        //     echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
-        //     echo '<a href="create_ticket.php">Create Ticket</a>';
-        //     echo '<a href="my_tickets.php">My Tickets</a>';
-        //     echo '<a href="my_profile.php">My Profile</a>';
-        // } elseif ($_SESSION['Access'] == 3) {
-        //     // IT Support Managers (admins)
-        //     echo '<a href="open_tickets.php">Open Tickets</a>';
-        //     echo '<a href="pending_tickets.php">Pending Tickets</a>';
-        //     echo '<a href="assigned_tickets.php">Assigned Tickets</a>';
-        //     echo '<a href="create_ticket.php">Create Ticket</a>';
-        //     echo '<a href="my_tickets.php">My Tickets</a>';
-        //     echo '<a href="my_profile.php">My Profile</a>';
-        //     echo '<a href="system_users.php">System Users</a>';
-        //     echo '<a href="new_user.php">New User</a>';
-        // }
-
-        ?>
-
-        <a href="logout.php">Logout</a>
-    </div>
-
-    <div class="main">
-
-        <?php
-
-            // echo "<h3>".'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!' . "</h3>";
-            // echo "<hr>";
-            // echo "<div>";
-
-            // if ($_SESSION['Access'] > 1) {
-
-            //     echo "<h3>Here is a quick break-down of what's going on:</h3>";
-
-            //     require('classes/Ticket.php');
-
-            //     $ticket = new Ticket();
-
-            //     $con = $ticket->connect();
-
-            //     $numOpen = $ticket->getNumPendingTickets($con);
-            //     $numPend = $ticket->getNumWorkingTickets($con);
-
-            //     echo "<h3>Number of open tickets: ".$numOpen."</h3>";
-            //     echo "<h3>Number of pending tickets: ".$numPend."</h3>";
-            // }
-
-        ?>
-
-    </div>
-    -->
 
  </body>
 </html>

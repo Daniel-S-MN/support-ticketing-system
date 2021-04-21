@@ -48,6 +48,10 @@ a, a:hover, a:focus {
     background: #fff;
 }
 
+/* Need to use the !important rule to ensure that the formating 
+ * for the drop-down text is correct:
+ * https://www.w3schools.com/css//css_important.asp
+*/
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
