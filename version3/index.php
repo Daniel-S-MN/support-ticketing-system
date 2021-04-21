@@ -111,8 +111,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
                 
                 <!-- Welcome screen for all users and ticket stats for IT Support -->
                 <?php
-                    echo "<h3>".'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!' . "</h3>";
-                    echo "<hr>";
+                    echo "<h2>".'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!' . "</h2><hr>";
                     echo "<div>";
                         if ($_SESSION['Access'] > 1) {
 

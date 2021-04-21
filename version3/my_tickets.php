@@ -107,6 +107,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                         </div>
                 </div>
             </nav>
+            <h2>My Tickets</h2><hr>
 
             <?php
         
@@ -130,7 +131,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                     echo "</style>";
 
                     // Display all the user's open/pending tickets in a table
-                    echo "<h4>My Open/Pending Tickets:</h4><br>";
+                    echo "<h4>Open/Pending Tickets:</h4><br>";
                     echo "<table class='table table-hover table-bordered'>";
                     echo "<thead>";
                         echo "<tr>";
@@ -173,7 +174,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 if ($myClosedTickets != NULL) {
 
                     // Display all the user's closed tickets in a table
-                    echo "<br><h4>My Closed Tickets:</h4><br>";
+                    echo "<br><h4>Closed Tickets:</h4><br>";
                     echo "<table class='table table-hover table-bordered'>";
                     echo "<thead>";
                         echo "<tr>";

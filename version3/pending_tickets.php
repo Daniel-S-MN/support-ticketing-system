@@ -83,7 +83,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                         </div>
                 </div>
             </nav>
-            
+            <h2>Pending Tickets</h2><hr>
             <h4>Tickets currently assigned to an IT Support rep:</h4><br>
             <!-- Display the tickets that are assigned to other IT Support users -->
             <?php

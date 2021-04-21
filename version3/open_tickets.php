@@ -106,8 +106,8 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                         </div>
                 </div>
             </nav>
-            
-            <h4>Select an open ticket to begin troubleshooting:</h4><br>
+            <h2>Open Tickets</h2><hr>
+            <h4>Select an unassigned ticket to begin troubleshooting:</h4><br>
             <!-- Display the tickets that are open (unassigned) -->
             <?php
             

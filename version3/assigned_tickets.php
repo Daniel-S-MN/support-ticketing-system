@@ -106,7 +106,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                         </div>
                 </div>
             </nav>
-            
+            <h2>Your Working Tickets</h2><hr>
             <h4>These tickets are assigned to you for troubleshooting:</h4><br>
             <!-- Display the tickets that are assigned to the IT Support user -->
             <?php

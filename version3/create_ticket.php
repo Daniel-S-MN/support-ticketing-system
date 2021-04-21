@@ -137,8 +137,7 @@ if (isset($_POST['submit_ticket'])) {
                         </div>
                 </div>
             </nav>
-            
-            <h4>Create a new ticket</h4><br>
+            <h2>Create a new ticket</h2><hr>
 
                 <form method="post">
                 <div class="form-group col-lg-6">
@@ -159,7 +158,7 @@ if (isset($_POST['submit_ticket'])) {
                     <textarea class="form-control" id="description" rows="10" name="description" required></textarea>
                 </div>
                 <div class="col-auto">
-                    <input type="submit" class="btn btn-info" name="submit_ticket" value="Submit New Ticket"/>
+                    <input type="submit" class="btn btn-info" name="submit_ticket" value="Submit New Ticket">
                 </div>
                 </form>
         </div>
