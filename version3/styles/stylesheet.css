@@ -94,6 +94,11 @@ nav.navbar {
     width: 100%;
 }
 
+.table thead th {
+    background-color: rgb(14, 83, 104);
+    color: white;
+}
+
 @media (max-width: 768px) {
     #desktopNav {margin-left: -250px;}
     #desktopNav.active {margin-left: 0;}

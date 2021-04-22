@@ -16,7 +16,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
-  <title>Create A New Ticket</title>    
+  <title>View My Tickets</title>    
   
     <!-- Bootstrap 4 CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -156,7 +156,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                             echo "<td>$ticketInfo->description</td>";
                             echo "<td>$ticketInfo->assigned_to</td>";
                             echo "<td>$ticketInfo->status</td>";
-                            echo "<td><button type='button' class='btn btn-primary'>Edit</button></td>";
+                            echo "<td><button type='button' class='btn btn-info'>Edit</button></td>";
                         echo "</tr>";
                     }
                     echo "</tbody>";
