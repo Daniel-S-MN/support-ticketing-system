@@ -3,15 +3,6 @@ body {
     font-family: 'Roboto', sans-serif;;
 }
 
-a, a:hover, a:focus {
-    color: #fff;
-    text-decoration: none;
-}
-
-.navbar {
-    margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
 
 /* ---------------------------------------------------
     SIDEBAR STYLE
