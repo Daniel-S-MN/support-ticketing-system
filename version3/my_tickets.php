@@ -23,14 +23,14 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     <!-- Font Awesome (for the icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
     <!-- Our CSS file for the site after the login page -->
-    <link rel="stylesheet" href="styles/testing.css">
+    <link rel="stylesheet" href="styles/stylesheet.css">
   
 </head>
   <body>
 
     <div class="wrapper">
         <!-- The sidebar and navigation links -->
-        <nav id="sidebar">
+        <nav id="desktopNav">
             <ul class="list-unstyled components">
                 <li><a href="index.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
 

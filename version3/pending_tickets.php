@@ -25,7 +25,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     <!-- Font Awesome (for the icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
     <!-- Our CSS file for the site after the login page -->
-    <link rel="stylesheet" href="styles/testing.css">
+    <link rel="stylesheet" href="styles/stylesheet.css">
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/css/jasny-bootstrap.min.css">
@@ -35,7 +35,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
     <div class="wrapper">
         <!-- The sidebar and navigation links -->
-        <nav id="sidebar">
+        <nav id="desktopNav">
             <ul class="list-unstyled components">
                 <li><a href="index.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
                 <li><a href="#troubleshooting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench" aria-hidden="true"></i> Troubleshooting</a>

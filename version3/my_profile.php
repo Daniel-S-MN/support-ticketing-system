@@ -62,14 +62,14 @@ if (isset($_POST['update_password'])) {
     <!-- Font Awesome (for the icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
     <!-- Our CSS file for the site after the login page -->
-    <link rel="stylesheet" href="styles/testing.css">
+    <link rel="stylesheet" href="styles/stylesheet.css">
 
 </head>
   <body>
 
     <div class="wrapper">
         <!-- The sidebar and navigation links -->
-        <nav id="sidebar">
+        <nav id="desktopNav">
             <ul class="list-unstyled components">
                 <li><a href="index.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
 
@@ -125,38 +125,42 @@ if (isset($_POST['update_password'])) {
             Here is the page content and mobile menu bar. The mobile bar is only visible when the screen
             size is smaller. The main navbar from above will not be displayed as well.
         -->
+
+        <!-- Mobile navbar (this is only intended for non-IT Support users) 
+        <nav class="d-block d-md-none navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-2 h1">Support Ticket System</span>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="create_ticket.php">Create Ticket</a></li>
+                            <li class="nav-item"><a class="nav-link" href="my_tickets.php">My Tickets</a></li>
+                            <li class="nav-item"><a class="nav-link" href="my_profile.php">My Profile</a></li>
+                            <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+                        </ul>
+                    </div>
+            </div>
+        </nav>
+        -->
+
+        <!-- Page content -->
         <div id="content">
 
-            <!-- Mobile navbar (this is only intended for non-IT Support users) -->
-            <nav class="d-block d-md-none navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <span class="navbar-brand mb-2 h1">Support Ticket System</span>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                        </button>
-
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="nav navbar-nav ml-auto">
-                                <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li>
-                                <li class="nav-item"><a class="nav-link" href="create_ticket.php">Create Ticket</a></li>
-                                <li class="nav-item"><a class="nav-link" href="my_tickets.php">My Tickets</a></li>
-                                <li class="nav-item"><a class="nav-link" href="my_profile.php">My Profile</a></li>
-                                <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
-                            </ul>
-                        </div>
-                </div>
-            </nav>
-                <h2>My Profile Information</h2><hr>
-                <h4>Please submit a ticket if any of your information needs to be updated.</h4><br>
-                <p>Username:  <?php echo $_SESSION['Username'];?></p>
-                <p>Full Name:  <?php echo $_SESSION['First_Name'].' '.$_SESSION['Last_Name'];?></p>
-                <p>Email:  <?php echo $_SESSION['Email'];?></p>
-                <p>Phone Number:  <?php echo $_SESSION['Phone_Num'];?></p>
-                <p>Department:  <?php echo $_SESSION['Department'];?></p>
-                <p>Position:  <?php echo $_SESSION['Title'];?></p>
-                <br><br>
-                <p style="font-weight: bold;">Need to update/change your password?</p>
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#passwordChange">Change Password</button>
+            <h2>My Profile Information</h2><hr>
+            <h4>Please submit a ticket if any of your information needs to be updated.</h4><br>
+            <p>Username:  <?php echo $_SESSION['Username'];?></p>
+            <p>Full Name:  <?php echo $_SESSION['First_Name'].' '.$_SESSION['Last_Name'];?></p>
+            <p>Email:  <?php echo $_SESSION['Email'];?></p>
+            <p>Phone Number:  <?php echo $_SESSION['Phone_Num'];?></p>
+            <p>Department:  <?php echo $_SESSION['Department'];?></p>
+            <p>Position:  <?php echo $_SESSION['Title'];?></p>
+            <br><br>
+            <p style="font-weight: bold;">Need to update/change your password?</p>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#passwordChange">Change Password</button>
                 
         </div>
 
