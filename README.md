@@ -39,6 +39,12 @@ web application, rather than a desktop application. An emphasis was placed on th
 ability for users to be able to use the system on their desktop, laptop, tablet, or 
 even their phone.
 
+# MOBILE USE
+While the IT Support team can technically use the site on their mobile devices, this
+feature is primarily focused on the non-IT Support users. Due to this design decision,
+many of the IT Support options will not be displayed when accessing the site on a 
+mobile device.
+
 # ACCESS
 Here's a quick overview of what options/pages are available for each user:
  - Users
