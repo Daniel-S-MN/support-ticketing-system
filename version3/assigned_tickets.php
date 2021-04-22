@@ -88,7 +88,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <div id="content">
 
             <!-- Mobile navbar (this is only intended for non-IT Support users) -->
-            <nav class="d-block d-md-none navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="d-block d-md-none navbar navbar-expand-lg navbar-dark">
                 <div class="container-fluid">
                     <span class="navbar-brand mb-2 h1">Support Ticket System</span>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,15 +97,16 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="nav navbar-nav ml-auto">
-                                <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li>
-                                <li class="nav-item"><a class="nav-link" href="create_ticket.php">Create Ticket</a></li>
-                                <li class="nav-item"><a class="nav-link" href="my_tickets.php">My Tickets</a></li>
-                                <li class="nav-item"><a class="nav-link" href="my_profile.php">My Profile</a></li>
-                                <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+                                <li><a href="index.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+                                <li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>
+                                <li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>
+                                <li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>
+                                <li><a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
                             </ul>
                         </div>
                 </div>
             </nav>
+            
             <h2>Your Working Tickets</h2><hr>
             <h4>These tickets are assigned to you for troubleshooting:</h4><br>
             <!-- Display the tickets that are assigned to the IT Support user -->

@@ -1,8 +1,10 @@
-/* Page font that will be used */
+/* Website font that will be used */
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 body {
     font-family: 'Roboto', sans-serif;;
 }
+
 
 
 /* Desktop navbar formatting */
@@ -48,12 +50,33 @@ ul ul a {
     background: rgb(14, 83, 104);
 }
 
-
 a, a:hover, a:focus {
     color: #fff;
     text-decoration: none;
 }
 
+
+
+/* Mobile navbar formatting */
+
+nav.navbar {
+    background: rgb(14, 83, 104);
+    padding-bottom: 5px;
+    bottom: 10px;
+}
+
+.navbar span.navbar-brand {
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    color:#fff;
+}
+
+.navbar ul li a {
+    padding: 8px;
+    font-size: 1.1em;
+    display: block;
+}
 
 /* Page content formatting */
 
