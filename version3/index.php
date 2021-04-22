@@ -127,10 +127,23 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
                         $numOpen = $ticket->getNumPendingTickets($con);
                         $numPend = $ticket->getNumWorkingTickets($con);
 
-                        echo "<h5>Number of open tickets: ".$numOpen."</h5><br>";
-                        echo "<h5>Number of pending tickets: ".$numPend."</h5><br>";
+                        echo '<div class="card-deck">';
+                            echo '<div class="card text-white text-center font-weight-bold bg-danger mb-3" style="max-width: 20rem;">';
+                            echo '<h4 class="card-header font-weight-bold">Total Open Tickets</h4>';
+                            echo '<div class="card-body">';
+                                echo '<h1 class="card-title font-weight-bold">'.$numOpen.'</h1>';
+                            echo '</div>';
+                            echo '</div>';
+                            echo '<div class="card text-white text-center font-weight-bold bg-success mb-3" style="max-width: 20rem;">';
+                            echo '<h4 class="card-header font-weight-bold">Total Pending Tickets</h4>';
+                            echo '<div class="card-body">';
+                                echo '<h1 class="card-title font-weight-bold">'.$numPend.'</h1>';
+                            echo '</div>';
+                            echo '</div>';
+                        echo '</div>';
                     }
             ?>
+
         </div>
     </div>
 
