@@ -10,6 +10,62 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
     header("Location: index.php");
 }
 
+// Attempt to add the new user to the DB after clicking the "Create New User" button
+if (isset($_POST['submit_new_user'])) {
+
+    // Make sure the temporary password is correct
+    if ($_POST['tempPswrd'] != $_POST['tempPswrd2']) {
+
+        echo '<script type="text/javascript">alert("Temporary passwords must match!");</script>';
+        header("refresh:0; url=new_user.php");
+    } else {
+
+        require('classes/User.php');
+
+        $user = new User();
+
+        $con = $user->connect();
+
+        $userID = $_POST['userID'];
+        $tempPass = $_POST['tempPswrd'];
+        $fName = $_POST['firstName'];
+        $lName = $_POST['lastName'];
+        $email = $_POST['userEmail'];
+        $phoneNum = $_POST['phoneNum'];
+        $dept = $_POST['userDept'];
+        $title = $_POST['userTitle'];
+        $level = $_POST['levels'];
+
+        $status = $user->addUser($con, $userID, $tempPass, $fName, $lName, $email, $phoneNum, $dept, $title, $level);
+
+        if ($status != 'Success') {
+            // User couldn't be added to the DB
+            $errormsg = $user->getError();
+            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            $con->close();
+            header("refresh:0; url=index.php");
+
+        } else {
+            // User was added to the DB, now flag the user as a new user in the DB
+            $flagged = $user->flagNewUser($con, $userID);
+
+            if ($flagged != 'Success') {
+                // The user couldn't be added to the userstatus table in the DB
+                $errormsg = $user->getError();
+                echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+                $con->close();
+                header("refresh:0; url=index.php");
+            } else {
+                $msg = "User was successfully added to the database!";
+                echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+                $con->close();
+                header("refresh:0; url=index.php");
+            }
+        }
+    }
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -85,39 +141,66 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             </nav>
             
             <h2>New System User</h2><hr>
-            <!-- Display all the users currently in the DB -->
-            <?php
-       
-            ?>
-            <form>
+            <!-- Add a new user to the DB -->
+            <form method="post">
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                    <label for="inputEmail4">Email</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                    <label for="inputFName">First Name</label>
+                    <input type="text" class="form-control" id="inputFName" name="firstName" placeholder="First name" required>
                     </div>
                     <div class="form-group col-md-4">
-                    <label for="inputPassword4">Temp Password</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Temp Password" required>
+                    <label for="inputLName">Last Name</label>
+                    <input type="text" class="form-control" id="inputLName" name="lastName" placeholder="Last name" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                    <label for="inputCity">City</label>
-                    <input type="text" class="form-control" id="inputCity">
+                    <label for="inputEmail">User Email</label>
+                    <input type="email" class="form-control" id="inputEmail" name="userEmail" placeholder="Email" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                    <label for="inputPhone">Phone Number</label>
+                    <input type="text" class="form-control" id="inputPhone" name="phoneNum" placeholder="(###) ###-####" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                    <label for="inputDepartment">Department</label>
+                    <input type="text" class="form-control" id="inputDepartment" name="userDept" placeholder="Department" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                    <label for="inputTitle">Title</label>
+                    <input type="text" class="form-control" id="inputTitle" name="userTitle" placeholder="Title" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="inputPassword1">Temporary Password</label>
+                        <input type="password" class="form-control" id="inputPassword1" name="tempPswrd" placeholder="Temp password" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputPassword2">Verify Password</label>
+                        <input type="password" class="form-control" id="inputPassword2" name="tempPswrd2" placeholder="Temp password" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                    <label for="inputUsername">Username</label>
+                    <input type="text" class="form-control" id="inputUsername" name="userID" placeholder="first initial + last name" required>
                     </div>
                     <div class="form-group col-md-2">
                     <label for="inputState">Access Level</label>
-                    <select id="inputState" class="form-control">
+                    <select id="inputState" name="levels" class="form-control" required>
                         <option selected>Choose...</option>
                         <option value="1">1 (non-IT Support)</option>
                         <option value="2">2 (IT non-manager)</option>
                         <option value="2">3 (IT manager)</option>
                     </select>
                     </div>
-                </div>
-                <button type="submit" class="btn btn-info">Create New User</button>
+                </div><br>
+                <button type="submit" class="btn btn-info" name='submit_new_user'>Create New User</button>
             </form>
-
+            
         </div>
     </div>
 
@@ -131,120 +214,3 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
  </body>
 </html>
-
-<!--
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport"
-     content="width=device-width, initial-scale=1, user-scalable=yes">
- 
-  <title>System Users</title>    
-  <link rel="stylesheet" href="styles/stylesheet.css" type="text/css" media="screen">
-</head>
-<body>
-    
-    <div class="sidenav">
-        <a href="index.php">Home</a>
-        <a href="open_tickets.php">Open Tickets</a>
-        <a href="pending_tickets.php">Pending Tickets</a>
-        <a href="assigned_tickets.php">Assigned Tickets</a>
-        <a href="create_ticket.php">Create Ticket</a>
-        <a href="my_tickets.php">My Tickets</a>
-        <a href="my_profile.php">My Profile</a>
-        <a href="system_users.php">System Users</a>
-        <a href="new_user.php">New User</a>
-        <a href="logout.php">Logout</a>
-    </div>
-
-    <div class="main">
-        <h3>This is where you can add a new user to the system:</h3>
-        <hr>
-        <div>
-        <?php
-        /*
-        echo "<h3>Create New User</h3>";
-        echo "<form method='post'>";
-            echo "<label for='userID'>New username: </label>";
-            echo "<input type='text' id='userID' name='userID' required><br><br>";
-            echo "<label for='tempPswrd'>Temporary Password: </label>";
-            echo "<input type='password' id='tempPswrd' name='tempPswrd' required><br><br>";
-            echo "<label for='firstName'>First Name: </label>";
-            echo "<input type='text' id='firstName' name='firstName' required><br><br>";
-            echo "<label for='lastName'>Last Name: </label>";
-            echo "<input type='text' id='lastName' name='lastName' required><br><br>";
-            echo "<label for='userEmail'>User Email: </label>";
-            echo "<input type='text' id='userEmail' name='userEmail' required><br><br>";
-            echo "<label for='phoneNum'>Phone Number: </label>";
-            echo "<input type='text' id='phoneNum' name='phoneNum' required><br><br>";
-            echo "<label for='userDept'>Department: </label>";
-            echo "<input type='text' id='userDept' name='userDept' required><br><br>";
-            echo "<label for='userPost'>Position: </label>";
-            echo "<input type='text' id='userPost' name='userTitle' required><br><br>";
-            echo "<label for='levels'>Select the new user's access level: </lable>";
-            echo "<select name='levels' id='levels' required>";
-            echo "<option value=''>--Select--</option>";
-            echo "<option value='1'>1 (non-IT Support)</option>";
-            echo "<option value='2'>2 (IT Support non-manager)</option>";
-            echo "<option value='3'>3 (IT Support manager)</option>";
-            echo "</select><br><br>";
-            echo "<input type='submit' name='submit_new_user' value='Create New User'>";
-        echo "</form>";
-
-        ?>
-    </div>
-
- </body>
-</html>
--->
-
-<?php
-
-if (isset($_POST['submit_new_user'])) {
-
-    require('classes/User.php');
-
-    $user = new User();
-
-    $con = $user->connect();
-
-    $userID = $_POST['userID'];
-    $tempPass = $_POST['tempPswrd'];
-    $fName = $_POST['firstName'];
-    $lName = $_POST['lastName'];
-    $email = $_POST['userEmail'];
-    $phoneNum = $_POST['phoneNum'];
-    $dept = $_POST['userDept'];
-    $title = $_POST['userTitle'];
-    $level = $_POST['levels'];
-
-    $status = $user->addUser($con, $userID, $tempPass, $fName, $lName, $email, $phoneNum, $dept, $title, $level);
-
-    if ($status != 'Success') {
-        // User couldn't be added to the DB
-        $errormsg = $user->getError();
-        echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-        $con->close();
-        header("refresh:0; url=index.php");
-
-    } else {
-        // User was added to the DB, now flag the user as a new user in the DB
-        $flagged = $user->flagNewUser($con, $userID);
-
-        if ($flagged != 'Success') {
-            // The user couldn't be added to the userstatus table in the DB
-            $errormsg = $user->getError();
-            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-            $con->close();
-            header("refresh:0; url=index.php");
-        } else {
-            $msg = "User was successfully added to the database!";
-            echo '<script type="text/javascript">alert("'.$msg.'");</script>';
-            $con->close();
-            header("refresh:0; url=index.php");
-        }
-    }
-}
-*/
-?>
