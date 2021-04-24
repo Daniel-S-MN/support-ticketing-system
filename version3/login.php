@@ -1,30 +1,46 @@
 <?php
 
+require('classes/User.php');
+
+$user = new User();
+$con = $user->connect();
+
 if (isset($_POST['post_login'])) {
 
-    require('classes/User.php');
+  if ($user->login($con, $_POST['posted_username'], $_POST['posted_password'])) {
 
-    $user = new User();
+    $con->close();
+    // Send the user to the correct main page, based on department and/or position
+    header("Location: index.php");
+  } else {
 
-    $con = $user->connect();
-
-    if($user->login($con, $_POST['posted_username'], $_POST['posted_password'])) {
-        $con->close();
-        // Send the user to the correct main page, based on department and/or position
-        header("Location: index.php");
-    } else {
-        // Incorrect user ID or password
-        $errormsg = $user->getError();
-        echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-        $con->close();
-        header("refresh:0; url=index.php");
-        exit();
-    }    
+    // Incorrect username or password
+    $errormsg = $user->getError();
+    echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+    $con->close();
+    header("refresh:0; url=index.php");
+    exit();
+  }    
     
 }
 
-// Bootstrap Modal example used:
-// https://www.w3schools.com/bootstrap/bootstrap_modal.asp
+if (isset($_POST['password_reset'])) {
+
+  if ($user->forgotPasswordCheck($con, $_POST['checkUsername'], $_POST['checkEmail'])) {
+
+    // echo '<script type="text/javascript">alert("A temporary password has been sent to your email.");</script>';
+    echo '<script type="text/javascript">alert("When email is supported, this is where you would get confirmation that a temp password will be emailed out to you.");</script>';
+    header("refresh:0; url=index.php");
+  } else {
+
+    // Incorrect username or password
+    $errormsg = $user->getError();
+    echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+    $con->close();
+    header("refresh:0; url=index.php");
+    exit();
+  }
+}
 
 /*
  * Here is the source for the background image:
@@ -41,11 +57,15 @@ if (isset($_POST['post_login'])) {
  
   <title>Login - Support Ticket System</title>
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Bootstrap 4 CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <!-- Font Awesome (for the icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+  <!-- Our CSS file for the site after the login page -->
   <link rel="stylesheet" href="styles/login.css">
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/css/jasny-bootstrap.min.css">
   
 </head>
 
@@ -61,52 +81,64 @@ if (isset($_POST['post_login'])) {
 
 <body>
 
-<div class="login-form">
-        <form method="post">
-            <h3 class="text-center">Support Ticket System</h3>
-            <div class="form-group">
-                <i class="fa fa-user-circle-o icon fa-lg"></i>
-                <input type="text" class="form-control" name="posted_username" placeholder="Username" required>
-            </div>
-            <div class="form-group">
-                <i class="fa fa-lock icon fa-lg"></i>
-                <input type="password" class="form-control" name="posted_password" placeholder="Password" required>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block" name="post_login">Login</button>
-            </div>
-                <!-- <a href="#" class="btn btn-info btn-block" role="button">Forgot Password?</a> 
-                Trigger the modal with a button -->
-                <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal">Forgot Password?</button>
-        </form>
-    </div>
+  <!-- Login Form -->
+  <div class="login-form">
+    <form method="post">
+      <h4 class="text-white text-center font-weight-bold">Support Ticket System</h4><br>
+        <div class="form-group">
+          <i class="fa fa-user-circle-o icon fa-lg"></i>
+          <input type="text" class="form-control" name="posted_username" placeholder="Username" required>
+        </div>
+        <div class="form-group">
+          <i class="fa fa-lock icon fa-lg"></i>
+          <input type="password" class="form-control" name="posted_password" placeholder="Password" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-block" name="post_login">Login</button>
+        </div>
+        <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#pswrdModal">Forgot Password?</button>
+    </form>
+  </div>
 
-<div class="container">
-
-<!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
+  <!-- "Forgot Password" modal -->
+  <div id="pswrdModal" class="modal fade">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title w-100">Forgot Password - Verify Identity</h4>
+          <h3 class="modal-title w-100">Forgot Password - Verify Identity</h3>
         </div>
-        <div class="modal-body">
-          <p>This is where we verify the user's identity before resetting their password.</p>
-          <p>Not sure how to do that YET...</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+        <form role="form" method="post">
+          <div class="modal-body">
+              <div class="form-group">
+                <label for="checkUsername">Username</label>
+                <div>
+                  <input type="text" class="form-control" id="checkUsername" name="checkUsername" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="checkEmail">Email Address</label>
+                <div>
+                  <input type="email" class="form-control" id="checkEmail" name="checkEmail" required>
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="submit" class="btn btn-info mr-auto" name="password_reset">Request Password Reset</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </form>
       </div>
-      
     </div>
   </div>
-  
-</div>
 
+  <!-- Bootstrap 4 JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/js/jasny-bootstrap.min.js"></script>
+  
 </body>
 
 </html>

@@ -53,6 +53,24 @@ class User extends Database {
         }
     }
 
+    // Verify user identity for a password reset request
+    function forgotPasswordCheck($con, $username, $email) {
+
+        // Check if the user is in the users table in the DB
+        $stmt = $con->prepare("SELECT * FROM users WHERE username = ? AND email = ?");
+        $stmt->bind_param("ss", $username, $email);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows != 1) {
+            $this->error = "User not found";
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     // Add a new user to the DB
     function addUser($con, $username, $psw, $fName, $lName, $email, $phone, $dept, $title, $level) {
 
