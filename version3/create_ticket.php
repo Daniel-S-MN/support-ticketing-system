@@ -142,7 +142,7 @@ if (isset($_POST['submit_ticket'])) {
 
                 <form method="post">
                 <div class="form-group col-lg-6">
-                    <label for="priority">Select ticket priority:</lable>
+                    <label for="priority">Select ticket priority:</label>
                     <select class="custom-select" name="priority" id="priority" required>
                         <option value="">Choose...</option>
                         <option value="High">High (within 1 business day)</option>

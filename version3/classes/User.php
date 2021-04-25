@@ -146,17 +146,27 @@ class User extends Database {
 
     // Used to display all the users in IT Support
     function getITReps($con) {
-        
-        $query = "SELECT username 
-            FROM users 
-            WHERE level > 1";
-        
+
+        $query = "SELECT * FROM users WHERE level != 1";
+
         if ($result = mysqli_query($con, $query)) {
             return $result;
         } else {
-            $this->error = "Unable to process department query: " . mysql_error();
+            // This shouldn't be possible, but whatever
+            $this->error = "Error processing query. " . mysqli_error($con);
             return NULL;
         }
+        
+        // $query = "SELECT username 
+        //     FROM users 
+        //     WHERE level > 1";
+        
+        // if ($result = mysqli_query($con, $query)) {
+        //     return $result;
+        // } else {
+        //     $this->error = "Unable to process department query: " . mysql_error();
+        //     return NULL;
+        // }
     }
 
     // Get all of the users from the DB
@@ -168,7 +178,7 @@ class User extends Database {
         if ($result = mysqli_query($con, $query)) {
             return $result;
         } else {
-            $this->error = "Error processing query. " . mysql_error();
+            $this->error = "Error processing query. " . mysqli_error($con);
             return NULL;
         }
     }
@@ -182,7 +192,7 @@ class User extends Database {
             return $result;
         } else {
             // This shouldn't be possible, but whatever
-            $this->error = "Error processing query. " . mysql_error();
+            $this->error = "Error processing query. " . mysqli_error($con);
             return NULL;
         }
     }

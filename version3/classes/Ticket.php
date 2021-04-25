@@ -202,20 +202,13 @@ class Ticket extends Database {
     // Get a specific ticket
     function getTicket($con, $ticketID) {
 
-        $stmt = mysqli_query($con, "SELECT *
-                                    FROM tickets
-                                    WHERE ticket_id = '$ticketID'");
-        
-        $row = mysqli_fetch_array($stmt);
+        $query = "SELECT * FROM tickets WHERE ticket_id = '$ticketID'";
 
-        if (!is_array($row)) {
-            $this->error = "Ticket not found";
-            //return NULL;
+        if ($result = mysqli_query($con, $query)) {
+            return $result;
         } else {
-            // $arr = [];
-            // array_push($arr, $row['username'], $row['date_created'], $row['description'], $row['comments']);
-            // return $arr;
-            return $row;
+            $this->error = "Error processing query. " . mysqli_error($con);
+            return NULL;
         }
     }
 

@@ -134,12 +134,17 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
                                 echo '<h1 class="card-title font-weight-bold">'.$numOpen.'</h1>';
                             echo '</div>';
                             echo '</div>';
-                            echo '<div class="card text-white text-center font-weight-bold bg-success mb-3" style="max-width: 20rem;">';
-                            echo '<h4 class="card-header font-weight-bold">Total Pending Tickets</h4>';
-                            echo '<div class="card-body">';
-                                echo '<h1 class="card-title font-weight-bold">'.$numPend.'</h1>';
-                            echo '</div>';
-                            echo '</div>';
+                            // Only managers need to see how many tickets are pending
+                            if ($_SESSION['Access'] == 3) {
+
+                                echo '<div class="card text-white text-center font-weight-bold bg-success mb-3" style="max-width: 20rem;">';
+                                echo '<h4 class="card-header font-weight-bold">Total Pending Tickets</h4>';
+                                echo '<div class="card-body">';
+                                    echo '<h1 class="card-title font-weight-bold">'.$numPend.'</h1>';
+                                echo '</div>';
+                                echo '</div>';
+                            }
+                            
                         echo '</div>';
                     }
             ?>

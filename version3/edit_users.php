@@ -69,6 +69,7 @@
     }
 
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -128,11 +129,13 @@
                 <lable for="levels">Access Permission Level</lable>
                 <input type="text" class="form-control" id="levels" name="levels" value="<?php echo $userInfo['level'];?>"/>
             </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-info" name="submit">Update</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-info" name="submit">Update</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+    </form>
 
     <!-- Latest stable version of jQuery (required for Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
