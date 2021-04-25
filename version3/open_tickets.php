@@ -18,18 +18,23 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
-  <title>Open Tickets</title>    
+  <title>Open Tickets</title>  
   
-    <!-- Bootstrap 4 CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome (for the icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
     <!-- Our CSS file for the site after the login page -->
     <link rel="stylesheet" href="styles/stylesheet.css">
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/css/jasny-bootstrap.min.css">
-  
+    <!-- For whatever reason, formatting only works if I include here, rather than the CSS file... -->
+    <style>
+        .table td, th {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style> 
+
 </head>
   <body>
 
@@ -125,13 +130,6 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         
                 if ($openTickets != NULL) {
 
-                    echo "<style>";
-                    echo ".table td, th{";
-                        echo "text-align:center;";
-                        echo "vertical-align: middle;";
-                        echo "}";
-                    echo "</style>";
-        
                     echo "<table class='table table-hover table-bordered'>";
                     echo "<thead>";
                         echo "<tr>";
@@ -140,22 +138,24 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                             echo "<th>Priority</th>";
                             echo "<th>Created By</th>";
                             echo "<th>Title</th>";
-                            // echo "<th>Description</th>";
-                            echo "<th>Status</th>";
+                            // echo "<th>Status</th>";
+                            echo "<th>Details</th>";
                         echo "</tr>";
                     echo "</thead>";
-                    echo "<tbody data-link='row' class='rowlink'>";
+                    // echo "<tbody data-link='row' class='rowlink'>";
+                    echo "<tbody>";
         
                     while($tickets = mysqli_fetch_object($openTickets)) {
         
                         echo "<tr>";
-                            echo "<td><a href='#ticketInfo' data-toggle='modal'>$tickets->ticket_id</a></td>";
+                            // echo "<td><a href='#ticketInfo' data-toggle='modal'>$tickets->ticket_id</a></td>";
+                            echo "<td>$tickets->ticket_id</td>";
                             echo "<td>$tickets->date_created</td>";
                             echo "<td>$tickets->priority</td>";
                             echo "<td>$tickets->username</td>";
                             echo "<td>$tickets->title</td>";
-                            // echo "<td>$tickets->description</td>";
-                            echo "<td>$tickets->status</td>";
+                            // echo "<td>$tickets->status</td>";
+                            echo "<td><button class='btn btn-info' data-toggle='modal' data-target='#ticketInfo' id='$tickets->ticket_id'>View</button></td>";
                         echo "</tr>";
                     }
                     echo "</tbody>";
@@ -171,11 +171,6 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             
             ?>
 
-            <!--
-                Here is where I found how to make a bootstrap table row "clickable":
-                https://www.jasny.net/bootstrap/components/#rowlink
-            -->
-
             <div id="ticketInfo" class="modal" role="dialog" aria-labelledby="ticketInfoTitle" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -187,6 +182,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                     </div>
                     <div class="modal-body">
                         <p>This is where the ticket information will be displayed.</p>
+
                         <p>It is also where the IT Support user will be able to assign the ticket to themselves by clicking "Troubleshoot".</p>
                         <p>If the IT Support user is a manager, they will have the option to assign the ticket so another IT Support user.</p>
                     </div>
@@ -199,16 +195,14 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 </div>
             </div>
 
-        </div>
-    </div>
 
-    <!-- Bootstrap 4 JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        </div> <!-- End of "content" -->
+    </div> <!-- End of wrapper class -->
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/js/jasny-bootstrap.min.js"></script>
+    <!-- Latest stable version of jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
  </body>
 </html>

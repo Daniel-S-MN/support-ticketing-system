@@ -69,6 +69,7 @@ if (isset($_POST['password_reset'])) {
   
 </head>
 
+<!-- This is the background image for the login page. I have no idea why it doesn't work in the CSS file but it doesn't, so here it is. -->
 <style>
     body{
         background-image: url('./images/Metropolitan_State_University_New_Main_V2.jpg');

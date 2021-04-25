@@ -20,15 +20,20 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
  
   <title>System Users</title>    
   
-    <!-- Bootstrap 4 CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <!-- Font Awesome (for the icons) -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <!-- Font Awesome (for the icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
     <!-- Our CSS file for the site after the login page -->
     <link rel="stylesheet" href="styles/stylesheet.css">
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/css/jasny-bootstrap.min.css">
+    <!-- For whatever reason, formatting only works if I include here, rather than the CSS file... -->
+    <style>
+        .table td, th {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
   
 </head>
   <body>
@@ -98,13 +103,6 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
                 if ($sysUsers != NULL) {
 
-                    echo "<style>";
-                    echo ".table td, th{";
-                        echo "text-align:center;";
-                        echo "vertical-align: middle;";
-                        echo "}";
-                    echo "</style>";
-
                     // Display all the system users in a table
                     echo "<h4>Here are all of the users in the system:</h4><br>";
                     echo "<table class='table table-hover table-bordered'>";
@@ -122,21 +120,21 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                     echo "</thead>";
                     echo "<tbody>";
 
-                    while($systemUsers = mysqli_fetch_object($sysUsers)) {
-
-                        echo "<tr>";
-                            echo "<td>$systemUsers->username</td>";
-                            echo "<td>$systemUsers->f_name</td>";
-                            echo "<td>$systemUsers->l_name</td>";
-                            echo "<td>$systemUsers->email</td>";
-                            echo "<td>$systemUsers->phone_num</td>";
-                            echo "<td>$systemUsers->department</td>";
-                            echo "<td>$systemUsers->title</td>";
-                            echo "<td><button type='button' class='btn btn-info'>Edit</button></td>";
-                        echo "</tr>";
+                    while($systemUsers = mysqli_fetch_assoc($sysUsers)) {
+                        echo '<tr>';
+                            echo '<td>'.$systemUsers['username'].'</td>';
+                            echo '<td>'.$systemUsers['f_name'].'</td>';
+                            echo '<td>'.$systemUsers['l_name'].'</td>';
+                            echo '<td>'.$systemUsers['email'].'</td>';
+                            echo '<td>'.$systemUsers['phone_num'].'</td>';
+                            echo '<td>'.$systemUsers['department'].'</td>';
+                            echo '<td>'.$systemUsers['title'].'</td>';
+                            echo '<td><a class="btn btn-info" data-toggle="modal" data-target="#getUserInfo" 
+                                data-whatever="'.$systemUsers['username'].'">Edit</a></td>';
+                        echo '</tr>';
                     }
-                    echo "</tbody>";
-                    echo "</table>";
+                    echo '</tbody>';
+                    echo '</table>';
 
                 } else {
                     // There was an issue with the mysql query
@@ -148,17 +146,52 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                             
             ?>
 
+            <!-- Modal -->
+            <div class="modal fade" id="getUserInfo" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="userModalLabel">Edit User Information</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        </div>
+                        <div class="populateData">
 
-        </div>
-    </div>
+                        </div>
 
-    <!-- Bootstrap 4 JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+                    </div>
+                </div>
+            </div> <!-- End of modal -->
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/js/jasny-bootstrap.min.js"></script>
+        </div> <!-- End of content -->
+    </div> <!-- End of wrapper -->
+
+    <!-- Latest stable version of jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $('#getUserInfo').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            var modal = $(this);
+            var dataString = 'id=' + recipient;
+
+                $.ajax({
+                    type: "GET",
+                    url: "edit_users.php",
+                    data: dataString,
+                    cache: false,
+                    success: function (data) {
+                        console.log(data);
+                        modal.find('.populateData').html(data);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+        })
+    </script>
 
  </body>
 </html>

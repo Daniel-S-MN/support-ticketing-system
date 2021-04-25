@@ -2,10 +2,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 body {
-    font-family: 'Roboto', sans-serif;;
+    font-family: 'Roboto', sans-serif;
 }
-
-
 
 /* Desktop navbar formatting */
 
@@ -54,8 +52,6 @@ a, a:hover, a:focus {
     color: #fff;
     text-decoration: none;
 }
-
-
 
 /* Mobile navbar formatting */
 

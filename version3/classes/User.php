@@ -173,6 +173,45 @@ class User extends Database {
         }
     }
 
+    // Get a specific user from the DB (this is only used with edit_users.php)
+    function getUserInfo($con, $username) {
+        
+        $query = "SELECT * FROM users WHERE username = '$username'";
+
+        if ($result = mysqli_query($con, $query)) {
+            return $result;
+        } else {
+            // This shouldn't be possible, but whatever
+            $this->error = "Error processing query. " . mysql_error();
+            return NULL;
+        }
+    }
+
+    // Update the user information in the DB (this is only used with edit_users.php)
+    function updateUser($con, $username, $fName, $lName, $email, $phone, $dept, $title, $level) {
+        
+        $sql = "UPDATE users
+                SET 
+                    f_name = '$fName',
+                    l_name = '$lName',
+                    email = '$email',
+                    phone_num = '$phone',
+                    department = '$dept',
+                    title = '$title',
+                    level = '$level'
+                WHERE
+                    username = '$username';";
+        
+        if (mysqli_query($con, $sql)) {
+            // User information was successfully updated
+            return "Success";
+        } else {
+            // Couldn't update the user information
+            $this->error = "Unable to update user info: " . mysqli_error($con);
+            return NULL;
+        }
+    }
+
     // Change the user's password
     function changePassword($con, $username, $password) {
 
