@@ -53,6 +53,29 @@ class User extends Database {
         }
     }
 
+    /**
+     * If a user logs in for the first time, or if they had to use the "forgot password"
+     * feature to log back into the system, they will be "flagged" as needing to change
+     * their password.
+     */
+    function passwordResetCheck($con, $username) {
+
+        // Check if the user is flagged for needing to update their password in the DB
+        $stmt = $con->prepare("SELECT * FROM userstatus WHERE username = ? AND password_reset = 'yes'");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows != 1) {
+            // The user isn't flagged
+            return false;
+        } else {
+            // The user needs to change their password
+            return true;
+        }
+    }
+
     // Verify user identity for a password reset request
     function forgotPasswordCheck($con, $username, $email) {
 
@@ -156,17 +179,6 @@ class User extends Database {
             $this->error = "Error processing query. " . mysqli_error($con);
             return NULL;
         }
-        
-        // $query = "SELECT username 
-        //     FROM users 
-        //     WHERE level > 1";
-        
-        // if ($result = mysqli_query($con, $query)) {
-        //     return $result;
-        // } else {
-        //     $this->error = "Unable to process department query: " . mysql_error();
-        //     return NULL;
-        // }
     }
 
     // Get all of the users from the DB

@@ -8,10 +8,20 @@ $con = $user->connect();
 if (isset($_POST['post_login'])) {
 
   if ($user->login($con, $_POST['posted_username'], $_POST['posted_password'])) {
+    
+    // Check if the user is flagged for a password reset in the DB
+    if ($user->passwordResetCheck($con, $_POST['posted_username'])) {
 
-    $con->close();
-    // Send the user to the correct main page, based on department and/or position
-    header("Location: index.php");
+      // The user needs to update their password
+      echo '<script type="text/javascript">alert("Please update your password");</script>';
+      $con->close();
+      header("refresh:0; url=my_profile.php");
+    } else {
+
+      $con->close();
+      // Send the user to the correct main page, based on department and/or position
+      header("Location: index.php");
+    }
   } else {
 
     // Incorrect username or password
