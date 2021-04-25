@@ -1,5 +1,13 @@
 <?php
 
+    /**
+     * I was only able to make this work by following a SUPER awesome guide:
+     * https://www.justcode.me/php/how-to-load-mysql-data-in-bootstrap-modal-body-using-ajax/
+     * 
+     * I needed to make several changes, but I still want to make sure I give credit
+     * to the folkds over at Just Code for helping me out!
+     */
+
     session_start();
 
     // Make sure only people logged in AND IT Support managers can view this page
