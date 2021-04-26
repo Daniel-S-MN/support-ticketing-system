@@ -113,40 +113,50 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes")
             <?php
                 echo "<h2>".'Hello, ' . $_SESSION['First_Name'] . ' ' . $_SESSION['Last_Name'] . '!' . "</h2><hr>";
                 echo "<div>";
+
+                    require('classes/Ticket.php');
+
+                    $ticket = new Ticket();
+
+                    $con = $ticket->connect();
+
+                    $numOpen = $ticket->getNumPendingTickets($con);
+                    $numPend = $ticket->getNumWorkingTickets($con);
+                    $numMine = $ticket->getNumOpenPendingTickets($con, $_SESSION['Username']);
+
+                    echo "<h4>Here is a quick break-down of what's going on:</h4><br>";
+
+                    echo '<div class="card-deck">';
+                        // Display how many of the user's tickets are still open/pending
+                        echo '<div class="card text-white text-center font-weight-bold bg-info mb-3" style="max-width: 20rem;">';
+                        echo '<h4 class="card-header font-weight-bold">Your Open Tickets</h4>';
+                        echo '<div class="card-body">';
+                            echo '<h1 class="card-title font-weight-bold">'.$numMine.'</h1>';
+                        echo '</div>';
+                        echo '</div>';
                 
                     if ($_SESSION['Access'] > 1) {
-
-                        echo "<h4>Here is a quick break-down of what's going on:</h4><br>";
-
-                        require('classes/Ticket.php');
-
-                        $ticket = new Ticket();
-
-                        $con = $ticket->connect();
-
-                        $numOpen = $ticket->getNumPendingTickets($con);
-                        $numPend = $ticket->getNumWorkingTickets($con);
-
-                        echo '<div class="card-deck">';
-                            echo '<div class="card text-white text-center font-weight-bold bg-danger mb-3" style="max-width: 20rem;">';
-                            echo '<h4 class="card-header font-weight-bold">Total Open Tickets</h4>';
-                            echo '<div class="card-body">';
-                                echo '<h1 class="card-title font-weight-bold">'.$numOpen.'</h1>';
-                            echo '</div>';
-                            echo '</div>';
-                            // Only managers need to see how many tickets are pending
-                            if ($_SESSION['Access'] == 3) {
-
-                                echo '<div class="card text-white text-center font-weight-bold bg-success mb-3" style="max-width: 20rem;">';
-                                echo '<h4 class="card-header font-weight-bold">Total Pending Tickets</h4>';
-                                echo '<div class="card-body">';
-                                    echo '<h1 class="card-title font-weight-bold">'.$numPend.'</h1>';
-                                echo '</div>';
-                                echo '</div>';
-                            }
-                            
+                        
+                        // Display the number of open (unassigned) tickets are in the system
+                        echo '<div class="card text-white text-center font-weight-bold bg-danger mb-3" style="max-width: 20rem;">';
+                        echo '<h4 class="card-header font-weight-bold">System Open Tickets</h4>';
+                        echo '<div class="card-body">';
+                            echo '<h1 class="card-title font-weight-bold">'.$numOpen.'</h1>';
                         echo '</div>';
+                        echo '</div>';
+
+                        // Only managers need to see how many tickets are pending
+                        if ($_SESSION['Access'] == 3) {
+
+                            echo '<div class="card text-white text-center font-weight-bold bg-success mb-3" style="max-width: 20rem;">';
+                            echo '<h4 class="card-header font-weight-bold">System Pending Tickets</h4>';
+                            echo '<div class="card-body">';
+                                echo '<h1 class="card-title font-weight-bold">'.$numPend.'</h1>';
+                            echo '</div>';
+                            echo '</div>';
+                        }  
                     }
+                    echo '</div>';
             ?>
 
         </div>

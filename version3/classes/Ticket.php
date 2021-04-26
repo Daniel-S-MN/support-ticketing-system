@@ -26,6 +26,23 @@ class Ticket extends Database {
         }
     }
 
+    // Get the number of open/pending tickets for the user
+    function getNumOpenPendingTickets($con, $username) {
+
+        $query = "SELECT *
+                  FROM tickets
+                  WHERE username = '$username'
+                  AND status != 'Closed'";
+        
+        if ($result = mysqli_query($con, $query)) {
+            $count = mysqli_num_rows($result);
+            return $count;
+        } else {
+            $this->error = "Error processing query. " . mysqli_error($con);
+            return NULL;
+        }
+    }
+
     // Get the number of pending (unassigned) tickets in the DB
     function getNumPendingTickets($con) {
 
