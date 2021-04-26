@@ -38,9 +38,60 @@ if (isset($_POST['password_reset'])) {
 
   if ($user->forgotPasswordCheck($con, $_POST['checkUsername'], $_POST['checkEmail'])) {
 
-    // echo '<script type="text/javascript">alert("A temporary password has been sent to your email.");</script>';
-    echo '<script type="text/javascript">alert("When email is supported, this is where you would get confirmation that a temp password will be emailed out to you.");</script>';
-    header("refresh:0; url=index.php");
+    $username = $_POST['checkUsername'];
+
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
+    // Generate a new temporary password
+    $tempPassword = substr(str_shuffle($chars), 0, 10);
+
+    $check = $user->changePassword($con, $username, $tempPassword);
+
+    // Verify that the password was udpated in the DB
+    if ($check == "Success") {
+
+      // Flag the user's account as needing to update their password when they log back in
+      $flag = $user->flagPswdReset($con, $username);
+
+      if ($flag != "Success") {
+
+        // Shouldn't be possible, but whatever
+        $errormsg = $user->getError();
+        echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+        $con->close();
+        header("refresh:0; url=index.php");
+        exit();
+
+      }else {
+
+        // Send the new temporary password to the user via email
+        $userEmail = $_POST['checkEmail'];
+        $subject = "Support Ticket System - Password Reset";
+        // This is just for testing to make sure email is actually working
+        $message = "<h1>Temporary Password Request</h1><br>";
+        //$message .= "<b>Here is your temporary password:</b> WARGARBLE2\n\n";
+        $message .= "<h2>Here is your temporary password: ".$tempPassword."</h2>";
+        $message .= "\n\nPlease remember to change your password after logging back in.";
+
+        $header = "From:ics499.spring2021.group5@gmail.com \r\n";
+        $header .= "MIME-Version: 1.0\r\n";
+        $header .= "Content-type: text/html\r\n";
+
+        $retval = mail($userEmail, $subject, $message, $header);
+
+        if ($retval == true) {
+
+          // Email was successfully sent
+          echo '<script type="text/javascript">alert("A temporary password has been sent to your email.");</script>';
+          header("refresh:0; url=index.php");
+        } else {
+
+          // Couldn't send the email
+          echo '<script type="text/javascript">alert("Message could not be sent...");</script>';
+          header("refresh:0; url=index.php");
+        }
+      }
+    }    
+
   } else {
 
     // Incorrect username or password
@@ -105,9 +156,9 @@ if (isset($_POST['password_reset'])) {
           <input type="password" class="form-control" name="posted_password" placeholder="Password" required>
         </div>
         <div class="form-group">
-          <button type="submit" class="btn btn-primary btn-block" name="post_login">Login</button>
+          <button type="submit" class="btn btn-info btn-block" name="post_login">Login</button>
         </div>
-        <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#pswrdModal">Forgot Password?</button>
+        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#pswrdModal">Forgot Password?</button>
     </form>
   </div>
 

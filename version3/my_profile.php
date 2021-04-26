@@ -37,11 +37,23 @@ if (isset($_POST['update_password'])) {
             $con->close();
             header("refresh:0; url=index.php");
         } else {
-            // Password was successfully updated
-            $msg = "Password updated";
-            echo '<script type="text/javascript">alert("'.$msg.'");</script>';
-            $con->close();
-            header("refresh:0; url=index.php");
+
+            // Make sure the "reset password" flag is set to "no" in the DB
+            if ($user->resetPswrdResetFlag($con, $username)) {
+
+                // Password was successfully updated
+                $msg = "Password updated";
+                echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+                $con->close();
+                header("refresh:0; url=index.php");
+            } else {
+
+                // Couldn't change the flag, something went wrong
+                $errormsg = $user->getError();
+                echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+                $con->close();
+                header("refresh:0; url=index.php");
+            }
         }
     }
 
@@ -171,7 +183,6 @@ if (isset($_POST['update_password'])) {
         <!-- Password Update Modal -->
         <div class="modal fade" id="passwordChange" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
-            <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header text-center">
                         <h4 class="modal-title w-100">Change Your Password</h4>
@@ -200,52 +211,7 @@ if (isset($_POST['update_password'])) {
             
             </div>
         </div>
-        
-        <!-- Security Questions Modal 
-        <div class="modal fade" id="securityQuestions" role="dialog" aria-hidden="true">
-            <div class="modal-dialog"> -->
-            <!-- Modal content 
-                <div class="modal-content">
-                    <div class="modal-header text-center">
-                        <h4 class="modal-title w-100">Security Questions and Answers</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="post">
-                        <div class="form-group">
-                            <label for="question1">1st Question:</label>
-                            <input type="text" class="form-control" id="question1" name="question1" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="answer1">1st Answer:</label>
-                            <input type="text" class="form-control" id="answer1" name="answer1" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="question2">2nd Question:</label>
-                            <input type="text" class="form-control" id="question2" name="question2" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="answer2">2nd Answer:</label>
-                            <input type="text" class="form-control" id="answer2" name="answer2" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="question3">3rd Question:</label>
-                            <input type="text" class="form-control" id="question3" name="question3" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="answer3">3rd Answer:</label>
-                            <input type="text" class="form-control" id="answer3" name="answer3" required></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <input type="submit" class="btn btn-info" name="update_security" value="Update Security Questions">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
-                        </form>
-                </div>
-                -->
+
             </div>
         </div>
 

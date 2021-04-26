@@ -19,7 +19,9 @@ class User extends Database {
         $result = $stmt->get_result();
         
         if ($result->num_rows != 1) {
-            $this->error = "User not found";
+            // For security reasons, we can't let bad-actors start randomly guessing
+            // usernames, in an attempt to gain access to the site or permissions
+            $this->error = "Invalid username or password";
             return false;
         } else {
             // TODO testing
@@ -87,7 +89,8 @@ class User extends Database {
         $result = $stmt->get_result();
         
         if ($result->num_rows != 1) {
-            $this->error = "User not found";
+            // For security reasons, can't just say "invalid email" or "invalid username"
+            $this->error = "Invalid username or email address";
             return false;
         } else {
             return true;
@@ -162,8 +165,25 @@ class User extends Database {
             return "Success";
         } else {
             // Couldn't flag the user, return the error
-            $this->error = "Unable to add user: " . mysqli_error($con);
+            $this->error = "Unable to flag password reset: " . mysqli_error($con);
             return NULL;
+        }
+    }
+
+    // Change the "password reset flag" to "no" in the DB
+    function resetPswrdResetFlag($con, $username) {
+
+        $sql = "UPDATE userstatus
+                SET password_reset = 'No'
+                WHERE userstatus.username = '$username'";
+        
+        if (mysqli_query($con, $sql)) {
+            // User was successfully flagged as needing to change their password in the DB
+            return true;
+        } else {
+            // Couldn't flag the user, return the error
+            $this->error = "Unable to flag password reset: " . mysqli_error($con);
+            return false;
         }
     }
 
