@@ -1,14 +1,14 @@
 <?php
 
-session_start();
+    session_start();
 
-// Make sure only people logged in AND IT Support managers can view this page
-if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
-	header("Location: login.php");
-	exit();
-} elseif ($_SESSION['Access'] != 3) {
-    header("Location: index.php");
-}
+    // Make sure only people logged in AND IT Support managers can view this page
+    if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
+        header("Location: login.php");
+        exit();
+    } elseif ($_SESSION['Access'] != 3) {
+        header("Location: index.php");
+    }
 
 ?>
 
@@ -61,7 +61,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                 </li>
                 <li><a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
             </ul>
-        </nav>
+        </nav> <!-- end of desktop navbar -->
 
         <!-- 
             Here is the page content and mobile menu bar. The mobile bar is only visible when the screen
@@ -76,7 +76,6 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                         </button>
-
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="nav navbar-nav ml-auto">
                                 <li><a href="index.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
@@ -87,7 +86,7 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                             </ul>
                         </div>
                 </div>
-            </nav>
+            </nav> <!-- end of mobile navbar -->
             
             <h2>Pending Tickets</h2><hr>
             <h4>Tickets currently assigned to an IT Support rep:</h4><br>
@@ -147,39 +146,52 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             
             ?>
 
-            <!--
-                Here is where I found how to make a bootstrap table row "clickable":
-                https://www.jasny.net/bootstrap/components/#rowlink
-            -->
-
-            <div id="ticketInfo" class="modal" role="dialog" aria-labelledby="ticketInfoTitle" aria-hidden="true">
-                <div class="modal-dialog">
+            <!-- ticketInfo modal -->
+            <div class="modal fade bd-example-modal-lg" id="ticketInfo" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                    <div class="modal-header text-center">
-                        <h4 class="modal-title w-100" id="ticketInfoTitle">Ticket Details and Troubleshooting</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>This is where the ticket information will be displayed.</p>
-                        <p>It is also where the IT Support manager can re-assign the ticket to another IT Support user.</p>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-info">Re-assign</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="userModalLabel">Ticket Details and Troubleshooting</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        </div>
+                        <div class="populateData">
+
+                        </div>
+
                     </div>
                 </div>
-            </div>
+            </div> <!-- end of ticket info -->
 
-        </div>
-    </div>
+        </div> <!-- End of content div -->
+    </div> <!-- end of wrapper -->
 
     <!-- Latest stable version of jQuery (required for Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $('#ticketInfo').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            var modal = $(this);
+            var dataString = 'id=' + recipient;
+
+                $.ajax({
+                    type: "GET",
+                    url: "view_pending_ticket.php",
+                    data: dataString,
+                    cache: false,
+                    success: function (data) {
+                        console.log(data);
+                        modal.find('.populateData').html(data);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+        })
+    </script>
     
  </body>
 </html>

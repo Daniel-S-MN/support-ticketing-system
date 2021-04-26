@@ -164,9 +164,9 @@
             
             ?>
 
-            <!-- Modal -->
-            <div class="modal fade" id="ticketInfo" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+            <!-- ticketInfo modal -->
+            <div class="modal fade bd-example-modal-lg" id="ticketInfo" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" id="userModalLabel">Ticket Details and Troubleshooting</h4>
@@ -178,11 +178,11 @@
 
                     </div>
                 </div>
-            </div> <!-- End of modal -->
+            </div> <!-- end of ticket info -->
 
 
-        </div> <!-- End of "content" -->
-    </div> <!-- End of wrapper class -->
+        </div> <!-- End of content -->
+    </div> <!-- End of wrapper -->
 
     <!-- Latest stable version of jQuery (required for Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

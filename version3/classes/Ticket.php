@@ -167,36 +167,37 @@ class Ticket extends Database {
         }
     }
 
-    // // Get the comments from a specific ticket
-    // function getComments($con, $ticketID) {
+    // Get the comments from a specific ticket
+    function getComments($con, $ticketID) {
 
-    //     $query = "SELECT comments
-    //             FROM tickets
-    //             WHERE tickets.ticket_id = '$ticketID'";
+        $query = "SELECT *
+                FROM comments
+                WHERE ticket_id = '$ticketID'";
         
-    //     if ($result = mysqli_query($con, $query)) {
-    //         return $result;
-    //     } else {
-    //         $this->error = "Error processing query. " . mysqli_error($con);
-    //         return NULL;
-    //     }
-    // }
+        if ($result = mysqli_query($con, $query)) {
+            return $result;
+        } else {
+            $this->error = "Error processing query. " . mysqli_error($con);
+            return NULL;
+        }
+    }
 
-    // // Update the comments on a specific ticket
-    // function addComment($con, $ticketID, $comment) {
+    // Add a new comment for a specific ticket
+    function addComment($con, $ticketID, $username, $comment) {
 
-    //     $message = mysqli_real_escape_string($con, $comment);
+        $message = mysqli_real_escape_string($con, $comment);
 
-    //     $sql = "UPDATE tickets SET comments = CONCAT(IFNULL(comments,''), '$comment')
-    //             WHERE ticket_id = '$ticketID'";
+        $sql = "INSERT INTO comments (ticket_id, username, comment)
+                VALUES ('$ticketID', '$username', '$message')";
 
-    //     if (mysqli_query($con, $sql)) {
-    //         // Comment was successfully added to the ticket
-    //         return "Success";
-    //     } else {
-    //         $this->error = "ERROR: Unable add comment to ticket: " . mysqli_error($con);
-    //     }
-    // }
+        if (mysqli_query($con, $sql)) {
+            // Comment was successfully added to the ticket
+            return true;
+        } else {
+            $this->error = "ERROR: Unable add comment to ticket: " . mysqli_error($con);
+            return false;
+        }
+    }
 
     // // Close a ticket
     // function closeTicket($con, $ticketID, $comment) {
