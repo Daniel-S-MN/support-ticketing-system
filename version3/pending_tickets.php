@@ -103,9 +103,9 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         
                 $user = new User();
         
-                $openTickets = $ticket->getAllPendingTickets($con);
+                $pendingTickets = $ticket->getAllPendingTickets($con);
         
-                if ($openTickets != NULL) {
+                if ($pendingTickets != NULL) {
 
                     echo "<table class='table table-hover table-bordered'>";
                     echo "<thead>";
@@ -115,26 +115,27 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                             echo "<th>Priority</th>";
                             echo "<th>Created By</th>";
                             echo "<th>Title</th>";
-                            echo "<th>Status</th>";
                             echo "<th>Assigned To</th>";
+                            echo "<th>Details</th>";
                         echo "</tr>";
                     echo "</thead>";
-                    echo "<tbody data-link='row' class='rowlink'>";
-        
-                    while($tickets = mysqli_fetch_object($openTickets)) {
-        
-                        echo "<tr>";
-                            echo "<td><a href='#ticketInfo' data-toggle='modal'>$tickets->ticket_id</a></td>";
-                            echo "<td>$tickets->date_created</td>";
-                            echo "<td>$tickets->priority</td>";
-                            echo "<td>$tickets->username</td>";
-                            echo "<td>$tickets->title</td>";
-                            echo "<td>$tickets->status</td>";
-                            echo "<td>$tickets->assigned_to</td>";
-                        echo "</tr>";
+                    echo "<tbody>";
+
+                    while($tickets = mysqli_fetch_assoc($pendingTickets)) {
+
+                        echo '<tr>';
+                            echo '<td>'.$tickets['ticket_id'].'</td>';
+                            echo '<td>'.$tickets['date_created'].'</td>';
+                            echo '<td>'.$tickets['priority'].'</td>';
+                            echo '<td>'.$tickets['username'].'</td>';
+                            echo '<td>'.$tickets['title'].'</td>';
+                            echo '<td>'.$tickets['assigned_to'].'</td>';
+                            echo '<td><a class="btn btn-info" data-toggle="modal" data-target="#ticketInfo" 
+                                data-whatever="'.$tickets['ticket_id'].'">View</a></td>';
+                        echo '</tr>';
                     }
-                    echo "</tbody>";
-                    echo "</table>";
+                    echo '</tbody>';
+                    echo '</table>';
                     
                 } else {
                     // There was an issue with the mysql query
