@@ -2,17 +2,16 @@
 
     session_start();
 
-    // Make sure only people logged in AND IT Support managers can view this page
+    // Make sure only people logged in can view this page
     if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         header("Location: login.php");
         exit();
-    } elseif ($_SESSION['Access'] != 3) {
-        header("Location: index.php");
     }
 
     require('classes/Ticket.php');
 
-    $id = @$_GET['id'];
+    // The Ticket ID that needs to be displayed in the modal
+    $id = @$_GET['id'];    
     
     $viewTicket = new Ticket();
     $viewCon = $viewTicket->connect();
@@ -29,24 +28,29 @@
         exit();
     }
 
-    // Re-assign the pending ticket to another IT Support user
-    if (isset($_POST['submit'])) {
+    $username = $_SESSION['Username'];
+
+    // Add a new comment to the ticket
+    if (isset($_POST['updateTicket'])) {
 
         $ticketID = $_POST['ticketID'];
-        $agent =$_POST['supportReps'];
 
-        $check = $viewTicket->assignRep($viewCon, $agent, $ticketID);
+        $comment = $_POST['workingComment'];
 
-        if ($check != 'Success') {
-            $errormsg = $ticket->getError();
-            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-            $viewCon->close();
-            header("refresh:0; url=index.php");
-        } else {
+        if ($viewTicket->addComment($viewCon, $ticketID, $username, $comment)) {
+
+            // Comment was successfully added to the ticket
             $msg = "Ticket updated successfully";
             echo '<script type="text/javascript">alert("'.$msg.'");</script>';
             $viewCon->close();
-            header("refresh:0; url=pending_tickets.php");
+            header("refresh:0; url=my_tickets.php");
+        } else {
+
+            // Comment couldn't be added
+            $errormsg = $viewTicket->getError();
+            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            $viewCon->close();
+            header("refresh:0; url=index.php");
         }
     }
 
@@ -77,7 +81,7 @@
 </head>
 <body>
 
-    <form method="post" action="view_pending_ticket.php" role="form">
+    <form method="post" action="view_my_ticket.php" role="form">
         <div class="modal-body">
             <div class="form-group">
                 <label for="ticketID">Ticket ID</label>
@@ -125,26 +129,22 @@
                     echo '</div>';
                 }
 
-                require('classes/User.php');
-                $user = new User();
-                $availAgents = $user->getITReps($viewCon);
-                if ($availAgents != NULL) {
+                // Users will only get the option to add a comment IF the ticket isn't closed
+                if ($ticketInfo['status'] != "Closed") {
+
                     echo '<div class="form-group">';
-                    echo '<label for="supportReps">Select IT Support user to assign:</label>';
-                    echo '<select class="custom-select" name="supportReps" id="supportReps" required>';
-                        echo '<option value="">Choose...</option>';
-                        while($reps = mysqli_fetch_assoc($availAgents)) {
-                            echo '<option value="'.$reps['username'].'">'.$reps['username'].'</option>';
-                        }
-                        echo '</select>';
+                        echo '<label for="workingComment">Add Comment</label>';
+                        echo '<textarea class="form-control" rows="8" id="workingComment" name="workingComment" required></textarea>';
                     echo '</div>';
                 }
                 
             ?>
+            
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-info" name="submit">Assign</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <!-- Users will only get the option to add a comment IF the ticket isn't closed -->
+            <?php if ($ticketInfo['status'] != "Closed") echo '<button type="submit" class="btn btn-info" name="updateTicket">Update Ticket</button>';?>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     </form>
 

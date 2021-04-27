@@ -1,14 +1,14 @@
 <?php
 
-session_start();
+    session_start();
 
-// Make sure only people logged in AND IT Support users can view this page
-if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
-	header("Location: login.php");
-	exit();
-} elseif ($_SESSION['Access'] < 2) {
-    header("Location: index.php");
-}
+    // Make sure only people logged in AND IT Support users can view this page
+    if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
+        header("Location: login.php");
+        exit();
+    } elseif ($_SESSION['Access'] < 2) {
+        header("Location: index.php");
+    }
 
 ?>
 
@@ -114,17 +114,14 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             
             <h2>Your Working Tickets</h2><hr>
             <h4>These tickets are assigned to you for troubleshooting:</h4><br>
-            <!-- Display the tickets that are assigned to the IT Support user -->
+            <!-- Display the tickets that are assigned to the IT Support user to work on -->
             <?php
             
                 require('classes/Ticket.php');
 
                 $ticket = new Ticket();
-        
                 $con = $ticket->connect();
-        
                 $myID = $_SESSION['Username'];
-        
                 $myTickets = $ticket->getMyAssignedTickets($con, $myID);
         
                 if ($myTickets != NULL) {
@@ -167,40 +164,52 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
             
             ?>
 
-            <!--
-                Here is where I found how to make a bootstrap table row "clickable":
-                https://www.jasny.net/bootstrap/components/#rowlink
-            -->
-
-            <div id="ticketInfo" class="modal" role="dialog" aria-labelledby="ticketInfoTitle" aria-hidden="true">
-                <div class="modal-dialog">
+            <!-- ticketInfo modal -->
+            <div class="modal fade bd-example-modal-lg" id="ticketInfo" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                    <div class="modal-header text-center">
-                        <h4 class="modal-title w-100" id="ticketInfoTitle">Ticket Details and Troubleshooting</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>This is where the ticket information will be displayed.</p>
-                        <p>It is also where the IT Support user will be able to comment on a ticket and even close it.</p>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-info">Update Ticket</button>
-                        <button type="button" class="btn btn-danger">Update and Close Ticket</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="userModalLabel">Ticket Details and Troubleshooting</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        </div>
+                        <div class="populateData">
+
+                        </div>
+
                     </div>
                 </div>
-            </div>
+            </div> <!-- end of ticket info -->
 
-        </div>
-    </div>
+        </div> <!-- End of content -->
+    </div> <!-- End of wrapper -->
 
     <!-- Latest stable version of jQuery (required for Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $('#ticketInfo').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            var modal = $(this);
+            var dataString = 'id=' + recipient;
+
+                $.ajax({
+                    type: "GET",
+                    url: "view_working_ticket.php",
+                    data: dataString,
+                    cache: false,
+                    success: function (data) {
+                        console.log(data);
+                        modal.find('.populateData').html(data);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+        })
+    </script>
 
  </body>
 </html>

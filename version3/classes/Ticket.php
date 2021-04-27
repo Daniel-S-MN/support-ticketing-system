@@ -199,23 +199,23 @@ class Ticket extends Database {
         }
     }
 
-    // // Close a ticket
-    // function closeTicket($con, $ticketID, $comment) {
+    // Close a ticket
+    function closeTicket($con, $ticketID) {
 
-    //     $message = mysqli_real_escape_string($con, $comment);
+        $sql = "UPDATE tickets
+                SET status = 'Closed'
+                WHERE ticket_id = '$ticketID'";
 
-    //     $sql = "UPDATE tickets
-    //             SET comments = CONCAT(IFNULL(comments,''), '$message'), status = 'Closed'
-    //             WHERE ticket_id = '$ticketID'";
+        if (mysqli_query($con, $sql)) {
+            
+            // Comment was successfully added to the ticket and closed
+            return true;
+        } else {
+            $this->error = "ERROR: Unable add comment to ticket: " . mysqli_error($con);
+            return false;
+        }
 
-    //     if (mysqli_query($con, $sql)) {
-    //         // Comment was successfully added to the ticket and closed
-    //         return "Success";
-    //     } else {
-    //         $this->error = "ERROR: Unable add comment to ticket: " . mysqli_error($con);
-    //     }
-
-    // }
+    }
 
     // Get a specific ticket
     function getTicket($con, $ticketID) {

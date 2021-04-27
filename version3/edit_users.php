@@ -31,7 +31,7 @@
      * a stroke, so I'm supressing the warning for now.
      */
     $id = @$_GET['id'];
-
+    
     require('classes/User.php');
 
     $editUser = new User();

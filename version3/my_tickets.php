@@ -139,27 +139,28 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                             echo "<th>Date Created</th>";
                             echo "<th>Priority</th>";
                             echo "<th>Title</th>";
-                            echo "<th>Description</th>";
                             echo "<th>Assigned To</th>";
                             echo "<th>Status</th>";
-                            echo "<th></th>";
+                            echo "<th>Details</th>";
                         echo "</tr>";
                     echo "</thead>";
                     echo "<tbody>";
-                    while($ticketInfo = mysqli_fetch_object($myOpenTickets)) {
-                        echo "<tr>";
-                            echo "<td>$ticketInfo->ticket_id</td>";
-                            echo "<td>$ticketInfo->date_created</td>";
-                            echo "<td>$ticketInfo->priority</td>";
-                            echo "<td>$ticketInfo->title</td>";
-                            echo "<td>$ticketInfo->description</td>";
-                            echo "<td>$ticketInfo->assigned_to</td>";
-                            echo "<td>$ticketInfo->status</td>";
-                            echo "<td><button type='button' class='btn btn-info'>Edit</button></td>";
-                        echo "</tr>";
+
+                    while($ticketInfo = mysqli_fetch_assoc($myOpenTickets)) {
+
+                        echo '<tr>';
+                            echo '<td>'.$ticketInfo['ticket_id'].'</td>';
+                            echo '<td>'.$ticketInfo['date_created'].'</td>';
+                            echo '<td>'.$ticketInfo['priority'].'</td>';
+                            echo '<td>'.$ticketInfo['title'].'</td>';
+                            echo '<td>'.$ticketInfo['assigned_to'].'</td>';
+                            echo '<td>'.$ticketInfo['status'].'</td>';
+                            echo '<td><a class="btn btn-info" data-toggle="modal" data-target="#ticketInfo" 
+                                data-whatever="'.$ticketInfo['ticket_id'].'">View</a></td>';
+                        echo '</tr>';
                     }
-                    echo "</tbody>";
-                    echo "</table>";
+                    echo '</tbody>';
+                    echo '</table>';
 
                 } else {
                     // There was an issue with the mysql query
@@ -178,29 +179,32 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                     echo "<table class='table table-hover table-bordered'>";
                     echo "<thead>";
                         echo "<tr>";
-                            echo "<th scope='col'>Ticket ID</th>";
-                            echo "<th scope='col'>Date Created</th>";
-                            echo "<th scope='col'>Priority</th>";
-                            echo "<th scope='col'>Title</th>";
-                            echo "<th scope='col'>Description</th>";
-                            echo "<th scope='col'>Assigned To</th>";
-                            echo "<th scope='col'>Status</th>";
+                            echo "<th>Ticket ID</th>";
+                            echo "<th>Date Created</th>";
+                            echo "<th>Priority</th>";
+                            echo "<th>Title</th>";
+                            echo "<th>Assigned To</th>";
+                            echo "<th>Status</th>";
+                            echo "<th>Details</th>";
                         echo "</tr>";
                     echo "</thead>";
                     echo "<tbody>";
-                    while($ticketInfo = mysqli_fetch_object($myClosedTickets)) {
-                        echo "<tr>";
-                            echo "<th scope='row'>$closedInfo->ticket_id</td>";
-                            echo "<td>$closedInfo->date_created</td>";
-                            echo "<td>$closedInfo->priority</td>";
-                            echo "<td>$closedInfo->title</td>";
-                            echo "<td>$closedInfo->description</td>";
-                            echo "<td>$closedInfo->assigned_to</td>";
-                            echo "<td>$closedInfo->status</td>";
-                        echo "</tr>";
+
+                    while($closedInfo = mysqli_fetch_assoc($myClosedTickets)) {
+
+                        echo '<tr>';
+                            echo '<td>'.$closedInfo['ticket_id'].'</td>';
+                            echo '<td>'.$closedInfo['date_created'].'</td>';
+                            echo '<td>'.$closedInfo['priority'].'</td>';
+                            echo '<td>'.$closedInfo['title'].'</td>';
+                            echo '<td>'.$closedInfo['assigned_to'].'</td>';
+                            echo '<td>'.$closedInfo['status'].'</td>';
+                            echo '<td><a class="btn btn-info" data-toggle="modal" data-target="#ticketInfo" 
+                                data-whatever="'.$closedInfo['ticket_id'].'">View</a></td>';
+                        echo '</tr>';
                     }
-                    echo "</tbody>";
-                    echo "</table>";
+                    echo '</tbody>';
+                    echo '</table>';
                     
                 } else {
                     // There was an issue with the mysql query
@@ -210,16 +214,55 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                     header("refresh:0; url=index.php");
                 }
         
-        ?>
+            ?>
+
+            <!-- ticketInfo modal -->
+            <div class="modal fade bd-example-modal-lg" id="ticketInfo" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="userModalLabel">Ticket Details</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        </div>
+                        <div class="populateData">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div> <!-- end of ticket info -->
 
                 
-        </div>
-    </div>
+        </div> <!-- End of content -->
+    </div> <!-- End of wrapper -->
 
     <!-- Latest stable version of jQuery (required for Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $('#ticketInfo').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            var modal = $(this);
+            var dataString = 'id=' + recipient;
+
+                $.ajax({
+                    type: "GET",
+                    url: "view_my_ticket.php",
+                    data: dataString,
+                    cache: false,
+                    success: function (data) {
+                        console.log(data);
+                        modal.find('.populateData').html(data);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+        })
+    </script>
     
  </body>
 </html>

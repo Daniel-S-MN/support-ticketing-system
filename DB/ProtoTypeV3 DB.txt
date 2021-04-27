@@ -35,27 +35,6 @@ CREATE TABLE userstatus (
 );
 
 
-/* Create the password recovery table (questions and answers are hashed) */
-CREATE TABLE passwordrecovery (
-    username VARCHAR(100) NOT NULL PRIMARY KEY,
-    question1 TEXT NOT NULL,
-    question2 TEXT NOT NULL,
-    question3 TEXT NOT NULL,
-    question4 TEXT NOT NULL,
-    question5 TEXT NOT NULL,
-    answer1 TEXT NOT NULL,
-    answer2 TEXT NOT NULL,
-    answer3 TEXT NOT NULL,
-    answer4 TEXT NOT NULL,
-    answer5 TEXT NOT NULL,
-    INDEX (username),
-    FOREIGN KEY (username)
-    REFERENCES users(username)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
-);
-
-
 /* Create the ticket table */
 CREATE TABLE tickets (
     ticket_id SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
