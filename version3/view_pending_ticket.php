@@ -1,6 +1,7 @@
 <?php
 
     session_start();
+    require_once('functions.php');
 
     // Make sure only people logged in AND IT Support managers can view this page
     if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
@@ -35,18 +36,21 @@
         $ticketID = $_POST['ticketID'];
         $agent =$_POST['supportReps'];
 
-        $check = $viewTicket->assignRep($viewCon, $agent, $ticketID);
+        // Attempt to assign the IT Support user to the ticket
+        if ($check = $viewTicket->assignRep($viewCon, $agent, $ticketID)) {
 
-        if ($check != 'Success') {
+            // User was assigned to the ticket
+            $msg = "Ticket updated successfully";
+            echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+            $viewCon->close();
+            header("refresh:0; url=open_tickets.php");
+        } else {
+
+            // The ticket couldn't be updated in the DB
             $errormsg = $ticket->getError();
             echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
             $viewCon->close();
             header("refresh:0; url=index.php");
-        } else {
-            $msg = "Ticket updated successfully";
-            echo '<script type="text/javascript">alert("'.$msg.'");</script>';
-            $viewCon->close();
-            header("refresh:0; url=pending_tickets.php");
         }
     }
 

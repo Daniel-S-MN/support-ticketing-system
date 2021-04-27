@@ -20,9 +20,10 @@ class Ticket extends Database {
         
         if (mysqli_query($con, $sql)) {
             // Ticket was successfully added to the DB
-            return "Success";
+            return true;
         } else {
             $this->error = "ERROR: Unable add ticket to the database: " . mysqli_error($con);
+            return false;
         }
     }
 
@@ -129,10 +130,11 @@ class Ticket extends Database {
         
         if (mysqli_query($con, $sql)) {
             // Ticket was successfully updated
-            return "Success";
+            return true;
         } else {
             // There was a problem
             $this->error = "Unable to assign support rep: " . mysqli_error($con);
+            return false;
         }
     }
 

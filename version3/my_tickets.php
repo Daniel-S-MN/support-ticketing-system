@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+require_once('functions.php');
 
 // Make sure only people logged in can view this page
 if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
@@ -41,51 +42,12 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
         <nav id="desktopNav">
             <ul class="list-unstyled components">
                 <li><a href="index.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
-
                 <?php
-
                     // Some menu items are only displayed based on the user permissions level
-                    if ($_SESSION['Access'] == 1) {
-                        // Non-IT Support users
-                        echo '<li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>';
-                        echo '<li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>';
-                        echo '<li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>';
-
-                    } elseif ($_SESSION['Access'] == 2) {
-                        // IT Support non-managers
-                        echo '<li><a href="#troubleshooting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench" aria-hidden="true"></i> Troubleshooting</a>';
-                            echo '<ul class="collapse list-unstyled" id="troubleshooting">';
-                                echo '<li><a href="open_tickets.php">Open Tickets</a></li>';
-                                echo '<li><a href="assigned_tickets.php">Tickets Assigned To Me</a></li>';
-                            echo '</ul>';
-                        echo '</li>';
-                        echo '<li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>';
-                        echo '<li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>';
-                        echo '<li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>';
-
-                    } elseif ($_SESSION['Access'] == 3) {
-                        // IT Support managers (admin)
-                        echo '<li><a href="#troubleshooting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench" aria-hidden="true"></i> Troubleshooting</a>';
-                            echo '<ul class="collapse list-unstyled" id="troubleshooting">';
-                                echo '<li><a href="open_tickets.php">Open Tickets</a></li>';
-                                echo '<li><a href="pending_tickets.php">Pending Tickets</a></li>';
-                                echo '<li><a href="assigned_tickets.php">Tickets Assigned To Me</a></li>';
-                            echo '</ul>';
-                        echo '</li>';
-                        echo '<li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>';
-                        echo '<li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>';
-                        echo '<li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>';
-                        echo '<li>';
-                            echo '<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-users" aria-hidden="true"></i> System Users</a>';
-                            echo '<ul class="collapse list-unstyled" id="pageSubmenu">';
-                                echo '<li><a href="system_users.php">View/Edit Users</a></li>';
-                                echo '<li><a href="new_user.php">Create New User</a></li>';
-                            echo '</ul>';
-                        echo '</li>';
-                    }
-
+                    if ($_SESSION['Access'] == 1) {showNonITMenu();
+                    } elseif ($_SESSION['Access'] == 2) {showITSupportMenu();
+                    } elseif ($_SESSION['Access'] == 3) {showITManagerMenu();}
                 ?>
-
                 <li><a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
             </ul>
         </nav>
@@ -136,11 +98,11 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                     echo "<thead>";
                         echo "<tr>";
                             echo "<th>Ticket ID</th>";
-                            echo "<th>Date Created</th>";
+                            // echo "<th>Date Created</th>";
                             echo "<th>Priority</th>";
                             echo "<th>Title</th>";
-                            echo "<th>Assigned To</th>";
-                            echo "<th>Status</th>";
+                            // echo "<th>Assigned To</th>";
+                            // echo "<th>Status</th>";
                             echo "<th>Details</th>";
                         echo "</tr>";
                     echo "</thead>";
@@ -150,11 +112,11 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
                         echo '<tr>';
                             echo '<td>'.$ticketInfo['ticket_id'].'</td>';
-                            echo '<td>'.$ticketInfo['date_created'].'</td>';
+                            // echo '<td>'.$ticketInfo['date_created'].'</td>';
                             echo '<td>'.$ticketInfo['priority'].'</td>';
                             echo '<td>'.$ticketInfo['title'].'</td>';
-                            echo '<td>'.$ticketInfo['assigned_to'].'</td>';
-                            echo '<td>'.$ticketInfo['status'].'</td>';
+                            // echo '<td>'.$ticketInfo['assigned_to'].'</td>';
+                            // echo '<td>'.$ticketInfo['status'].'</td>';
                             echo '<td><a class="btn btn-info" data-toggle="modal" data-target="#ticketInfo" 
                                 data-whatever="'.$ticketInfo['ticket_id'].'">View</a></td>';
                         echo '</tr>';
@@ -180,10 +142,10 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                     echo "<thead>";
                         echo "<tr>";
                             echo "<th>Ticket ID</th>";
-                            echo "<th>Date Created</th>";
+                            // echo "<th>Date Created</th>";
                             echo "<th>Priority</th>";
-                            echo "<th>Title</th>";
-                            echo "<th>Assigned To</th>";
+                            // echo "<th>Title</th>";
+                            // echo "<th>Assigned To</th>";
                             echo "<th>Status</th>";
                             echo "<th>Details</th>";
                         echo "</tr>";
@@ -194,11 +156,11 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
 
                         echo '<tr>';
                             echo '<td>'.$closedInfo['ticket_id'].'</td>';
-                            echo '<td>'.$closedInfo['date_created'].'</td>';
+                            // echo '<td>'.$closedInfo['date_created'].'</td>';
                             echo '<td>'.$closedInfo['priority'].'</td>';
                             echo '<td>'.$closedInfo['title'].'</td>';
-                            echo '<td>'.$closedInfo['assigned_to'].'</td>';
-                            echo '<td>'.$closedInfo['status'].'</td>';
+                            // echo '<td>'.$closedInfo['assigned_to'].'</td>';
+                            // echo '<td>'.$closedInfo['status'].'</td>';
                             echo '<td><a class="btn btn-info" data-toggle="modal" data-target="#ticketInfo" 
                                 data-whatever="'.$closedInfo['ticket_id'].'">View</a></td>';
                         echo '</tr>';

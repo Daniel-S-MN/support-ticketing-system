@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+require_once('functions.php');
 
 // Make sure only people logged in AND IT Support managers can view this page
 if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
@@ -23,7 +24,6 @@ if (isset($_POST['submit_new_user'])) {
         require('classes/User.php');
 
         $user = new User();
-
         $con = $user->connect();
 
         $userID = $_POST['userID'];
@@ -36,31 +36,33 @@ if (isset($_POST['submit_new_user'])) {
         $title = $_POST['userTitle'];
         $level = $_POST['levels'];
 
-        $status = $user->addUser($con, $userID, $tempPass, $fName, $lName, $email, $phoneNum, $dept, $title, $level);
-
-        if ($status != 'Success') {
-            // User couldn't be added to the DB
-            $errormsg = $user->getError();
-            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-            $con->close();
-            header("refresh:0; url=index.php");
-
-        } else {
+        // Try to add the new user to the DB
+        if ($status = $user->addUser($con, $userID, $tempPass, $fName, $lName, 
+            $email, $phoneNum, $dept, $title, $level)) {
+            
             // User was added to the DB, now flag the user as a new user in the DB
-            $flagged = $user->flagNewUser($con, $userID);
+            if ($flagged = $user->flagNewUser($con, $userID)) {
 
-            if ($flagged != 'Success') {
+                // User was successfully flagged as a new user in the DB
+                $msg = "User was successfully added to the database!";
+                echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+                $con->close();
+                header("refresh:0; url=index.php");
+            } else {
+
                 // The user couldn't be added to the userstatus table in the DB
                 $errormsg = $user->getError();
                 echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
                 $con->close();
                 header("refresh:0; url=index.php");
-            } else {
-                $msg = "User was successfully added to the database!";
-                echo '<script type="text/javascript">alert("'.$msg.'");</script>';
-                $con->close();
-                header("refresh:0; url=index.php");
             }
+        } else {
+
+            // User couldn't be added to the DB
+            $errormsg = $user->getError();
+            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            $con->close();
+            header("refresh:0; url=index.php");
         }
     }
 
@@ -91,22 +93,7 @@ if (isset($_POST['submit_new_user'])) {
         <nav id="desktopNav">
             <ul class="list-unstyled components">
                 <li><a href="index.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
-                <li><a href="#troubleshooting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench" aria-hidden="true"></i> Troubleshooting</a>
-                    <ul class="collapse list-unstyled" id="troubleshooting">
-                        <li><a href="open_tickets.php">Open Tickets</a></li>
-                        <li><a href="pending_tickets.php">Pending Tickets</a></li>
-                        <li><a href="assigned_tickets.php">Tickets Assigned To Me</a></li>
-                    </ul>
-                </li>
-                <li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>
-                <li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>
-                <li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>
-                <li><a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-users" aria-hidden="true"></i> System Users</a>
-                    <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li><a href="system_users.php">View/Edit Users</a></li>
-                        <li><a href="new_user.php">Create New User</a></li>
-                    </ul>
-                </li>
+                <?php showITManagerMenu(); ?>
                 <li><a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
             </ul>
         </nav>

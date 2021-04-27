@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+require_once('functions.php');
 
 // Make sure only people logged in can view this page
 if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
@@ -21,24 +22,15 @@ if (isset($_POST['update_password'])) {
         echo "<script type='text/javascript'>alert('$message');</script>";
     } else {
 
-        include ('classes/User.php');
+        include('classes/User.php');
 
         $user = new User();
-
         $con = $user->connect();
 
-        $check = $user->changePassword($con, $username, $newpassword);
+        // Attempt to change the useer's password in the DB
+        if ($check = $user->changePassword($con, $username, $newpassword)) {
 
-        // Verify if the password change was successful
-        if ($check != "Success") {
-            // Couldn't update the password
-            $errormsg = $user->getError();
-            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-            $con->close();
-            header("refresh:0; url=index.php");
-        } else {
-
-            // Make sure the "reset password" flag is set to "no" in the DB
+            // Password was successfully updated, now set the "reset password" flag is set to "no" in the DB
             if ($user->resetPswrdResetFlag($con, $username)) {
 
                 // Password was successfully updated
@@ -54,6 +46,13 @@ if (isset($_POST['update_password'])) {
                 $con->close();
                 header("refresh:0; url=index.php");
             }
+        } else {
+
+            // Couldn't update the password
+            $errormsg = $user->getError();
+            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            $con->close();
+            header("refresh:0; url=index.php");
         }
     }
 
@@ -84,49 +83,12 @@ if (isset($_POST['update_password'])) {
         <nav id="desktopNav">
             <ul class="list-unstyled components">
                 <li><a href="index.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
-
                 <?php
                     // Some menu items are only displayed based on the user permissions level
-                    if ($_SESSION['Access'] == 1) {
-                        // Non-IT Support users
-                        echo '<li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>';
-                        echo '<li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>';
-                        echo '<li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>';
-
-                    } elseif ($_SESSION['Access'] == 2) {
-                        // IT Support non-managers
-                        echo '<li><a href="#troubleshooting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench" aria-hidden="true"></i> Troubleshooting</a>';
-                            echo '<ul class="collapse list-unstyled" id="troubleshooting">';
-                                echo '<li><a href="open_tickets.php">Open Tickets</a></li>';
-                                echo '<li><a href="assigned_tickets.php">Tickets Assigned To Me</a></li>';
-                            echo '</ul>';
-                        echo '</li>';
-                        echo '<li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>';
-                        echo '<li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>';
-                        echo '<li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>';
-
-                    } elseif ($_SESSION['Access'] == 3) {
-                        // IT Support managers (admin)
-                        echo '<li><a href="#troubleshooting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench" aria-hidden="true"></i> Troubleshooting</a>';
-                            echo '<ul class="collapse list-unstyled" id="troubleshooting">';
-                                echo '<li><a href="open_tickets.php">Open Tickets</a></li>';
-                                echo '<li><a href="pending_tickets.php">Pending Tickets</a></li>';
-                                echo '<li><a href="assigned_tickets.php">Tickets Assigned To Me</a></li>';
-                            echo '</ul>';
-                        echo '</li>';
-                        echo '<li><a href="create_ticket.php"><i class="fa fa-ticket" aria-hidden="true"></i> Create Ticket</a></li>';
-                        echo '<li><a href="my_tickets.php"><i class="fa fa-tags" aria-hidden="true"></i> My Tickets</a></li>';
-                        echo '<li><a href="my_profile.php"><i class="fa fa-address-card" aria-hidden="true"></i> My Profile</a></li>';
-                        echo '<li>';
-                            echo '<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-users" aria-hidden="true"></i> System Users</a>';
-                            echo '<ul class="collapse list-unstyled" id="pageSubmenu">';
-                                echo '<li><a href="system_users.php">View/Edit Users</a></li>';
-                                echo '<li><a href="new_user.php">Create New User</a></li>';
-                            echo '</ul>';
-                        echo '</li>';
-                    }
+                    if ($_SESSION['Access'] == 1) {showNonITMenu();
+                    } elseif ($_SESSION['Access'] == 2) {showITSupportMenu();
+                    } elseif ($_SESSION['Access'] == 3) {showITManagerMenu();}
                 ?>
-
                 <li><a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
             </ul>
         </nav>
@@ -171,14 +133,9 @@ if (isset($_POST['update_password'])) {
             <br><br>
             <p style="font-weight: bold;">Need to update/change your password?</p>
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#passwordChange">Change Password</button>
+
             
-            <!-- Update security questions+answers button
-            <br><br><br><br>
-            <p style="font-weight: bold;">Need to update/change your security questions?</p>
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#securityQuestions">Security Questions</button>
-            -->
-            
-        </div>
+        </div> <!-- End of content -->
 
         <!-- Password Update Modal -->
         <div class="modal fade" id="passwordChange" role="dialog" aria-hidden="true">
@@ -210,12 +167,9 @@ if (isset($_POST['update_password'])) {
                 </div>
             
             </div>
-        </div>
+        </div> <!-- End of password modal -->
 
-            </div>
-        </div>
-
-    </div>
+    </div> <!-- End of wrapper -->
 
     <!-- Latest stable version of jQuery (required for Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

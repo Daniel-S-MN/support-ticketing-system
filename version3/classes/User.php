@@ -108,11 +108,11 @@ class User extends Database {
 
         if (mysqli_query($con, $sql)) {
             // User was successfully added to the DB
-            return "Success";
+            return true;
         } else {
             // Couldn't add the user, return the error
             $this->error = "Unable to add user: " . mysqli_error($con);
-            return "Fail";
+            return false;
         }
     }
 
@@ -124,33 +124,12 @@ class User extends Database {
         
         if (mysqli_query($con, $sql)) {
             // User was successfully flagged as a new user in the DB
-            return "Success";
+            return true;
         } else {
             // Couldn't flag the user, return the error
             $this->error = "Unable to add user: " . mysqli_error($con);
-            return NULL;
+            return false;
         }
-    }
-
-    /*
-     * If a user cannot remember their password, we will provide them with a way to set their own security questions 
-     * and answers. This way, they can recover their password on their own. If they are unable to answer their own
-     * security questions, they will need to reach out to their supervisor/manager, who can then submit a ticket for
-     * a password request on the user's behalf.
-    */
-    function setQuestions($con, $username, $q1, $q2, $q3, $q4, $q5) {
-
-    }
-
-    /*
-     * Both the security questions (above) and the answers to the questions (below) will be encrypted/decrypted using
-     * a Cryptography Exstension called OpenSSL. Here's where I found out how to do this:
-     * 
-     * https://www.geeksforgeeks.org/how-to-encrypt-and-decrypt-a-php-string/
-     * 
-    */
-    function setAnswers($con, $username, $ans1, $ans2, $ans3, $ans4, $ans5) {
-
     }
 
     // Flag the database that the user needs to reset their password
@@ -162,11 +141,11 @@ class User extends Database {
         
         if (mysqli_query($con, $sql)) {
             // User was successfully flagged as needing to change their password in the DB
-            return "Success";
+            return true;
         } else {
             // Couldn't flag the user, return the error
             $this->error = "Unable to flag password reset: " . mysqli_error($con);
-            return NULL;
+            return false;
         }
     }
 
@@ -246,11 +225,11 @@ class User extends Database {
         
         if (mysqli_query($con, $sql)) {
             // User information was successfully updated
-            return "Success";
+            return true;
         } else {
             // Couldn't update the user information
             $this->error = "Unable to update user info: " . mysqli_error($con);
-            return NULL;
+            return false;
         }
     }
 
@@ -265,11 +244,11 @@ class User extends Database {
         
         if (mysqli_query($con, $sql)) {
             // Password was successfully updated
-            return "Success";
+            return true;
         } else {
             // Couldn't update the password
             $this->error = "Unable to update password: " . mysqli_error($con);
-            return NULL;
+            return false;
         }
     }
 

@@ -9,6 +9,7 @@
      */
 
     session_start();
+    require_once('functions.php');
 
     // Make sure only people logged in AND IT Support managers can view this page
     if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
@@ -20,15 +21,9 @@
    
     /**
      * $_GET['id'] is the username that was selected in system_users.php and works just
-     * fine in all the code below, HOWEVER, after $_POST['submit'], somehow the variable
-     * for $id becomes undefined.
-     * 
-     * I have ZERO idea why this is happening. The variable is 100% valid and working throughout
-     * this page UNTIL we check for is the "submit" button was selected, then $id somehow
-     * becomes "undefined".
-     * 
-     * It's driving me crazy, but I don't have time right now to figure out why it's having
-     * a stroke, so I'm supressing the warning for now.
+     * fine in all the code below, HOWEVER, after $_POST['submit'], the variable for $id 
+     * becomes NULL. Adding a warning supression will resolve seeing the warning, since
+     * everything is actually working as intended.
      */
     $id = @$_GET['id'];
     
@@ -50,21 +45,30 @@
     // Update the user information in the DB
     if (isset($_POST['submit'])) {
 
-        $check = $editUser->updateUser($editCon, $_POST['username'], $_POST['fname'], $_POST['lname'], $_POST['email'], $_POST['phone'],
-            $_POST['dept'], $_POST['title'], $_POST['levels']);
-     
-        if ($check != "Success") {
-            // Couldn't update the user information
-            $errormsg = $user->getError();
-            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
-            $editCon->close();
-            header("refresh:0; url=index.php");
-        } else {
+        $username = $_POST['username'];
+        $fname = $_POST['fname'];
+        $lname = $_POST['lname'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone'];
+        $dept = $_POST['dept'];
+        $title = $_POST['title'];
+        $level = $_POST['levels'];
+
+        // Attempt to update the user's information in the DB
+        if ($check = $editUser->updateUser($editCon, $username, $fname, $lname, $email, $phone,$dept, $title, $level)) {
+
             // User info was successfully updated
             $msg = "User information updated!";
             echo '<script type="text/javascript">alert("'.$msg.'");</script>';
             $editCon->close();
             header("refresh:0; url=system_users.php");
+        } else {
+
+            // Couldn't update the user information
+            $errormsg = $user->getError();
+            echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
+            $editCon->close();
+            header("refresh:0; url=index.php");
         }
     }
 

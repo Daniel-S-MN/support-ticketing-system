@@ -1,6 +1,7 @@
 <?php
 
 require('classes/User.php');
+require_once('functions.php');
 
 $user = new User();
 $con = $user->connect();
@@ -44,15 +45,11 @@ if (isset($_POST['password_reset'])) {
     // Generate a new temporary password
     $tempPassword = substr(str_shuffle($chars), 0, 10);
 
-    $check = $user->changePassword($con, $username, $tempPassword);
-
     // Verify that the password was udpated in the DB
-    if ($check == "Success") {
+    if ($check = $user->changePassword($con, $username, $tempPassword)) {
 
       // Flag the user's account as needing to update their password when they log back in
-      $flag = $user->flagPswdReset($con, $username);
-
-      if ($flag != "Success") {
+      if (!$flag = $user->flagPswdReset($con, $username)) {
 
         // Shouldn't be possible, but whatever
         $errormsg = $user->getError();
@@ -66,9 +63,8 @@ if (isset($_POST['password_reset'])) {
         // Send the new temporary password to the user via email
         $userEmail = $_POST['checkEmail'];
         $subject = "Support Ticket System - Password Reset";
-        // This is just for testing to make sure email is actually working
+
         $message = "<h1>Temporary Password Request</h1><br>";
-        //$message .= "<b>Here is your temporary password:</b> WARGARBLE2\n\n";
         $message .= "<h2>Here is your temporary password: ".$tempPassword."</h2>";
         $message .= "\n\nPlease remember to change your password after logging back in.";
 
@@ -76,9 +72,10 @@ if (isset($_POST['password_reset'])) {
         $header .= "MIME-Version: 1.0\r\n";
         $header .= "Content-type: text/html\r\n";
 
+        // Attempt to send the email with the temporary password to the user
         $retval = mail($userEmail, $subject, $message, $header);
 
-        if ($retval == true) {
+        if ($retval) {
 
           // Email was successfully sent
           echo '<script type="text/javascript">alert("A temporary password has been sent to your email.");</script>';
