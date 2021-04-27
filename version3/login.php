@@ -35,6 +35,14 @@ if (isset($_POST['post_login'])) {
     
 }
 
+/**
+ * Before you can send out emails, you need to configure XAMPP. I found
+ * a very helpful and detailed explanation here:
+ * 
+ * https://stackoverflow.com/questions/15965376/how-to-configure-xampp-to-send-mail-from-localhost
+ * 
+ */
+
 if (isset($_POST['password_reset'])) {
 
   if ($user->forgotPasswordCheck($con, $_POST['checkUsername'], $_POST['checkEmail'])) {
