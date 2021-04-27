@@ -144,9 +144,9 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
                             echo "<th>Ticket ID</th>";
                             // echo "<th>Date Created</th>";
                             echo "<th>Priority</th>";
-                            // echo "<th>Title</th>";
+                            echo "<th>Title</th>";
                             // echo "<th>Assigned To</th>";
-                            echo "<th>Status</th>";
+                            // echo "<th>Status</th>";
                             echo "<th>Details</th>";
                         echo "</tr>";
                     echo "</thead>";
