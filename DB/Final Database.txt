@@ -106,3 +106,23 @@ VALUES ('tdrake', 'No', 'No');
 
 INSERT INTO userstatus (username, new_user, password_reset)
 VALUES ('ballen', 'No', 'No');
+
+/*
+ * Here are some tickets and comments for testing
+*/
+
+INSERT INTO tickets (ticket_id, username, date_created, priority, title, description, assigned_to, status) VALUES
+(1, 'ballen', '2021-04-27 00:03:44', 'Low', 'Ergo Keyboard Request', 'I would like to request an ergo keyboard for my desk, please.', 'bwayne', 'Closed'),
+(2, 'ballen', '2021-04-27 01:29:47', 'Low', 'Ergo Mouse Request', 'I would like to request an ergo mouse to use at my desk, please.', 'bwayne', 'Closed'),
+(3, 'tdrake', '2021-04-27 01:34:01', 'Low', 'Ergo keyboard request', 'I would like to request an ergo keyboard to use at my desk, please.', 'dschwen', 'Pending'),
+(4, 'bwayne', '2021-04-27 01:35:19', 'Low', 'Request for 2nd monitor', 'I\'m requesting a second monitor to use at my desk, to increase productivity.\r\n\r\n\r\nThank you.', NULL, 'Open'),
+(5, 'ballen', '2021-04-28 02:04:13', 'Low', 'LAMP', 'I WANT A LAMP', NULL, 'Open');
+
+INSERT INTO comments (comment_id, ticket_id, username, comment) VALUES
+(1, 1, 'bwayne', 'Request has been forwarded to Finance for approval.'),
+(2, 1, 'bwayne', 'Request has been approved. The keyboard will shipped out to the address listed inn your account.'),
+(3, 2, 'ballen', 'I would like to order this mouse:\r\n\r\nhttps://www.logitech.com/en-us/products/mice/mx-ergo-wireless-trackball-mouse.html'),
+(4, 2, 'ballen', 'Thank you!'),
+(5, 2, 'bwayne', 'Forwarded request to Finance for approval.'),
+(6, 2, 'bwayne', 'Mouse has been shipped.'),
+(7, 5, 'ballen', 'YAY');
