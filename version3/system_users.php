@@ -4,12 +4,7 @@ session_start();
 require_once('functions.php');
 
 // Make sure only people logged in AND IT Support managers can view this page
-if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
-	header("Location: login.php");
-	exit();
-} elseif ($_SESSION['Access'] != 3) {
-    header("Location: index.php");
-}
+onlyAdminAccess();
 
 ?>
 

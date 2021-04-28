@@ -4,12 +4,7 @@
     require_once('functions.php');
 
     // Make sure only people logged in AND IT Support users can view this page
-    if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
-        header("Location: login.php");
-        exit();
-    } elseif ($_SESSION['Access'] < 2) {
-        header("Location: index.php");
-    }
+    onlyITAccess();
 
 ?>
 
@@ -93,18 +88,7 @@
         
                 if ($myTickets != NULL) {
 
-                    echo "<table class='table table-hover table-bordered'>";
-                    echo "<thead>";
-                        echo "<tr>";
-                            echo "<th>Ticket ID</th>";
-                            echo "<th>Date Created</th>";
-                            echo "<th>Priority</th>";
-                            echo "<th>Created By</th>";
-                            echo "<th>Title</th>";
-                            echo "<th>Details</th>";
-                        echo "</tr>";
-                    echo "</thead>";
-                    echo "<tbody>";
+                    tableWithoutAssign();
                     
                     while($tickets = mysqli_fetch_assoc($myTickets)) {
 

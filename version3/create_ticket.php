@@ -4,10 +4,7 @@ session_start();
 require_once('functions.php');
 
 // Make sure only people logged in can view this page
-if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
-	header("Location: login.php");
-	exit();
-}
+mustBeLoggedIn();
 
 // Attempt to add the ticket to the DB
 if (isset($_POST['submit_ticket'])) {

@@ -4,12 +4,7 @@ session_start();
 require_once('functions.php');
 
 // Make sure only people logged in AND IT Support managers can view this page
-if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
-	header("Location: login.php");
-	exit();
-} elseif ($_SESSION['Access'] != 3) {
-    header("Location: index.php");
-}
+onlyAdminAccess();
 
 // Attempt to add the new user to the DB after clicking the "Create New User" button
 if (isset($_POST['submit_new_user'])) {

@@ -4,12 +4,7 @@
     require_once('functions.php');
 
     // Make sure only people logged in AND IT Support managers can view this page
-    if(!isset($_SESSION['login']) || $_SESSION['login'] != "yes") {
-        header("Location: login.php");
-        exit();
-    } elseif ($_SESSION['Access'] != 3) {
-        header("Location: index.php");
-    }
+    onlyAdminAccess();
 
 ?>
 
@@ -92,19 +87,7 @@
         
                 if ($pendingTickets != NULL) {
 
-                    echo "<table class='table table-hover table-bordered'>";
-                    echo "<thead>";
-                        echo "<tr>";
-                            echo "<th>Ticket ID</th>";
-                            echo "<th>Date Created</th>";
-                            echo "<th>Priority</th>";
-                            echo "<th>Created By</th>";
-                            echo "<th>Title</th>";
-                            echo "<th>Assigned To</th>";
-                            echo "<th>Details</th>";
-                        echo "</tr>";
-                    echo "</thead>";
-                    echo "<tbody>";
+                    tableWithAssign();
 
                     while($tickets = mysqli_fetch_assoc($pendingTickets)) {
 

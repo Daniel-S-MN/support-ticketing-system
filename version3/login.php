@@ -48,54 +48,33 @@ if (isset($_POST['password_reset'])) {
   if ($user->forgotPasswordCheck($con, $_POST['checkUsername'], $_POST['checkEmail'])) {
 
     $username = $_POST['checkUsername'];
+    $userEmail = $_POST['checkEmail'];
 
-    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
-    // Generate a new temporary password
-    $tempPassword = substr(str_shuffle($chars), 0, 10);
+    $tempPassword = getTempPassword();
 
     // Verify that the password was udpated in the DB
     if ($check = $user->changePassword($con, $username, $tempPassword)) {
-
       // Flag the user's account as needing to update their password when they log back in
-      if (!$flag = $user->flagPswdReset($con, $username)) {
-
+      if ($flag = $user->flagPswdReset($con, $username)) {
+        // Send the new temporary password to the user via email
+        if (sendRecoveryEmail($userEmail, $tempPassword)) {
+          // Email was successfully sent
+          echo '<script type="text/javascript">alert("A temporary password has been sent to your email.");</script>';
+          header("refresh:0; url=index.php");
+        } else {
+          // Couldn't send the email
+          echo '<script type="text/javascript">alert("Message could not be sent...");</script>';
+          header("refresh:0; url=index.php");
+        }
+      } else {
         // Shouldn't be possible, but whatever
         $errormsg = $user->getError();
         echo '<script type="text/javascript">alert("'.$errormsg.'");</script>';
         $con->close();
         header("refresh:0; url=index.php");
         exit();
-
-      }else {
-
-        // Send the new temporary password to the user via email
-        $userEmail = $_POST['checkEmail'];
-        $subject = "Support Ticket System - Password Reset";
-
-        $message = "<h1>Temporary Password Request</h1><br>";
-        $message .= "<h2>Here is your temporary password: ".$tempPassword."</h2>";
-        $message .= "\n\nPlease remember to change your password after logging back in.";
-
-        $header = "From:ics499.spring2021.group5@gmail.com \r\n";
-        $header .= "MIME-Version: 1.0\r\n";
-        $header .= "Content-type: text/html\r\n";
-
-        // Attempt to send the email with the temporary password to the user
-        $retval = mail($userEmail, $subject, $message, $header);
-
-        if ($retval) {
-
-          // Email was successfully sent
-          echo '<script type="text/javascript">alert("A temporary password has been sent to your email.");</script>';
-          header("refresh:0; url=index.php");
-        } else {
-
-          // Couldn't send the email
-          echo '<script type="text/javascript">alert("Message could not be sent...");</script>';
-          header("refresh:0; url=index.php");
-        }
       }
-    }    
+    }
 
   } else {
 
