@@ -5,6 +5,13 @@ This is a simple support ticketing system that will allow users to create and
 submit tickets for any issues/requests they may have. It will be updated 
 throughout the semester until May 28th (when the project is due).
 
+# Database
+The project was completed using phpMyAdmin, included with XAMPP. I exported
+a copy of the final database (along with a few user type accounts and
+multiple tickets), but I would recommend copying the content within 
+"Final Database.txt" and paste the SQL code into your database management
+tool.
+
 # USERS
 There are really three users:
 
